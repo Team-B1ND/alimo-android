@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFEFC</color>
+    <color name="Main900">#FF020202</color>
+    <color name="Main800">#FF534307</color>
+    <color name="Main700">#FF7C630A</color>
+    <color name="Main600">#FFD2A70E</color>
+    <color name="Main500">#FFFECE23</color>
+    <color name="Main400">#FFFBD757</color>
+    <color name="Main300">#FFFADB70</color>
+    <color name="Main200">#FFFBE69E</color>
+    <color name="Main100">#FFFDF2CD</color>
+    <color name="Main50">#FFFFFEFC</color>
+    <color name="Gray700">#FF333333</color>
+    <color name="Gray500">#FFAAAAAA</color>
+    <color name="Gray300">#FFE6E6E6</color>
+    <color name="Gray100">#FFF4F5F9</color>
+    <color name="Red500">#FFF90707</color>
+    <color name="Red200">#FFFFE8E8</color>
+    <color name="Base">#FFFECE23</color>
+
+</resources>
