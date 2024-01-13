@@ -5,4 +5,8 @@
         <item name="android:layout_width">22dp</item>
         <item name="android:layout_height">22dp</item>
     </style>
+
+    <declare-styleable name="custom_category_card">
+        <attr name="name" format="string"/>
+    </declare-styleable>
 </resources>
