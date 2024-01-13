@@ -6,6 +6,15 @@
         <item name="android:layout_height">22dp</item>
     </style>
 
+    <style name="alimo_switch">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:track">@drawable/track_selector</item>
+        <item name="android:thumb">@drawable/thumb_selector</item>
+        <item name="android:enabled">true</item>
+        <item name="android:checked">true</item>
+    </style>
+
     <declare-styleable name="custom_category_card">
         <attr name="name" format="string"/>
     </declare-styleable>
