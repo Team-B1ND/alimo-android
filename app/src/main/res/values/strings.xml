@@ -31,4 +31,6 @@
 
 
     <string name="not_bookmark">아직 북마크가 없어요</string>
+    <string name="user_name">김가영</string>
+    <string name="student_code">학생코드</string>
 </resources>
