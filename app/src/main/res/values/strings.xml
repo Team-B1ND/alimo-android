@@ -33,4 +33,6 @@
     <string name="not_bookmark">아직 북마크가 없어요</string>
     <string name="user_name">김가영</string>
     <string name="student_code">학생코드</string>
+    <string name="student_share">부모님께만 공유해주세요</string>
+    <string name="close">닫기</string>
 </resources>
