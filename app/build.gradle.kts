@@ -66,4 +66,6 @@ dependencies {
     implementation("androidx.paging:paging-runtime-ktx:3.2.1")
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    implementation("com.github.amarjain07:StickyScrollView:1.0.3")
 }
