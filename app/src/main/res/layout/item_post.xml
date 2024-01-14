@@ -53,6 +53,7 @@
                 android:layout_gravity="bottom"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="1dp"
+                android:visibility="gone"
                 android:src="@drawable/ic_new_badge"/>
         </LinearLayout>
         <TextView
@@ -85,6 +86,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_background"
             android:clipToOutline="true"
+            android:visibility="gone"
             app:layout_constraintDimensionRatio="284:257"
             app:layout_constraintTop_toBottomOf="@id/text_see_more"
             app:layout_constraintStart_toStartOf="@id/layout_profile"
