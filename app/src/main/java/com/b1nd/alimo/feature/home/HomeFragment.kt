@@ -61,6 +61,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
             "testcontent\n알빠노\n라고할뻔",
             "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
             false,
+            false
         )
 
 

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.ItemPostBinding
 import com.bumptech.glide.Glide
 import java.time.LocalDateTime
@@ -31,14 +32,17 @@ class PostRecyclerAdapter constructor(
                         .into(imageProfile)
                 }
                 if (item.image != null) {
+                    imageContent.visibility = View.VISIBLE
                     Glide.with(root)
                         .load(item.image)
                         .centerCrop()
                         .into(imageContent)
-                    imageContent.visibility = View.VISIBLE
+                }
+                if (item.isNew) {
+                    imageNewBadge.visibility = View.VISIBLE
                 }
                 if (item.isBookmark) {
-                    imageNewBadge.visibility = View.VISIBLE
+                    imageBookmark.setImageResource(R.drawable.ic_bookmark)
                 }
 
                 textAuthor.text = item.author
@@ -73,6 +77,6 @@ data class PostItem(
     val createAt: LocalDateTime,
     val content: String,
     val image: String?,
-    val isBookmark: Boolean
-
+    val isBookmark: Boolean,
+    val isNew: Boolean
 )
