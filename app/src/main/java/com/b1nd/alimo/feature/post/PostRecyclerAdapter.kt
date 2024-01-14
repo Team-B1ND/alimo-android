@@ -10,7 +10,9 @@ import com.b1nd.alimo.databinding.ItemPostBinding
 import com.bumptech.glide.Glide
 import java.time.LocalDateTime
 
-class PostRecyclerAdapter: PagingDataAdapter<PostItem, PostRecyclerAdapter.ViewHolder>(diffCallback) {
+class PostRecyclerAdapter constructor(
+    private val onClick: (PostItem) -> Unit
+): PagingDataAdapter<PostItem, PostRecyclerAdapter.ViewHolder>(diffCallback) {
 
     inner class ViewHolder(binding: ItemPostBinding): RecyclerView.ViewHolder(binding.root) {
         val binding = binding
@@ -42,6 +44,9 @@ class PostRecyclerAdapter: PagingDataAdapter<PostItem, PostRecyclerAdapter.ViewH
                 textAuthor.text = item.author
                 textDate.text = item.createAt.toString()
                 textContent.text = item.content
+            }
+            binding.layoutPost.setOnClickListener {
+                onClick(item)
             }
         }
     }
