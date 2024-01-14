@@ -3,7 +3,7 @@ package com.b1nd.alimo
 import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
-import com.b1nd.alimo.feature.test.TestFragment
+import com.b1nd.alimo.feature.home.HomeFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         findViewById<FrameLayout>(R.id.frameLayout)
         supportFragmentManager.beginTransaction()
-            .add(R.id.frameLayout, TestFragment())
+            .add(R.id.frameLayout, HomeFragment())
             .commit()
     }
 }
