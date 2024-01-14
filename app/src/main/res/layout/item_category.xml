@@ -7,10 +7,13 @@
         android:gravity="center_vertical"
         xmlns:app="http://schemas.android.com/apk/res-auto">
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:background="@drawable/shape_main500_12">
+            android:background="@drawable/ripple_main500_12"
+            android:clickable="true"
+            android:focusable="true">
             <TextView
                 android:id="@+id/text_"
                 android:layout_width="wrap_content"
