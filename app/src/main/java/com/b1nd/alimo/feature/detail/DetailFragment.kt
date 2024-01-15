@@ -3,6 +3,7 @@ package com.b1nd.alimo.feature.detail
 import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.PagingData
 import com.b1nd.alimo.MainActivity
@@ -29,7 +30,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
             event.onSuccessEvent {
                 when(it) {
                     ON_CLICK_BACK -> {
-                        Log.d("TAG", "initView: back")
+                        findNavController().popBackStack()
                     }
                     ON_CLICK_SEND -> {
                         Log.d("TAG", "initView: send")
