@@ -12,12 +12,18 @@
             android:id="@+id/action_nav_item_home_to_detailFragment"
             app:destination="@id/detailFragment"
             app:enterAnim="@anim/enter"
-            app:exitAnim="@anim/exit"/>
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.b1nd.alimo.feature.detail.DetailFragment"
-        android:label="DetailFragment" />
+        android:label="DetailFragment" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/nav_item_bookmark"
         android:name="com.b1nd.alimo.feature.bookmark.BookmarkFragment"
@@ -26,7 +32,9 @@
             android:id="@+id/action_nav_item_bookmark_to_detailFragment"
             app:destination="@id/detailFragment"
             app:enterAnim="@anim/enter"
-            app:exitAnim="@anim/exit"/>
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit" />
     </fragment>
     <fragment
         android:id="@+id/nav_item_my"
