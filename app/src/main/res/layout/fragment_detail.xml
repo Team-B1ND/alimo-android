@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+    <data>
+        <variable
+            name="vm"
+            type="com.b1nd.alimo.feature.detail.DetailViewModel"/>
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,6 +24,10 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="16dp"
                     android:src="@drawable/ic_back_arrow"
+                    android:background="@drawable/ripple_white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{() -> vm.onClickBack()}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
                 <ImageView
@@ -167,6 +176,7 @@
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent">
             <EditText
+                android:id="@+id/edit_send"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
@@ -183,12 +193,16 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="@drawable/ripple_white"
+                android:onClick="@{() -> vm.onClickSend()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
                 <ImageView
                     android:layout_width="22dp"
                     android:layout_height="22dp"
-                    android:src="@drawable/ic_send"/>
+                    android:src="@drawable/ic_send" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
