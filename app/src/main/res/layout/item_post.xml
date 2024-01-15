@@ -4,10 +4,9 @@
         android:id="@+id/layout_post"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/ripple_white"
-        android:foreground="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
+        android:background="@color/white"
+        android:stateListAnimator="@animator/anim_color_white"
+        android:foreground="@null"
         xmlns:app="http://schemas.android.com/apk/res-auto">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/image_profile"

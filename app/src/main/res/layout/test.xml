@@ -14,6 +14,7 @@
         android:elevation="40dp"
         android:gravity="center"
         android:text="Hello elevation!"
+        android:stateListAnimator="@animator/anim_color_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
