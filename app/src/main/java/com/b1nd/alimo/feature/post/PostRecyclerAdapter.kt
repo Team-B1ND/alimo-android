@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.ItemPostBinding
-import com.bumptech.glide.Glide
+import com.b1nd.alimo.utiles.loadImage
 import java.time.LocalDateTime
 
 class PostRecyclerAdapter constructor(
@@ -26,17 +26,11 @@ class PostRecyclerAdapter constructor(
         item?.let {
             with(binding) {
                 if (item.authorProfile != null) {
-                    Glide.with(root)
-                        .load(item.authorProfile)
-                        .centerCrop()
-                        .into(imageProfile)
+                    imageProfile.loadImage(item.authorProfile)
                 }
                 if (item.image != null) {
                     imageContent.visibility = View.VISIBLE
-                    Glide.with(root)
-                        .load(item.image)
-                        .centerCrop()
-                        .into(imageContent)
+                    imageContent.loadImage(item.image)
                 }
                 if (item.isNew) {
                     imageNewBadge.visibility = View.VISIBLE
