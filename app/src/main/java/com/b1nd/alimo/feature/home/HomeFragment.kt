@@ -3,6 +3,7 @@ package com.b1nd.alimo.feature.home
 import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.b1nd.alimo.R
@@ -31,12 +32,16 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
         }
 
         mBinding.rvCategory.adapter = HomeCategoryRv(testCategoryItem, requireContext()) {
-
         }
         mBinding.rvCategory.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         val adapter = PostRecyclerAdapter() {
             Log.d("TAG", "initView: ${it.id}")
+
+            val navigate = HomeFragmentDirections.actionNavItemHomeToDetailFragment(
+                it.id
+            )
+            findNavController().navigate(navigate)
         }
         mBinding.rvPost.adapter = adapter
         lifecycleScope.launch(Dispatchers.IO) {
