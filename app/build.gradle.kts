@@ -38,6 +38,7 @@ android {
         dataBinding{
             enable = true
         }
+        buildConfig = true
     }
 }
 
