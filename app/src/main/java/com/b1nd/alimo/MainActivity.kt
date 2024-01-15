@@ -1,5 +1,6 @@
 package com.b1nd.alimo
 
+import android.view.View
 import androidx.activity.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -16,5 +17,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
         mBinding.navBottom
             .setupWithNavController(navController)
+    }
+
+    fun bottomVisible(state: Boolean) {
+        mBinding.navBottom.visibility = if (state) View.VISIBLE else View.GONE
     }
 }
