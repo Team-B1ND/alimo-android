@@ -7,11 +7,31 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-        <FrameLayout
-            android:id="@+id/frameLayout"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/nav_host_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </FrameLayout>
+            android:layout_height="0dp"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:background="@color/white"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/main_nav"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/nav_bottom"/>
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/nav_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="67dp"
+            android:background="@drawable/shape_white_top_16"
+            android:elevation="500dp"
+            android:outlineAmbientShadowColor="#FF000000"
+            android:outlineSpotShadowColor="@color/black"
+            app:itemRippleColor="@color/shadow"
+            app:itemIconSize="28dp"
+            app:itemActiveIndicatorStyle="@color/white"
+            app:itemIconTint="@drawable/menu_item_color"
+            app:labelVisibilityMode="labeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:menu="@menu/main_nav_menu"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
