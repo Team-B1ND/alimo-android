@@ -25,6 +25,8 @@
             android:elevation="500dp"
             android:outlineAmbientShadowColor="#FF000000"
             android:outlineSpotShadowColor="@color/black"
+            app:itemTextAppearanceInactive="@style/MyBottomNavigationView.TextAppearance"
+            app:itemTextAppearanceActive="@style/MyBottomNavigationView.TextAppearance"
             app:itemRippleColor="@color/shadow"
             app:itemIconSize="28dp"
             app:itemActiveIndicatorStyle="@color/white"
