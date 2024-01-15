@@ -1,17 +1,19 @@
 package com.b1nd.alimo
 
 import android.os.Bundle
-import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
-import com.b1nd.alimo.feature.profile.ProfileFragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        findViewById<FrameLayout>(R.id.frameLayout)
-        supportFragmentManager.beginTransaction()
-            .add(R.id.frameLayout, ProfileFragment())
-            .commit()
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_main) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        findViewById<BottomNavigationView>(R.id.nav_bottom)
+            .setupWithNavController(navController)
     }
 }
