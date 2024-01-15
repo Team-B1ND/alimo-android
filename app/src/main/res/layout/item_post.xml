@@ -60,7 +60,7 @@
             android:id="@+id/text_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="너 좀 수상함... 아니 그게 아니라 수상함...문화상품권 \n받으러오셈."
             android:textFontWeight="500"
             android:textSize="12sp"
