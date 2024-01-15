@@ -3,6 +3,7 @@ package com.b1nd.alimo.feature.detail
 import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import androidx.paging.PagingData
 import com.b1nd.alimo.MainActivity
 import com.b1nd.alimo.R
@@ -19,7 +20,9 @@ import java.time.LocalDateTime
 class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.layout.fragment_detail) {
 
     override val viewModel: DetailViewModel by viewModels()
-    
+
+    private val args: DetailFragmentArgs by navArgs()
+
     override fun initView() {
         (requireActivity() as? MainActivity)?.bottomVisible(false)
         bindingViewEvent { event ->

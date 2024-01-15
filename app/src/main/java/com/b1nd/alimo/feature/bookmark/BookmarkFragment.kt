@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
 import com.b1nd.alimo.R
 import com.b1nd.alimo.base.BaseFragment
@@ -23,7 +24,10 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
 
     override fun initView() {
         val adapter = PostRecyclerAdapter {
-
+            val navigate = BookmarkFragmentDirections.actionNavItemBookmarkToDetailFragment(
+                it.id
+            )
+            findNavController().navigate(navigate)
         }
         mBinding.rvPost.visibility = View.GONE
         mBinding.layoutNot.visibility = View.VISIBLE
