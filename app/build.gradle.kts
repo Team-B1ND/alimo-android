@@ -56,6 +56,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 
+    val nav_version = "2.5.3"
+    
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
 
@@ -63,11 +65,12 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
+    // circle
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
+    // paging
     implementation("androidx.paging:paging-runtime-ktx:3.2.1")
 
+    // glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
-
-    implementation("com.github.amarjain07:StickyScrollView:1.0.3")
 }
