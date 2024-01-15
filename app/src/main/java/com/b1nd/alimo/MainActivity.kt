@@ -1,19 +1,20 @@
 package com.b1nd.alimo
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.b1nd.alimo.base.BaseActivity
+import com.b1nd.alimo.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.activity_main) {
+
+    override val viewModel: MainViewModel by viewModels()
+
+    override fun initView() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_main) as NavHostFragment
         val navController = navHostFragment.navController
 
-        findViewById<BottomNavigationView>(R.id.nav_bottom)
+        mBinding.navBottom
             .setupWithNavController(navController)
     }
 }
