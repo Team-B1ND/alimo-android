@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.Fragment
 import com.b1nd.alimo.utiles.Event
 import com.b1nd.alimo.utiles.repeatOnStarted
@@ -32,6 +33,7 @@ abstract class BaseActivity<T: ViewDataBinding, VM: BaseViewModel>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mViewModel = if (::mViewModel.isInitialized) mViewModel else viewModel
+        mBinding.setVariable(BR.vm, mViewModel)
         mBinding.lifecycleOwner = this@BaseActivity
         initView()
         super.onViewCreated(view, savedInstanceState)
