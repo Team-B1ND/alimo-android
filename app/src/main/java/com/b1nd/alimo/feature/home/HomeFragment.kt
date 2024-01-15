@@ -42,13 +42,15 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
         lifecycleScope.launch(Dispatchers.IO) {
             delay(1000)
 
-            adapter.submitData(PagingData.from(listOf(testData(0))))
-            delay(1000)
-            adapter.submitData(PagingData.from(listOf(testData(1))))
-            delay(1000)
-            adapter.submitData(PagingData.from(listOf(testData(2))))
-            delay(1000)
-            adapter.submitData(PagingData.from(listOf(testData(2), testData(3))))
+//            adapter.submitData(PagingData.from(listOf(testData(0))))
+//            delay(1000)
+//            adapter.submitData(PagingData.from(listOf(testData(1))))
+//            delay(1000)
+//            adapter.submitData(PagingData.from(listOf(testData(2))))
+//            delay(1000)
+            adapter.submitData(PagingData.from(listOf(testData(2), testData(3), testData(4), testData(5), testData(6), testData(7), testData(8), testData(9), testData(10), testData(11), testData(12), testData(13), testData(14), testData(15), testData(16))))
+//            delay(5000)
+//            adapter.submitData(PagingData.from(listOf(testData(2))))
         }
     }
 
