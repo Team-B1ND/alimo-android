@@ -1,117 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="vm"
+            type="com.b1nd.alimo.feature.profile.ProfileViewModel" />
+    </data>
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_top_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ALIMO"
-            android:textFontWeight="700"
-            android:textSize="20sp"
-            android:textColor="@color/Gray300"
-            android:layout_marginTop="14dp"
-            android:layout_marginStart="14dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_top_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ALIMO"
+                android:textFontWeight="700"
+                android:textSize="20sp"
+                android:textColor="@color/Gray300"
+                android:layout_marginTop="14dp"
+                android:layout_marginStart="14dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/image_profile"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="56dp"
-            android:src="@drawable/ic_profile"
-            app:layout_constraintTop_toBottomOf="@id/text_top_logo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/image_profile"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="56dp"
+                android:src="@drawable/ic_profile"
+                app:layout_constraintTop_toBottomOf="@id/text_top_logo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TextView
-            android:id="@+id/text_user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:text="@string/user_name"
-            android:textSize="16sp"
-            android:textColor="@color/Main900"
-            android:textFontWeight="700"
-            app:layout_constraintTop_toBottomOf="@id/image_profile"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-        <TextView
-            android:id="@+id/text_student_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/student_code"
-            android:textSize="12sp"
-            android:textColor="@color/Gray500"
-            android:textFontWeight="500"
-            app:layout_constraintTop_toBottomOf="@id/text_user_name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
+                android:id="@+id/text_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="@string/user_name"
+                android:textSize="16sp"
+                android:textColor="@color/Main900"
+                android:textFontWeight="700"
+                app:layout_constraintTop_toBottomOf="@id/image_profile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
+                android:id="@+id/text_student_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/student_code"
+                android:textSize="12sp"
+                android:textColor="@color/Gray500"
+                android:textFontWeight="500"
+                android:onClick="@{() -> vm.onClickStudentCode()}"
+                app:layout_constraintTop_toBottomOf="@id/text_user_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        <com.b1nd.alimo.custom.FlowLayout
-            android:id="@+id/layout_category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            app:layout_constraintTop_toBottomOf="@id/text_student_code"
-            android:orientation="horizontal" />
-
-
-        <com.b1nd.alimo.custom.CustomSettingCard
-            android:id="@+id/card_alarm"
-            android:layout_width="match_parent"
-            android:layout_height="59dp"
-            android:layout_marginTop="36dp"
-            app:title="알림 설정"
-            app:titleColor="@color/Main900"
-            app:switchVisible="true"
-            app:layout_constraintTop_toBottomOf="@id/layout_category"/>
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider_alarm"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            app:dividerColor="@color/Gray100"
-            app:layout_constraintTop_toBottomOf="@id/card_alarm"/>
-        <com.b1nd.alimo.custom.CustomSettingCard
-            android:id="@+id/card_privacy_policy"
-            android:layout_width="match_parent"
-            android:layout_height="59dp"
-            app:title="개인정보 이용 약관"
-            app:titleColor="@color/Main900"
-            app:layout_constraintTop_toBottomOf="@id/divider_alarm"/>
-        <com.b1nd.alimo.custom.CustomSettingCard
-            android:id="@+id/card_service_policy"
-            android:layout_width="match_parent"
-            android:layout_height="59dp"
-            app:title="서비스 정책"
-            app:titleColor="@color/Main900"
-            app:layout_constraintTop_toBottomOf="@id/card_privacy_policy"/>
-        <com.b1nd.alimo.custom.CustomSettingCard
-            android:id="@+id/card_version"
-            android:layout_width="match_parent"
-            android:layout_height="59dp"
-            app:title="버전"
-            app:titleColor="@color/Main900"
-            app:layout_constraintTop_toBottomOf="@id/card_service_policy"/>
-        <com.b1nd.alimo.custom.CustomSettingCard
-            android:id="@+id/card_logout"
-            android:layout_width="match_parent"
-            android:layout_height="59dp"
-            app:title="로그아웃"
-            app:titleColor="@color/Red500"
-            app:layout_constraintTop_toBottomOf="@id/card_version"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@color/Gray100"
-            app:layout_constraintTop_toBottomOf="@id/card_logout"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            <com.b1nd.alimo.custom.FlowLayout
+                android:id="@+id/layout_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="12dp"
+                app:layout_constraintTop_toBottomOf="@id/text_student_code"
+                android:orientation="horizontal" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.b1nd.alimo.custom.CustomSettingCard
+                android:id="@+id/card_alarm"
+                android:layout_width="match_parent"
+                android:layout_height="59dp"
+                android:layout_marginTop="36dp"
+                android:background="@color/white"
+                app:title="알림 설정"
+                app:titleColor="@color/Main900"
+                app:switchVisible="true"
+                app:layout_constraintTop_toBottomOf="@id/layout_category"/>
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divider_alarm"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                app:dividerColor="@color/Gray100"
+                app:layout_constraintTop_toBottomOf="@id/card_alarm"/>
+            <com.b1nd.alimo.custom.CustomSettingCard
+                android:id="@+id/card_privacy_policy"
+                android:layout_width="match_parent"
+                android:layout_height="59dp"
+                android:background="@drawable/ripple_white"
+                android:clickable="true"
+                android:onClick="@{() -> vm.onClickPrivatePolicy()}"
+                app:title="개인정보 이용 약관"
+                app:titleColor="@color/Main900"
+                app:layout_constraintTop_toBottomOf="@id/divider_alarm"/>
+            <com.b1nd.alimo.custom.CustomSettingCard
+                android:id="@+id/card_service_policy"
+                android:layout_width="match_parent"
+                android:layout_height="59dp"
+                android:background="@drawable/ripple_white"
+                android:clickable="true"
+                android:onClick="@{() -> vm.onClickServicePolicy()}"
+                app:title="서비스 정책"
+                app:titleColor="@color/Main900"
+                app:layout_constraintTop_toBottomOf="@id/card_privacy_policy"/>
+            <com.b1nd.alimo.custom.CustomSettingCard
+                android:id="@+id/card_version"
+                android:layout_width="match_parent"
+                android:layout_height="59dp"
+                android:background="@color/white"
+                app:title="버전"
+                app:titleColor="@color/Main900"
+                app:layout_constraintTop_toBottomOf="@id/card_service_policy"/>
+            <com.b1nd.alimo.custom.CustomSettingCard
+                android:id="@+id/card_logout"
+                android:layout_width="match_parent"
+                android:layout_height="59dp"
+                android:background="@drawable/ripple_white"
+                android:clickable="true"
+                android:onClick="@{() -> vm.onClickLogout()}"
+                app:title="로그아웃"
+                app:titleColor="@color/Red500"
+                app:layout_constraintTop_toBottomOf="@id/card_version"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/Gray100"
+                app:layout_constraintTop_toBottomOf="@id/card_logout"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>
