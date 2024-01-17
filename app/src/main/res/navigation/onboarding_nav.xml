@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/onboardingFirst">
+    android:id="@+id/onboarding_nav"
+    app:startDestination="@id/onboardingFirst">
 
     <fragment
         android:id="@+id/onboardingFirst"
         android:name="com.b1nd.alimo.onboarding.first.OnboardingFirstFragment"
-        android:label="onboardingFirstFragment" >
+        android:label="onboardingFirstFragmentss" >
         <action
             android:id="@+id/action_onboardingFirst_to_onboardingSecond"
             app:destination="@id/onboardingSecond"/>
