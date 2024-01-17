@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/onboardingFirst"
-        android:name="com.b1nd.alimo.feature.onboarding.first.OnboardingFirstFragment"
+        android:name="com.b1nd.alimo.presentation.feature.onboarding.first.OnboardingFirstFragment"
         android:label="onboardingFirstFragmentss" >
         <action
             android:id="@+id/action_onboardingFirst_to_onboardingSecond"
@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/onboardingSecond"
-        android:name="com.b1nd.alimo.feature.onboarding.second.OnboardingSecondFragment"
+        android:name="com.b1nd.alimo.presentation.feature.onboarding.second.OnboardingSecondFragment"
         android:label="onboardingSecondFragment" >
         <action
             android:id="@+id/action_onboardingSecond_to_onboardingThird"
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/onboardingThird"
-        android:name="com.b1nd.alimo.feature.onboarding.third.OnboardingThirdFragment"
+        android:name="com.b1nd.alimo.presentation.feature.onboarding.third.OnboardingThirdFragment"
         android:label="onboardingThirdFragment" >
         <action
             android:id="@+id/action_onboardingThird_to_studentLoginFirst"
@@ -42,14 +42,14 @@
 
     <fragment
         android:id="@+id/studentLoginFirst"
-        android:name="com.b1nd.alimo.feature.onboarding.student.first.StudentLoginFirstFragment"
+        android:name="com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginFirstFragment"
         android:label="studentLoginFragment" />
 
 
 
     <fragment
         android:id="@+id/parentJoinFirst"
-        android:name="com.b1nd.alimo.feature.onboarding.parent.join.first.ParentJoinFirstFragment"
+        android:name="com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstFragment"
         android:label="parentJoinFirstFragment" >
         <action
             android:id="@+id/action_parentJoinFirst_to_parentJoinSecond"
@@ -57,7 +57,7 @@
     </fragment>
     <fragment
         android:id="@+id/parentJoinSecond"
-        android:name="com.b1nd.alimo.feature.onboarding.parent.join.second.ParentJoinSecondFragment"
+        android:name="com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondFragment"
         android:label="parentJoinSecondFragment" >
         <action
             android:id="@+id/action_parentJoinSecond_to_parentJoinThird"
@@ -65,7 +65,7 @@
     </fragment>
     <fragment
         android:id="@+id/parentJoinThirst"
-        android:name="com.b1nd.alimo.feature.onboarding.parent.join.third.ParentJoinThirdFragment"
+        android:name="com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdFragment"
         android:label="parentJoinThirdFragment" >
         <action
             android:id="@+id/action_parentJoinThird_to_parentJoinSecond"
@@ -75,7 +75,7 @@
 
     <fragment
         android:id="@+id/parentLoginFirst"
-        android:name="com.b1nd.alimo.feature.onboarding.parent.login.first.ParentLoginFirstFragment"
+        android:name="com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstFragment"
         android:label="parentLoginFirstFragment">
         <action
             android:id="@+id/action_parentLoginFirst_to_parentJoinFirst"
@@ -90,7 +90,7 @@
 
     <fragment
         android:id="@+id/parentFindPWFirst"
-        android:name="com.b1nd.alimo.feature.onboarding.parent.pw.first.ParentFindPWFirstFragment"
+        android:name="com.b1nd.alimo.presentation.feature.onboarding.parent.pw.first.ParentFindPWFirstFragment"
         android:label="parentFindPWFirstFragment">
         <action
             android:id="@+id/action_parentFindPWFirst_to_parentFindPWSecond"
@@ -98,7 +98,7 @@
     </fragment>
     <fragment
         android:id="@+id/parentFindPWSecond"
-        android:name="com.b1nd.alimo.feature.onboarding.parent.pw.second.ParnetFindPWSecondFragment"
+        android:name="com.b1nd.alimo.presentation.feature.onboarding.parent.pw.second.ParnetFindPWSecondFragment"
         android:label="parentFindPWSecondFragment"/>
 
 
