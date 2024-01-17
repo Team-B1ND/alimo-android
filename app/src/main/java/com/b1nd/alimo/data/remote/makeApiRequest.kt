@@ -1,6 +1,6 @@
 package com.b1nd.alimo.data.remote
 
-import com.b1nd.alimo.data.ApiResult
+import com.b1nd.alimo.data.Resource
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.HttpRequestBuilder
@@ -13,14 +13,14 @@ internal inline fun <reified T> makeApiPostRequest(
     httpClient: HttpClient,
     endpoint: String,
     crossinline block: HttpRequestBuilder.() -> Unit
-): Flow<ApiResult<T>> = flow {
-    emit(ApiResult.Loading())
+): Flow<Resource<T>> = flow {
+    emit(Resource.Loading())
     try {
         val result = httpClient.post(endpoint, block)
-        emit(ApiResult.Success(result.body()))
+        emit(Resource.Success(result.body()))
     } catch (e: Exception) {
         e.printStackTrace()
-        emit(ApiResult.Error(e))
+        emit(Resource.Error(e))
     }
 }
 
@@ -28,13 +28,13 @@ internal inline fun <reified T> makeApiGetRequest(
     httpClient: HttpClient,
     endpoint: String,
     crossinline block: HttpRequestBuilder.() -> Unit
-): Flow<ApiResult<T>> = flow {
-    emit(ApiResult.Loading())
+): Flow<Resource<T>> = flow {
+    emit(Resource.Loading())
     try {
         val result = httpClient.get(endpoint, block)
-        emit(ApiResult.Success(result.body()))
+        emit(Resource.Success(result.body()))
     } catch (e: Exception) {
         e.printStackTrace()
-        emit(ApiResult.Error(e))
+        emit(Resource.Error(e))
     }
 }
