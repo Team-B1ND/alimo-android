@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -5,6 +7,9 @@ plugins {
     id("androidx.navigation.safeargs")
     id("dagger.hilt.android.plugin")
 }
+
+val prperties = Properties()
+prperties.load(project.rootProject.file("local.properties").inputStream())
 
 android {
     namespace = "com.b1nd.alimo"
@@ -16,6 +21,8 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
+
+        buildConfigField("String", "SERVER_URL", "${prperties["SERVER_URL"]}")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -89,7 +96,7 @@ dependencies {
     implementation("io.ktor:ktor-client-android:$ktor_version")
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
-    implementation("io.ktor:ktor-client-logging:2.3.2")
+    implementation("io.ktor:ktor-client-logging:$ktor_version")
 
 }
 
