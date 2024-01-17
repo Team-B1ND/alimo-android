@@ -1,6 +1,11 @@
 package com.b1nd.alimo.feature.onboarding.third
 
 import com.b1nd.alimo.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class OnboardingThirdViewModel:BaseViewModel() {
+@HiltViewModel
+class OnboardingThirdViewModel @Inject constructor(
+
+): BaseViewModel() {
 }

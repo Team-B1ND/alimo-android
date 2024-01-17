@@ -4,7 +4,9 @@ import androidx.activity.viewModels
 import com.b1nd.alimo.R
 import com.b1nd.alimo.base.BaseActivity
 import com.b1nd.alimo.databinding.ActivityOnboardingBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OnboardingActivity : BaseActivity<ActivityOnboardingBinding, com.b1nd.alimo.feature.onboarding.OnboardingViewModel>(
     R.layout.activity_onboarding
 ) {

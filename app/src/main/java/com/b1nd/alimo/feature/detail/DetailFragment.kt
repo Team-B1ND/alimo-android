@@ -13,11 +13,13 @@ import com.b1nd.alimo.databinding.FragmentDetailBinding
 import com.b1nd.alimo.feature.detail.DetailViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.feature.detail.DetailViewModel.Companion.ON_CLICK_SEND
 import com.b1nd.alimo.utiles.onSuccessEvent
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
+@AndroidEntryPoint
 class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.layout.fragment_detail) {
 
     override val viewModel: DetailViewModel by viewModels()

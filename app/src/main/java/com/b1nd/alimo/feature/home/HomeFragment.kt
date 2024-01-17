@@ -11,11 +11,13 @@ import com.b1nd.alimo.base.BaseFragment
 import com.b1nd.alimo.databinding.FragmentHomeBinding
 import com.b1nd.alimo.feature.post.PostItem
 import com.b1nd.alimo.feature.post.PostRecyclerAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
+@AndroidEntryPoint
 class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fragment_home) {
 
     override val viewModel: HomeViewModel by viewModels()

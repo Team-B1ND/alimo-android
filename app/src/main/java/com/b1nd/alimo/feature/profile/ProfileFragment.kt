@@ -12,8 +12,10 @@ import com.b1nd.alimo.feature.profile.ProfileViewModel.Companion.ON_CLICK_PRIVAT
 import com.b1nd.alimo.feature.profile.ProfileViewModel.Companion.ON_CLICK_SERVICE_POLICY
 import com.b1nd.alimo.feature.profile.ProfileViewModel.Companion.ON_CLICK_STUDENT_CODE
 import com.b1nd.alimo.utiles.onSuccessEvent
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.random.Random
 
+@AndroidEntryPoint
 class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.layout.fragment_profile) {
 
     override val viewModel: ProfileViewModel by viewModels()

@@ -1,8 +1,13 @@
 package com.b1nd.alimo.feature.profile
 
 import com.b1nd.alimo.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ProfileViewModel: BaseViewModel() {
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
+
+): BaseViewModel() {
 
     fun onClickStudentCode() = viewEvent(ON_CLICK_STUDENT_CODE)
 

@@ -13,11 +13,13 @@ import com.b1nd.alimo.feature.post.PostItem
 import com.b1nd.alimo.feature.post.PostRecyclerAdapter
 import com.b1nd.alimo.utiles.startAnimationWithHide
 import com.b1nd.alimo.utiles.startAnimationWithShow
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
+@AndroidEntryPoint
 class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>(R.layout.fragment_bookmark) {
 
     override val viewModel: BookmarkViewModel by viewModels()
