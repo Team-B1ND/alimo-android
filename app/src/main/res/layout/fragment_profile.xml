@@ -5,7 +5,7 @@
     <data>
         <variable
             name="vm"
-            type="com.b1nd.alimo.feature.profile.ProfileViewModel" />
+            type="com.b1nd.alimo.presentation.feature.profile.ProfileViewModel" />
     </data>
     <ScrollView
         android:layout_width="match_parent"
@@ -63,7 +63,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-            <com.b1nd.alimo.custom.FlowLayout
+            <com.b1nd.alimo.presentation.custom.FlowLayout
                 android:id="@+id/layout_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
                 android:orientation="horizontal" />
 
 
-            <com.b1nd.alimo.custom.CustomSettingCard
+            <com.b1nd.alimo.presentation.custom.CustomSettingCard
                 android:id="@+id/card_alarm"
                 android:layout_width="match_parent"
                 android:layout_height="59dp"
@@ -90,7 +90,7 @@
                 android:layout_height="10dp"
                 app:dividerColor="@color/Gray100"
                 app:layout_constraintTop_toBottomOf="@id/card_alarm"/>
-            <com.b1nd.alimo.custom.CustomSettingCard
+            <com.b1nd.alimo.presentation.custom.CustomSettingCard
                 android:id="@+id/card_privacy_policy"
                 android:layout_width="match_parent"
                 android:layout_height="59dp"
@@ -100,7 +100,7 @@
                 app:title="개인정보 이용 약관"
                 app:titleColor="@color/Main900"
                 app:layout_constraintTop_toBottomOf="@id/divider_alarm"/>
-            <com.b1nd.alimo.custom.CustomSettingCard
+            <com.b1nd.alimo.presentation.custom.CustomSettingCard
                 android:id="@+id/card_service_policy"
                 android:layout_width="match_parent"
                 android:layout_height="59dp"
@@ -110,7 +110,7 @@
                 app:title="서비스 정책"
                 app:titleColor="@color/Main900"
                 app:layout_constraintTop_toBottomOf="@id/card_privacy_policy"/>
-            <com.b1nd.alimo.custom.CustomSettingCard
+            <com.b1nd.alimo.presentation.custom.CustomSettingCard
                 android:id="@+id/card_version"
                 android:layout_width="match_parent"
                 android:layout_height="59dp"
@@ -118,7 +118,7 @@
                 app:title="버전"
                 app:titleColor="@color/Main900"
                 app:layout_constraintTop_toBottomOf="@id/card_service_policy"/>
-            <com.b1nd.alimo.custom.CustomSettingCard
+            <com.b1nd.alimo.presentation.custom.CustomSettingCard
                 android:id="@+id/card_logout"
                 android:layout_width="match_parent"
                 android:layout_height="59dp"
