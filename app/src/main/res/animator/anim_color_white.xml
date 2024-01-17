@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <set>
+            <objectAnimator android:propertyName="backgroundColor"
+                android:duration="300"
+                android:valueFrom="@color/white"
+                android:valueTo="#E6E6E6"/>
+        </set>
+    </item>
+    <item>
+        <set>
+            <objectAnimator android:propertyName="backgroundColor"
+                android:duration="300"
+                android:valueFrom="#E6E6E6"
+                android:valueTo="@color/white"/>
+        </set>
+    </item>
+</selector>

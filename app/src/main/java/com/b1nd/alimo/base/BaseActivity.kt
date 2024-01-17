@@ -1,40 +1,35 @@
 package com.b1nd.alimo.base
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.Fragment
+import androidx.databinding.library.baseAdapters.BR
 import com.b1nd.alimo.utiles.Event
 import com.b1nd.alimo.utiles.repeatOnStarted
 import kotlinx.coroutines.flow.collectLatest
 
 abstract class BaseActivity<T: ViewDataBinding, VM: BaseViewModel>(
     @LayoutRes val layoutRes: Int
-) : Fragment() {
+) : AppCompatActivity() {
 
     protected lateinit var mBinding: T
     protected lateinit var mViewModel: VM
 
     protected abstract val viewModel: VM
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        mBinding = DataBindingUtil.inflate(inflater, layoutRes, container, false)
-        return mBinding.root
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mBinding = DataBindingUtil.setContentView(this, layoutRes)
+        performDataBinding()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    private fun performDataBinding() {
         mViewModel = if (::mViewModel.isInitialized) mViewModel else viewModel
+        mBinding.setVariable(BR.vm, mViewModel)
         mBinding.lifecycleOwner = this@BaseActivity
         initView()
-        super.onViewCreated(view, savedInstanceState)
     }
 
     abstract fun initView()

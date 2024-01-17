@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="shadow">#0A000000</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFEFC</color>
+    <color name="white">#FFFFFFFF</color>
     <color name="Main900">#FF020202</color>
     <color name="Main800">#FF534307</color>
     <color name="Main700">#FF7C630A</color>
