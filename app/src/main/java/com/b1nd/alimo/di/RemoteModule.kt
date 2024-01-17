@@ -2,6 +2,7 @@ package com.b1nd.alimo.di
 
 import android.util.Log
 import com.b1nd.alimo.BuildConfig
+import com.b1nd.alimo.data.local.dao.ExampleDao
 import com.b1nd.alimo.data.remote.service.ExampleService
 import com.b1nd.alimo.data.repository.ExampleRepository
 import dagger.Module
@@ -58,6 +59,6 @@ object RemoteModule {
 
     @Singleton
     @Provides
-    fun provideExampleRepository(httpClient: HttpClient): ExampleService =
-        ExampleRepository(httpClient)
+    fun provideExampleRepository(httpClient: HttpClient, exampleDao: ExampleDao): ExampleService =
+        ExampleRepository(httpClient, exampleDao)
 }

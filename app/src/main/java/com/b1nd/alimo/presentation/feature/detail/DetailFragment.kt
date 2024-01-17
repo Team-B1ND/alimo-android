@@ -6,10 +6,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.PagingData
-import com.b1nd.alimo.presentation.MainActivity
 import com.b1nd.alimo.R
-import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.databinding.FragmentDetailBinding
+import com.b1nd.alimo.presentation.MainActivity
+import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.detail.DetailViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.detail.DetailViewModel.Companion.ON_CLICK_SEND
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
@@ -24,7 +24,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
     override val viewModel: DetailViewModel by viewModels()
 
-    private val args: com.b1nd.alimo.feature.detail.DetailFragmentArgs by navArgs()
+    private val args: DetailFragmentArgs by navArgs()
 
     override fun initView() {
         (requireActivity() as? MainActivity)?.bottomVisible(false)

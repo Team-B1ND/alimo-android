@@ -7,8 +7,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.b1nd.alimo.R
-import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.databinding.FragmentHomeBinding
+import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.post.PostItem
 import com.b1nd.alimo.presentation.feature.post.PostRecyclerAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,7 +41,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
             Log.d("TAG", "initView: ${it.id}")
 
             val navigate =
-                com.b1nd.alimo.feature.home.HomeFragmentDirections.actionNavItemHomeToDetailFragment(
+                HomeFragmentDirections.actionNavItemHomeToDetailFragment(
                     it.id
                 )
             findNavController().navigate(navigate)

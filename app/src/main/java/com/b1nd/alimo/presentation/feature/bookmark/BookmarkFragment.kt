@@ -7,8 +7,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
 import com.b1nd.alimo.R
-import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.databinding.FragmentBookmarkBinding
+import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.post.PostItem
 import com.b1nd.alimo.presentation.feature.post.PostRecyclerAdapter
 import com.b1nd.alimo.presentation.utiles.startAnimationWithHide
@@ -27,7 +27,7 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
     override fun initView() {
         val adapter = PostRecyclerAdapter {
             val navigate =
-                com.b1nd.alimo.feature.bookmark.BookmarkFragmentDirections.actionNavItemBookmarkToDetailFragment(
+                BookmarkFragmentDirections.actionNavItemBookmarkToDetailFragment(
                     it.id
                 )
             findNavController().navigate(navigate)
