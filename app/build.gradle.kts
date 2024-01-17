@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -73,4 +74,12 @@ dependencies {
 
     // glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    // hilt
+    implementation("com.google.dagger:hilt-android:2.44.2")
+    kapt("com.google.dagger:hilt-android-compiler:2.44.2")
+}
+
+kapt {
+    correctErrorTypes = true
 }
