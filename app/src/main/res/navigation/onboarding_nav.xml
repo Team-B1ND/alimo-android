@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/onboardingFirst">
+
+    <fragment
+        android:id="@+id/onboardingFirst"
+        android:name="com.b1nd.alimo.onboarding.first.OnboardingFirstFragment"
+        android:label="onboardingFirstFragment" >
+        <action
+            android:id="@+id/action_onboardingFirst_to_onboardingSecond"
+            app:destination="@id/onboardingSecond"/>
+    </fragment>
+    <fragment
+        android:id="@+id/onboardingSecond"
+        android:name="com.b1nd.alimo.onboarding.second.OnboardingSecondFragment"
+        android:label="onboardingSecondFragment" >
+        <action
+            android:id="@+id/action_onboardingSecond_to_onboardingThird"
+            app:destination="@id/onboardingThird"/>
+    </fragment>
+    <fragment
+        android:id="@+id/onboardingThird"
+        android:name="com.b1nd.alimo.onboarding.third.OnboardingThirdFragment"
+        android:label="onboardingThirdFragment" >
+        <action
+            android:id="@+id/action_onboardingThird_to_studentLoginFirst"
+            app:destination="@+id/studentLoginFirst" />
+
+        <action
+            android:id="@+id/action_onboardingThird_to_parentJoinFirst"
+            app:destination="@+id/parentJoinFirst" />
+
+        <action
+            android:id="@+id/action_onboardingThird_to_parentLoginFirst"
+            app:destination="@+id/parentLoginFirst" />
+
+    </fragment>
+
+
+
+    <fragment
+        android:id="@+id/studentLoginFirst"
+        android:name="com.b1nd.alimo.onboarding.student.first.StudentLoginFirstFragment"
+        android:label="studentLoginFragment" />
+
+
+
+    <fragment
+        android:id="@+id/parentJoinFirst"
+        android:name="com.b1nd.alimo.onboarding.parent.join.first.ParentJoinFirstFragment"
+        android:label="parentJoinFirstFragment" >
+        <action
+            android:id="@+id/action_parentJoinFirst_to_parentJoinSecond"
+            app:destination="@+id/parentJoinSecond" />
+    </fragment>
+    <fragment
+        android:id="@+id/parentJoinSecond"
+        android:name="com.b1nd.alimo.onboarding.parent.join.second.ParentJoinSecondFragment"
+        android:label="parentJoinSecondFragment" >
+        <action
+            android:id="@+id/action_parentJoinSecond_to_parentJoinThird"
+            app:destination="@id/parentJoinThirst" />
+    </fragment>
+    <fragment
+        android:id="@+id/parentJoinThirst"
+        android:name="com.b1nd.alimo.onboarding.parent.join.third.ParentJoinThirdFragment"
+        android:label="parentJoinThirdFragment" >
+        <action
+            android:id="@+id/action_parentJoinThird_to_parentJoinSecond"
+            app:destination="@+id/parentJoinSecond" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/parentLoginFirst"
+        android:name="com.b1nd.alimo.onboarding.parent.login.first.ParentLoginFirstFragment"
+        android:label="parentLoginFirstFragment">
+        <action
+            android:id="@+id/action_parentLoginFirst_to_parentJoinFirst"
+            app:destination="@id/parentJoinFirst"/>
+
+        <action
+            android:id="@+id/action_parentLoginFirst_to_parentFindPWFirst"
+            app:destination="@+id/parentFindPWFirst"/>
+    </fragment>
+
+
+
+    <fragment
+        android:id="@+id/parentFindPWFirst"
+        android:name="com.b1nd.alimo.onboarding.parent.pw.first.ParentFindPWFirstFragment"
+        android:label="parentFindPWFirstFragment">
+        <action
+            android:id="@+id/action_parentFindPWFirst_to_parentFindPWSecond"
+            app:destination="@+id/parentFindPWSecond"/>
+    </fragment>
+    <fragment
+        android:id="@+id/parentFindPWSecond"
+        android:name="com.b1nd.alimo.onboarding.parent.pw.second.ParnetFindPWSecondFragment"
+        android:label="parentFindPWSecondFragment"/>
+
+
+
+
+
+</navigation>
