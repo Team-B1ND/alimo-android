@@ -1,5 +1,6 @@
 package com.b1nd.alimo.di
 
+import LocalDateTimeTypeAdapter
 import android.util.Log
 import com.b1nd.alimo.BuildConfig
 import com.b1nd.alimo.data.local.dao.ExampleDao
@@ -22,6 +23,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.gson.gson
 import io.ktor.serialization.kotlinx.json.json
+import java.time.LocalDateTime
 import javax.inject.Singleton
 
 @Module
@@ -33,6 +35,7 @@ object RemoteModule {
     fun provideKtorHttpClient() = HttpClient(CIO) {
         install(ContentNegotiation) {
             gson {
+                registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeTypeAdapter())
                 setPrettyPrinting()
                 setLenient()
             }
