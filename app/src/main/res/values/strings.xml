@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">alimo</string>
+    <string name="onboarding_title">ALIMO</string>
+    <string name="onboarding_sub_title">대소고의 모든 소식</string>
+    <string name="start">시작하기</string>
+    <string name="next">다음</string>
+    <string name="onboarding_third_title">학생이신가요?\n아니면 학부모이신가요?</string>
+    <string name="onboarding_third_sub_title">알리모에서는 학생, 학부모 모두 참여해요</string>
+    <string name="onboarding_third_parent_message">이미 계정이 있으시다면?</string>
+    <string name="login">로그인</string>
+    <string name="student_login_title">도담도담 계정으로 로그인 해주세요!</string>
+    <string name="student_login_id">아이디</string>
+    <string name="student_login_pw">비밀번호</string>
+    <string name="join">회원가입</string>
+    <string name="parent_join_first_title">학생 코드를 입력해주세요</string>
+    <string name="parent_join_first_sub_title">학생 코드가 무엇인가요?</string>
+    <string name="parent_join_email">이메일</string>
+    <string name="parent_join_pw">비밀번호 재입력</string>
+    <string name="parent_join_second_title">학부모님 안녕하세요!</string>
+    <string name="parent_name">김가영</string>
+    <string name="parent_join_thirst_title">이메일 인증 코드를 전송했어요</string>
+    <string name="authentication_code">인증코드</string>
+    <string name="find_password">비밀번호 찾기</string>
+    <string name="new_password">새 비밀번호</string>
+    <string name="re_new_password">새 비밀번호 재입력</string>
+    <string name="complete">완료</string>
+    <string name="incorrect_code">올바르지 않은 학생 코드</string>
+    <string name="reconfirm">학생 코드를 다시 확인해 주세요</string>
+    <string name="cancel">닫기</string>
+
+
+
 </resources>
