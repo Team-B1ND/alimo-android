@@ -12,7 +12,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.b1nd.alimo.databinding.DialogStudentCodeBinding
 
-class ProfileStudentCodeDialog: DialogFragment() {
+class ProfileStudentCodeDialog constructor(
+    private val onClickListener: ProfileStudentClickListener
+): DialogFragment() {
 
     private lateinit var binding: DialogStudentCodeBinding
     override fun onStart() {
@@ -21,7 +23,6 @@ class ProfileStudentCodeDialog: DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         view?.setPadding(1, 0, 1, 0)
         view?.z = 1f
-
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +35,7 @@ class ProfileStudentCodeDialog: DialogFragment() {
             manager.setPrimaryClip(
                 ClipData.newPlainText("학생코드가 복사되었습니다.", binding.textStudentCode.text.toString())
             )
+            onClickListener.onCopy()
             dialog?.dismiss()
         }
         return binding.root
