@@ -50,11 +50,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
             <LinearLayout
+                android:id="@+id/layout_close"
                 android:layout_width="49dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="16dp"
                 android:gravity="center"
-                android:background="@drawable/shape_gray100_12"
+                android:background="@drawable/ripple_gray100_12"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintTop_toBottomOf="@id/text_share"
                 app:layout_constraintEnd_toEndOf="parent">
                 <TextView

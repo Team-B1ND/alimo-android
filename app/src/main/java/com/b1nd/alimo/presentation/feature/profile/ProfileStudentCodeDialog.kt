@@ -40,6 +40,10 @@ class ProfileStudentCodeDialog constructor(
             onClickListener.onCopy()
             dialog?.dismiss()
         }
+
+        binding.layoutClose.setOnClickListener {
+            dialog?.dismiss()
+        }
         return binding.root
     }
 }
