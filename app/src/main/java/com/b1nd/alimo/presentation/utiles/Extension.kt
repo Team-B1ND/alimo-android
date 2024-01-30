@@ -13,7 +13,36 @@ import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
+fun <T> Fragment.collectFlow(
+    state: Flow<T>,
+    action: (T) -> Unit
+) {
+    lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+            state.collectLatest {
+                action(it)
+            }
+        }
+    }
+}
+
+fun <T> Fragment.collectStateFlow(
+    state: StateFlow<T>,
+    action: (T) -> Unit
+) {
+    lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+            state.collectLatest {
+                action(it)
+            }
+        }
+    }
+}
 
 fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
     lifecycleScope.launch {
