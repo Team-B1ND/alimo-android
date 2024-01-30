@@ -36,10 +36,9 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
         collectStateFlow(viewModel.state) {
             lifecycleScope.launch(Dispatchers.Main) {
                 it.data?.let { model ->
-                    if (model.image != "null") {
-//                        Log.d("TAG", "initView: ${null.javaClass}")
+                    if (model.image != null) {
                         Log.d("TAG", "initView: 엄 이미지 바ㅏ인딩")
-                        mBinding.imageProfile.loadImage(model.image?: "")
+                        mBinding.imageProfile.loadImage(model.image)
                     }
                     mBinding.textUserName.text = model.name
                 }
