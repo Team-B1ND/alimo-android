@@ -3,6 +3,7 @@ package com.b1nd.alimo.data.repository
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.remote.makeApiGetRequest
 import com.b1nd.alimo.data.remote.response.BaseResponse
+import com.b1nd.alimo.data.remote.response.profile.ProfileCategoryResponse
 import com.b1nd.alimo.data.remote.response.profile.ProfileInfoResponse
 import com.b1nd.alimo.data.remote.service.ProfileService
 import io.ktor.client.HttpClient
@@ -23,5 +24,13 @@ class ProfileRepository @Inject constructor(
                 header("Authorization", "Bearer $testToken")
             }
         }
+
+    override suspend fun getCategory(): Flow<Resource<BaseResponse<ProfileCategoryResponse>>> =
+        makeApiGetRequest(httpClient, "/member/role-list") {
+            headers {
+                header("Authorization", "Bearer $testToken")
+            }
+        }
+
 
 }

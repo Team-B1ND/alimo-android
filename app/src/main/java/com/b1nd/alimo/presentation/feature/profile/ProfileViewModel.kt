@@ -50,7 +50,19 @@ class ProfileViewModel @Inject constructor(
             }
 
             val job2 = async {
-
+                repository.getCategory().catch {
+                    _sideEffect.send(ProfileSideEffect.FailedLoad(it))
+                }.collectLatest {
+                    if (it is Resource.Error) {
+                        Log.d("TAG", "${it.error?.message}: ")
+                    } else if (it is Resource.Success) {
+                        Log.d("TAG", ": ${it.data}")
+                    }
+                    _state.value = _state.value.copy(
+                        category = it.data?.data?.roles
+                    )
+                    Log.d("TAG", ": ${_state.value}")
+                }
             }
             job1.start()
             job2.start()
