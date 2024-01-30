@@ -3,6 +3,7 @@ package com.b1nd.alimo.presentation.feature.profile
 import android.graphics.Paint
 import android.os.Build
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -39,6 +40,9 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
                     if (model.image != null) {
                         Log.d("TAG", "initView: 엄 이미지 바ㅏ인딩")
                         mBinding.imageProfile.loadImage(model.image)
+                    }
+                    if (model.childCode != null) {
+                        mBinding.textStudentCode.visibility = View.VISIBLE
                     }
                     mBinding.textUserName.text = model.name
                 }
