@@ -8,6 +8,7 @@
     <string name="onboarding_third_sub_title">알리모에서는 학생, 학부모 모두 참여해요</string>
     <string name="onboarding_third_parent_message">이미 계정이 있으시다면?</string>
     <string name="login">로그인</string>
+    <string name="dodam_login">도담도담 로그인</string>
     <string name="student_login_title">도담도담 계정으로 로그인 해주세요!</string>
     <string name="student_login_id">아이디</string>
     <string name="student_login_pw">비밀번호</string>
@@ -27,6 +28,8 @@
     <string name="incorrect_code">올바르지 않은 학생 코드</string>
     <string name="reconfirm">학생 코드를 다시 확인해 주세요</string>
     <string name="cancel">닫기</string>
+    <string name="pw_error">비밀번호가 다릅니다</string>
+    <string name="authentication_code_error">인증코드가 올바르지 않습니다</string>
 
 
 
