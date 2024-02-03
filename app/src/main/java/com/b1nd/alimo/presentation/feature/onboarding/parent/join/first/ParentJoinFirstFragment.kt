@@ -6,7 +6,6 @@ import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -54,30 +53,28 @@ class ParentJoinFirstFragment : BaseFragment<FragmentParentJoinFirstBinding, Par
         showKeyboard()
 
 
-        // Apply GenericTextWatcher to handle text changes
-        mBinding.studentCode1.addTextChangedListener(GenericTextWatcher(mBinding.studentCode1, mBinding.studentCode2))
-        mBinding.studentCode2.addTextChangedListener(GenericTextWatcher(mBinding.studentCode2, mBinding.studentCode3))
-        mBinding.studentCode3.addTextChangedListener(GenericTextWatcher(mBinding.studentCode3, mBinding.studentCode4))
-        mBinding.studentCode4.addTextChangedListener(GenericTextWatcher(mBinding.studentCode4, mBinding.studentCode5))
-        mBinding.studentCode5.addTextChangedListener(GenericTextWatcher(mBinding.studentCode5, mBinding.studentCode6))
-        mBinding.studentCode6.addTextChangedListener(GenericTextWatcher(mBinding.studentCode6, mBinding.loginBtnOn))
+        // 리스트에 EditText 객체들을 추가합니다
+        val editTextList = listOf(
+            mBinding.studentCode1,
+            mBinding.studentCode2,
+            mBinding.studentCode3,
+            mBinding.studentCode4,
+            mBinding.studentCode5,
+            mBinding.studentCode6,
 
-        // Apply GenericKeyEvent to handle deletion
-        mBinding.studentCode1.setOnKeyListener(GenericKeyEvent(mBinding.studentCode1, null))
-        mBinding.studentCode2.setOnKeyListener(GenericKeyEvent(mBinding.studentCode2, mBinding.studentCode1))
-        mBinding.studentCode3.setOnKeyListener(GenericKeyEvent(mBinding.studentCode3, mBinding.studentCode2))
-        mBinding.studentCode4.setOnKeyListener(GenericKeyEvent(mBinding.studentCode4, mBinding.studentCode3))
-        mBinding.studentCode5.setOnKeyListener(GenericKeyEvent(mBinding.studentCode5, mBinding.studentCode4))
-        mBinding.studentCode6.setOnKeyListener(GenericKeyEvent(mBinding.studentCode6, mBinding.studentCode5))
+        )
 
+// editTextList에 대해 forEachIndexed를 사용하여 반복합니다.
+        editTextList.forEachIndexed { index, editText ->
+            // 현재 EditText에 GenericTextWatcher를 추가
+            editText.addTextChangedListener(GenericTextWatcher(editText, editTextList.getOrNull(index + 1)))
 
-        // Set up initial backgrounds
-        setupEditTextBackground(mBinding.studentCode1)
-        setupEditTextBackground(mBinding.studentCode2)
-        setupEditTextBackground(mBinding.studentCode3)
-        setupEditTextBackground(mBinding.studentCode4)
-        setupEditTextBackground(mBinding.studentCode5)
-        setupEditTextBackground(mBinding.studentCode6)
+            // 현재 EditText에 GenericKeyEvent를 추가
+            editText.setOnKeyListener(GenericKeyEvent(editText, editTextList.getOrNull(index - 1)))
+
+            // 초기 설정을 위해 EditText의 배경을 설정
+            setupEditTextBackground(editText)
+        }
     }
 
     private fun setupEditTextBackground(editText: EditText) {
@@ -112,16 +109,17 @@ class ParentJoinFirstFragment : BaseFragment<FragmentParentJoinFirstBinding, Par
     inner class GenericTextWatcher(private val currentView: EditText, private val nextView: View?) : TextWatcher {
         override fun afterTextChanged(editable: Editable) {
             if (editable.length == 1) {
-                nextView?.let {
-                    it.requestFocus()
-                    if (it is EditText) {
-                        // 텍스트가 입력되면서 다음 EditText일 경우
-                        updateEditTextBackground(it)
-                    } else if (it is Button) {
-                        // 텍스트가 입력되면서 다음 Button일 경우
-                        view?.hideKeyboard() // 키보드 숨김
-                        mBinding.loginBtnOff.visibility = View.INVISIBLE
-                        mBinding.loginBtnOn.visibility = View.VISIBLE
+                if (nextView == null) {
+                    // 마지막 EditText에 도달한 경우
+                    view?.hideKeyboard() // 키보드 숨김
+                    mBinding.loginBtnOff.visibility = View.INVISIBLE
+                    mBinding.loginBtnOn.visibility = View.VISIBLE
+                } else {
+                    // 다음 EditText로 포커스 이동
+                    nextView.requestFocus()
+                    if (nextView is EditText) {
+                        // 다음 EditText에 텍스트가 입력되면 배경 업데이트
+                        updateEditTextBackground(nextView)
                     }
                 }
             }
