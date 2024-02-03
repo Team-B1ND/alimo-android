@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <variable
             name="vm"
             type="com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel" />
@@ -9,8 +11,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:onClick="@{() -> vm.onClickBackground()}"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:onClick="@{() -> vm.onClickBackground()}">
 
         <LinearLayout
             android:id="@+id/topBar"
@@ -33,8 +35,8 @@
                 android:layout_height="wrap_content"
                 android:padding="12dp"
                 android:text="@string/login"
-                android:textFontWeight="700"
                 android:textColor="@color/Main900"
+                android:textFontWeight="700"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -46,8 +48,8 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="36dp"
             android:text="@string/parent_join_second_title"
-            android:textFontWeight="700"
             android:textColor="@color/Main900"
+            android:textFontWeight="700"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/topBar" />
@@ -60,17 +62,21 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="20dp"
-            android:hint="@string/parent_join_email"
             android:textColorHint="@color/Gray500"
+
             app:endIconDrawable="@drawable/ic_clear_text"
             app:endIconMode="custom"
+            app:hintEnabled="false"
             app:layout_constraintTop_toBottomOf="@id/student_join_title">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:background="@drawable/edittext_border_background" />
+                android:textColorHint="@drawable/hint_color"
+
+                android:background="@drawable/edittext_border_background"
+                android:hint="@string/parent_join_email" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -82,16 +88,20 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="20dp"
-            android:hint="@string/student_login_pw"
             android:textColorHint="@color/Gray500"
+
             app:endIconMode="password_toggle"
+            app:hintEnabled="false"
             app:layout_constraintTop_toBottomOf="@id/id_edit_text_layout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/pw_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:background="@drawable/edittext_border_background" />
+                android:textColorHint="@drawable/hint_color"
+
+                android:background="@drawable/edittext_border_background"
+                android:hint="@string/student_login_pw" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -100,8 +110,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
-            android:text="@string/find_password"
             android:onClick="@{() -> vm.onClickFindPW()}"
+            android:text="@string/find_password"
             android:textColor="@color/Gray500"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -126,8 +136,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:background="@drawable/bottom_line"
-                android:text="@string/join"
                 android:onClick="@{() -> vm.onClickJoin()}"
+                android:text="@string/join"
                 android:textColor="@color/Main500"
                 android:textStyle="normal" />
 
@@ -140,10 +150,10 @@
             android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
-            android:visibility="visible"
             android:background="@drawable/btn_shape_rounded_off"
             android:text="@string/login"
             android:textColor="@color/Gray500"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -155,11 +165,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
             android:background="@drawable/btn_shape_rounded_on"
-            android:text="@string/login"
-            android:textFontWeight="700"
             android:onClick="@{() -> vm.onClickLogin()}"
-            android:visibility="invisible"
+            android:text="@string/login"
             android:textColor="@color/Main900"
+            android:textFontWeight="700"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
