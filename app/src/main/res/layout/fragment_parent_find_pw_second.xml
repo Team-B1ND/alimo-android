@@ -31,6 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
+                android:textFontWeight="700"
                 android:text="@string/find_password"
                 android:textColor="@color/Main900"
                 android:textSize="16sp" />
@@ -42,6 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="36dp"
+            android:textFontWeight="700"
             android:text="@string/parent_name"
             android:textColor="@color/Main900"
             android:textSize="16sp"
@@ -64,6 +66,7 @@
             android:id="@+id/id_edit_text_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
+            android:textFontWeight="700"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="16dp"
@@ -110,6 +113,7 @@
             android:text="@string/complete"
             android:onClick="@{() -> vm.onClickDone()}"
             android:textColor="@color/Main900"
+            android:textFontWeight="700"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

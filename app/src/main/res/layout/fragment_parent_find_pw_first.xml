@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:padding="12dp"
                 android:text="@string/find_password"
+                android:textFontWeight="700"
                 android:textColor="@color/Main900"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -43,6 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="36dp"
+            android:textFontWeight="700"
             android:text="@string/parent_join_thirst_title"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"

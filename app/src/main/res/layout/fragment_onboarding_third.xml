@@ -36,6 +36,7 @@
             android:text="@string/onboarding_third_title"
             app:layout_constraintTop_toBottomOf="@id/topBar"
             app:layout_constraintStart_toStartOf="parent"
+            android:textFontWeight="700"
             android:layout_marginTop="145dp"
             android:layout_marginStart="24dp"
             android:textColor="@color/Main900" />
@@ -113,6 +114,7 @@
             android:textColor="@color/Main900"
             android:onClick="@{() -> vm.onClickDodamLogin()}"
             android:visibility="visible"
+            android:textFontWeight="700"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -131,6 +133,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:visibility="invisible"
+            android:textFontWeight="700"
             style="?android:attr/borderlessButtonStyle"
             android:layout_marginBottom="30dp" />
 
