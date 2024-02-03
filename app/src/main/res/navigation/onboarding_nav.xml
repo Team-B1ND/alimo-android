@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/onboarding_nav"
-    app:startDestination="@id/onboardingFirst">
+    app:startDestination="@id/onboardingSecond">
 
     <fragment
         android:id="@+id/onboardingFirst"
@@ -71,7 +71,7 @@
             app:destination="@id/parentLoginFirst" />
     </fragment>
     <fragment
-        android:id="@+id/parentJoinThirst"
+        android:id="@+id/parentJoinThird"
         android:name="com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdFragment"
         android:label="parentJoinThirdFragment" >
         <action
@@ -106,8 +106,13 @@
 
     <fragment
         android:id="@+id/parentFindPWSecond"
-        android:name="com.b1nd.alimo.presentation.feature.onboarding.parent.pw.second.ParnetFindPWSecondFragment"
-        android:label="parentFindPWSecondFragment"/>
+        android:name="com.b1nd.alimo.presentation.feature.onboarding.parent.pw.second.ParentFindPWSecondFragment"
+        android:label="parentFindPWSecondFragment">
+
+        <action
+            android:id="@+id/action_parentFindPwSecond_to_onBoardingThird"
+            app:destination="@+id/onboardingThird"/>
+    </fragment>
 
 
 

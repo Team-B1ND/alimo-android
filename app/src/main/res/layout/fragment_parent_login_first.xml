@@ -3,7 +3,7 @@
     <data>
         <variable
             name="vm"
-            type="com.b1nd.alimo.feature.onboarding.parent.login.first.ParentLoginFirstViewModel" />
+            type="com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
