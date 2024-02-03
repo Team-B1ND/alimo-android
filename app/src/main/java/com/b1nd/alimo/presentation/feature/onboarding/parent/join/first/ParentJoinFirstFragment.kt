@@ -14,9 +14,11 @@ import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentParentJoinFirstBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_BACK
+import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_BACKGROUND
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_LOGIN
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_NEXT
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_STUDENT_CODE
+import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 
 class ParentJoinFirstFragment : BaseFragment<FragmentParentJoinFirstBinding, ParentJoinFirstViewModel>(
@@ -39,6 +41,9 @@ class ParentJoinFirstFragment : BaseFragment<FragmentParentJoinFirstBinding, Par
                     }
                     ON_CLICK_STUDENT_CODE -> {
 
+                    }
+                    ON_CLICK_BACKGROUND -> {
+                        view?.hideKeyboard()
                     }
 
                 }
@@ -114,7 +119,7 @@ class ParentJoinFirstFragment : BaseFragment<FragmentParentJoinFirstBinding, Par
                         updateEditTextBackground(it)
                     } else if (it is Button) {
                         // 텍스트가 입력되면서 다음 Button일 경우
-                        hideKeyboard() // 키보드 숨김
+                        view?.hideKeyboard() // 키보드 숨김
                         mBinding.loginBtnOff.visibility = View.INVISIBLE
                         mBinding.loginBtnOn.visibility = View.VISIBLE
                     }
@@ -145,10 +150,7 @@ class ParentJoinFirstFragment : BaseFragment<FragmentParentJoinFirstBinding, Par
         }
     }
 
-    private fun hideKeyboard() {
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
-    }
+
     private fun showKeyboard() {
         val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(mBinding.studentCode1, InputMethodManager.SHOW_IMPLICIT)

@@ -106,7 +106,6 @@ class ParentFindPWFirstFragment :
             // 두 EditText의 텍스트가 null이 아닐 때 버튼의 색상을 변경
             mBinding.nextBtnOff.visibility = View.INVISIBLE
             mBinding.nextBtnOn.visibility = View.VISIBLE
-            view?.hideKeyboard()
         } else {
             Log.d("TAG", "updateButtonColor: off")
             // 두 EditText 중 하나라도 텍스트가 null일 때 버튼의 색상을 기본 색상으로 변경
