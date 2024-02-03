@@ -1,4 +1,4 @@
-package com.b1nd.alimo.feature.onboarding.third
+package com.b1nd.alimo.presentation.feature.onboarding.third
 
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -6,16 +6,17 @@ import androidx.navigation.fragment.findNavController
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentOnboardingThirdBinding
 
-import com.b1nd.alimo.base.BaseFragment
-import com.b1nd.alimo.feature.onboarding.third.OnboardingThirdViewModel.Companion.ON_CLICK_BACK
-import com.b1nd.alimo.feature.onboarding.third.OnboardingThirdViewModel.Companion.ON_CLICK_DODAM_LOGIN
-import com.b1nd.alimo.feature.onboarding.third.OnboardingThirdViewModel.Companion.ON_CLICK_JOIN
-import com.b1nd.alimo.feature.onboarding.third.OnboardingThirdViewModel.Companion.ON_CLICK_LOGIN
-import com.b1nd.alimo.feature.onboarding.third.OnboardingThirdViewModel.Companion.ON_CLICK_PARENT
-import com.b1nd.alimo.feature.onboarding.third.OnboardingThirdViewModel.Companion.ON_CLICK_STUDENT
-import com.b1nd.alimo.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.base.BaseFragment
+import com.b1nd.alimo.presentation.feature.onboarding.third.OnboardingThirdViewModel.Companion.ON_CLICK_BACK
+import com.b1nd.alimo.presentation.feature.onboarding.third.OnboardingThirdViewModel.Companion.ON_CLICK_DODAM_LOGIN
+import com.b1nd.alimo.presentation.feature.onboarding.third.OnboardingThirdViewModel.Companion.ON_CLICK_JOIN
+import com.b1nd.alimo.presentation.feature.onboarding.third.OnboardingThirdViewModel.Companion.ON_CLICK_LOGIN
+import com.b1nd.alimo.presentation.feature.onboarding.third.OnboardingThirdViewModel.Companion.ON_CLICK_PARENT
+import com.b1nd.alimo.presentation.feature.onboarding.third.OnboardingThirdViewModel.Companion.ON_CLICK_STUDENT
+import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 
-class OnboardingThirdFragment:BaseFragment<FragmentOnboardingThirdBinding, com.b1nd.alimo.feature.onboarding.third.OnboardingThirdViewModel>(
+class OnboardingThirdFragment:
+    BaseFragment<FragmentOnboardingThirdBinding, OnboardingThirdViewModel>(
     R.layout.fragment_onboarding_third) {
     override val viewModel: OnboardingThirdViewModel by viewModels()
 

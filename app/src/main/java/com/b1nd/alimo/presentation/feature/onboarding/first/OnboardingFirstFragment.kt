@@ -5,7 +5,7 @@ import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentOnboardingFirstBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
 
-class OnboardingFirst:BaseFragment<FragmentOnboardingFirstBinding, OnboardingFirstViewModel>(R.layout.fragment_onboarding_first) {
+class OnboardingFirstFragment:BaseFragment<FragmentOnboardingFirstBinding, OnboardingFirstViewModel>(R.layout.fragment_onboarding_first) {
     override val viewModel: OnboardingFirstViewModel by viewModels()
 
     override fun initView() {

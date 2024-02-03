@@ -1,9 +1,8 @@
-package com.b1nd.alimo.feature.onboarding.parent.pw.first
+package com.b1nd.alimo.presentation.feature.onboarding.parent.pw.first
 
-import com.b1nd.alimo.base.BaseViewModel
-import com.b1nd.alimo.feature.onboarding.parent.join.third.ParentJoinThirdViewModel
+import com.b1nd.alimo.presentation.base.BaseViewModel
 
-class ParentFindPWFirstViewModel:BaseViewModel() {
+class ParentFindPWFirstViewModel: BaseViewModel() {
     fun onClickCertification() = viewEvent(ON_CLICK_CERTIFICATION)
     fun onClickCheck() = viewEvent(ON_CLICK_CHECK)
     fun onClickBack() = viewEvent(ON_CLICK_BACK)

@@ -1,19 +1,18 @@
-package com.b1nd.alimo.feature.onboarding.parent.pw.second
+package com.b1nd.alimo.presentation.feature.onboarding.parent.pw.second
 
-import android.content.Context
-import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.b1nd.alimo.R
-import com.b1nd.alimo.base.BaseFragment
-import com.b1nd.alimo.databinding.FragmentParentFindPwFirstBinding
 import com.b1nd.alimo.databinding.FragmentParentFindPwSecondBinding
-import com.b1nd.alimo.feature.onboarding.parent.pw.second.ParentFindPWSecondViewModel.Companion.ON_CLICK_BACK
-import com.b1nd.alimo.feature.onboarding.parent.pw.second.ParentFindPWSecondViewModel.Companion.ON_CLICK_BACKGROUND
-import com.b1nd.alimo.feature.onboarding.parent.pw.second.ParentFindPWSecondViewModel.Companion.ON_CLICK_DONE
-import com.b1nd.alimo.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.base.BaseFragment
+import com.b1nd.alimo.presentation.feature.onboarding.parent.pw.second.ParentFindPWSecondViewModel.Companion.ON_CLICK_BACK
+import com.b1nd.alimo.presentation.feature.onboarding.parent.pw.second.ParentFindPWSecondViewModel.Companion.ON_CLICK_BACKGROUND
+import com.b1nd.alimo.presentation.feature.onboarding.parent.pw.second.ParentFindPWSecondViewModel.Companion.ON_CLICK_DONE
+import com.b1nd.alimo.presentation.utiles.hideKeyboard
+import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 
-class ParentFindPWSecondFragment:BaseFragment<FragmentParentFindPwSecondBinding, ParentFindPWSecondViewModel>(
+class ParentFindPWSecondFragment:
+    BaseFragment<FragmentParentFindPwSecondBinding, ParentFindPWSecondViewModel>(
     R.layout.fragment_parent_find_pw_second
 ) {
     override val viewModel: ParentFindPWSecondViewModel by viewModels()
@@ -31,7 +30,7 @@ class ParentFindPWSecondFragment:BaseFragment<FragmentParentFindPwSecondBinding,
                     ON_CLICK_BACKGROUND -> {
                         mBinding.idEditTextLayout.clearFocus()
                         mBinding.pwEditTextLayout.clearFocus()
-                        hideKeyboard()
+                        view?.hideKeyboard()
                     }
                 }
             }
@@ -39,8 +38,5 @@ class ParentFindPWSecondFragment:BaseFragment<FragmentParentFindPwSecondBinding,
 
     }
 
-    private fun hideKeyboard() {
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view?.windowToken, 0)
-    }
+
 }

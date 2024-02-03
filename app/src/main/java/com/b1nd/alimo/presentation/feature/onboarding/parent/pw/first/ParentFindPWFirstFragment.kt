@@ -1,29 +1,28 @@
-package com.b1nd.alimo.feature.onboarding.parent.pw.first
+package com.b1nd.alimo.presentation.feature.onboarding.parent.pw.first
 
-import android.content.Context
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.b1nd.alimo.R
-import com.b1nd.alimo.base.BaseFragment
 import com.b1nd.alimo.databinding.FragmentParentFindPwFirstBinding
-import com.b1nd.alimo.feature.onboarding.parent.join.third.ParentJoinThirdViewModel
-import com.b1nd.alimo.feature.onboarding.parent.pw.first.ParentFindPWFirstViewModel.Companion.ON_CLICK_BACK
-import com.b1nd.alimo.feature.onboarding.parent.pw.first.ParentFindPWFirstViewModel.Companion.ON_CLICK_BACKGROUND
-import com.b1nd.alimo.feature.onboarding.parent.pw.first.ParentFindPWFirstViewModel.Companion.ON_CLICK_CERTIFICATION
-import com.b1nd.alimo.feature.onboarding.parent.pw.first.ParentFindPWFirstViewModel.Companion.ON_CLICK_NEXT
-import com.b1nd.alimo.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.base.BaseFragment
+import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdViewModel
+import com.b1nd.alimo.presentation.feature.onboarding.parent.pw.first.ParentFindPWFirstViewModel.Companion.ON_CLICK_BACK
+import com.b1nd.alimo.presentation.feature.onboarding.parent.pw.first.ParentFindPWFirstViewModel.Companion.ON_CLICK_BACKGROUND
+import com.b1nd.alimo.presentation.feature.onboarding.parent.pw.first.ParentFindPWFirstViewModel.Companion.ON_CLICK_CERTIFICATION
+import com.b1nd.alimo.presentation.feature.onboarding.parent.pw.first.ParentFindPWFirstViewModel.Companion.ON_CLICK_NEXT
+import com.b1nd.alimo.presentation.utiles.hideKeyboard
+import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 
 class ParentFindPWFirstFragment :
-    BaseFragment<FragmentParentFindPwFirstBinding, com.b1nd.alimo.feature.onboarding.parent.pw.first.ParentFindPWFirstViewModel>(
+    BaseFragment<FragmentParentFindPwFirstBinding, ParentFindPWFirstViewModel>(
         R.layout.fragment_parent_find_pw_first
     ) {
-    override val viewModel: com.b1nd.alimo.feature.onboarding.parent.pw.first.ParentFindPWFirstViewModel by viewModels()
+    override val viewModel: ParentFindPWFirstViewModel by viewModels()
 
     override fun initView() {
         bindingViewEvent { event ->
@@ -35,7 +34,7 @@ class ParentFindPWFirstFragment :
 
                     ON_CLICK_BACKGROUND -> {
                         mBinding.idEditTextLayout.clearFocus()
-                        hideKeyboard()
+                        view?.hideKeyboard()
                     }
 
                     ON_CLICK_NEXT -> {
@@ -107,7 +106,7 @@ class ParentFindPWFirstFragment :
             // 두 EditText의 텍스트가 null이 아닐 때 버튼의 색상을 변경
             mBinding.nextBtnOff.visibility = View.INVISIBLE
             mBinding.nextBtnOn.visibility = View.VISIBLE
-            hideKeyboard()
+            view?.hideKeyboard()
         } else {
             Log.d("TAG", "updateButtonColor: off")
             // 두 EditText 중 하나라도 텍스트가 null일 때 버튼의 색상을 기본 색상으로 변경
@@ -118,9 +117,5 @@ class ParentFindPWFirstFragment :
     }
 
 
-    private fun hideKeyboard() {
-        val imm =
-            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view?.windowToken, 0)
-    }
+
 }

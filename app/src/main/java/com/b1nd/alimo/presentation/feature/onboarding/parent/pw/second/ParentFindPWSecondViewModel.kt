@@ -1,8 +1,8 @@
-package com.b1nd.alimo.feature.onboarding.parent.pw.second
+package com.b1nd.alimo.presentation.feature.onboarding.parent.pw.second
 
-import com.b1nd.alimo.base.BaseViewModel
+import com.b1nd.alimo.presentation.base.BaseViewModel
 
-class ParentFindPWSecondViewModel:BaseViewModel() {
+class ParentFindPWSecondViewModel: BaseViewModel() {
     fun onClickBack() = viewEvent(ON_CLICK_BACK)
     fun onClickDone() = viewEvent(ON_CLICK_DONE)
     fun onClickBackground() = viewEvent(ON_CLICK_BACKGROUND)

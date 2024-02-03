@@ -1,26 +1,22 @@
-package com.b1nd.alimo.feature.onboarding.student.first
+package com.b1nd.alimo.presentation.feature.onboarding.student.first
 
-import android.app.Activity
-import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.b1nd.alimo.R
-import com.b1nd.alimo.base.BaseFragment
 import com.b1nd.alimo.databinding.FragmentStudentLoginFirstBinding
-import com.b1nd.alimo.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACK
-import com.b1nd.alimo.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACKGROUND
-import com.b1nd.alimo.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_LOGIN_ON
-import com.b1nd.alimo.utiles.onSuccessEvent
-import com.google.android.material.internal.ViewUtils.hideKeyboard
+import com.b1nd.alimo.presentation.base.BaseFragment
+import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACK
+import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACKGROUND
+import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_LOGIN_ON
+import com.b1nd.alimo.presentation.utiles.hideKeyboard
+import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 
-class StudentLoginFirstFragment:BaseFragment<FragmentStudentLoginFirstBinding, StudentLoginViewModel>(
+class StudentLoginFirstFragment:
+    BaseFragment<FragmentStudentLoginFirstBinding, StudentLoginViewModel>(
     R.layout.fragment_student_login_first
 ) {
     override val viewModel: StudentLoginViewModel by viewModels()
@@ -39,7 +35,7 @@ class StudentLoginFirstFragment:BaseFragment<FragmentStudentLoginFirstBinding, S
                         Log.d("TAG", "initView: background")
                         mBinding.idEditText.clearFocus()
                         mBinding.pwEditText.clearFocus()
-                        hideKeyboard()
+                        view?.hideKeyboard()
                     }
                 }
             }
@@ -79,7 +75,7 @@ class StudentLoginFirstFragment:BaseFragment<FragmentStudentLoginFirstBinding, S
             // 두 EditText의 텍스트가 null이 아닐 때 버튼의 색상을 변경
             mBinding.loginBtnOff.visibility = View.GONE
             mBinding.loginBtnOn.visibility = View.VISIBLE
-            hideKeyboard()
+            view?.hideKeyboard()
         } else {
             Log.d("TAG", "updateButtonColor: off")
             // 두 EditText 중 하나라도 텍스트가 null일 때 버튼의 색상을 기본 색상으로 변경
@@ -89,8 +85,5 @@ class StudentLoginFirstFragment:BaseFragment<FragmentStudentLoginFirstBinding, S
         }
     }
 
-    private fun hideKeyboard() {
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
-    }
+
 }

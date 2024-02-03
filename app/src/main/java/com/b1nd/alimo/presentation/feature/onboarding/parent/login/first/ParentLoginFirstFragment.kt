@@ -1,4 +1,4 @@
-package com.b1nd.alimo.feature.onboarding.parent.login.first
+package com.b1nd.alimo.presentation.feature.onboarding.parent.login.first
 
 import android.content.Context
 import android.text.Editable
@@ -9,17 +9,18 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.b1nd.alimo.R
-import com.b1nd.alimo.base.BaseFragment
 import com.b1nd.alimo.databinding.FragmentParentLoginFirstBinding
-import com.b1nd.alimo.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_BACK
-import com.b1nd.alimo.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_BACKGROUND
-import com.b1nd.alimo.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_FIND_PW
-import com.b1nd.alimo.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_JOIN
-import com.b1nd.alimo.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_LOGIN
-import com.b1nd.alimo.feature.onboarding.student.first.StudentLoginViewModel
-import com.b1nd.alimo.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.base.BaseFragment
+import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_BACK
+import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_BACKGROUND
+import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_FIND_PW
+import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_JOIN
+import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_LOGIN
+import com.b1nd.alimo.presentation.utiles.hideKeyboard
+import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 
-class ParentLoginFirstFragment:BaseFragment<FragmentParentLoginFirstBinding,ParentLoginFirstViewModel>(
+class ParentLoginFirstFragment:
+    BaseFragment<FragmentParentLoginFirstBinding, ParentLoginFirstViewModel>(
     R.layout.fragment_parent_login_first
 ) {
     override val viewModel: ParentLoginFirstViewModel by viewModels()
@@ -38,7 +39,7 @@ class ParentLoginFirstFragment:BaseFragment<FragmentParentLoginFirstBinding,Pare
                         Log.d("TAG", "initView: background")
                         mBinding.idEditTextLayout.clearFocus()
                         mBinding.pwEditTextLayout.clearFocus()
-                        hideKeyboard()
+                        view?.hideKeyboard()
                     }
                     ON_CLICK_JOIN -> {
                         findNavController().navigate(R.id.action_parentLoginFirst_to_parentJoinFirst)
@@ -84,7 +85,7 @@ class ParentLoginFirstFragment:BaseFragment<FragmentParentLoginFirstBinding,Pare
             // 두 EditText의 텍스트가 null이 아닐 때 버튼의 색상을 변경
             mBinding.loginBtnOff.visibility = View.INVISIBLE
             mBinding.loginBtnOn.visibility = View.VISIBLE
-            hideKeyboard()
+            view?.hideKeyboard()
         } else {
             Log.d("TAG", "updateButtonColor: off")
             // 두 EditText 중 하나라도 텍스트가 null일 때 버튼의 색상을 기본 색상으로 변경
@@ -94,8 +95,5 @@ class ParentLoginFirstFragment:BaseFragment<FragmentParentLoginFirstBinding,Pare
         }
     }
 
-    private fun hideKeyboard() {
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view?.windowToken, 0)
-    }
+
 }

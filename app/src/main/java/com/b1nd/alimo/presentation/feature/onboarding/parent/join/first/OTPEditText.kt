@@ -1,4 +1,4 @@
-package com.b1nd.alimo.feature.onboarding.parent.join.first
+package com.b1nd.alimo.presentation.feature.onboarding.parent.join.first
 
 import android.text.Editable
 import android.text.TextWatcher

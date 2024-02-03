@@ -1,9 +1,8 @@
-package com.b1nd.alimo.feature.onboarding.parent.join.first
+package com.b1nd.alimo.presentation.feature.onboarding.parent.join.first
 
-import com.b1nd.alimo.base.BaseViewModel
-import com.b1nd.alimo.feature.onboarding.parent.login.first.ParentLoginFirstViewModel
+import com.b1nd.alimo.presentation.base.BaseViewModel
 
-class ParentJoinFirstViewModel:BaseViewModel() {
+class ParentJoinFirstViewModel: BaseViewModel() {
 
     fun onClickBack() = viewEvent(ON_CLICK_BACK)
     fun onClickLogin() = viewEvent(ON_CLICK_LOGIN)

@@ -1,4 +1,6 @@
 package com.b1nd.alimo.presentation.feature.onboarding.first
 
-class OnboardingFirstViewModel {
+import com.b1nd.alimo.presentation.base.BaseViewModel
+
+class OnboardingFirstViewModel:BaseViewModel() {
 }

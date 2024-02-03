@@ -1,9 +1,8 @@
-package com.b1nd.alimo.feature.onboarding.parent.join.first
+package com.b1nd.alimo.presentation.feature.onboarding.parent.join.first
 
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -12,13 +11,13 @@ import android.widget.EditText
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.b1nd.alimo.R
-import com.b1nd.alimo.base.BaseFragment
 import com.b1nd.alimo.databinding.FragmentParentJoinFirstBinding
-import com.b1nd.alimo.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_BACK
-import com.b1nd.alimo.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_LOGIN
-import com.b1nd.alimo.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_NEXT
-import com.b1nd.alimo.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_STUDENT_CODE
-import com.b1nd.alimo.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.base.BaseFragment
+import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_BACK
+import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_LOGIN
+import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_NEXT
+import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_STUDENT_CODE
+import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 
 class ParentJoinFirstFragment : BaseFragment<FragmentParentJoinFirstBinding, ParentJoinFirstViewModel>(
     R.layout.fragment_parent_join_first

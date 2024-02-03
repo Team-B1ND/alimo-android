@@ -1,8 +1,8 @@
-package com.b1nd.alimo.feature.onboarding.parent.join.third
+package com.b1nd.alimo.presentation.feature.onboarding.parent.join.third
 
-import com.b1nd.alimo.base.BaseViewModel
+import com.b1nd.alimo.presentation.base.BaseViewModel
 
-class ParentJoinThirdViewModel:BaseViewModel() {
+class ParentJoinThirdViewModel: BaseViewModel() {
     fun onClickBack() = viewEvent(ON_CLICK_BACK)
     fun onClickBackground() = viewEvent(ON_CLICK_BACKGROUND)
     fun onClickJoin() = viewEvent(ON_CLICK_JOIN)

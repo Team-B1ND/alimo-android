@@ -1,26 +1,25 @@
-package com.b1nd.alimo.feature.onboarding.parent.join.third
+package com.b1nd.alimo.presentation.feature.onboarding.parent.join.third
 
-import android.content.Context
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.b1nd.alimo.R
-import com.b1nd.alimo.base.BaseFragment
 import com.b1nd.alimo.databinding.FragmentParentJoinThirdBinding
-import com.b1nd.alimo.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_BACK
-import com.b1nd.alimo.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_BACKGROUND
-import com.b1nd.alimo.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_CERTIFICATION
-import com.b1nd.alimo.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_CHECK
-import com.b1nd.alimo.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_JOIN
-import com.b1nd.alimo.utiles.onSuccessEvent
-import java.util.Timer
+import com.b1nd.alimo.presentation.base.BaseFragment
+import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_BACK
+import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_BACKGROUND
+import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_CERTIFICATION
+import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_CHECK
+import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_JOIN
+import com.b1nd.alimo.presentation.utiles.hideKeyboard
+import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 
-class ParentJoinThirdFragment:BaseFragment<FragmentParentJoinThirdBinding, ParentJoinThirdViewModel>(
+class ParentJoinThirdFragment:
+    BaseFragment<FragmentParentJoinThirdBinding, ParentJoinThirdViewModel>(
     R.layout.fragment_parent_join_third
 ) {
     override val viewModel: ParentJoinThirdViewModel by viewModels()
@@ -36,7 +35,7 @@ class ParentJoinThirdFragment:BaseFragment<FragmentParentJoinThirdBinding, Paren
                     }
                     ON_CLICK_BACKGROUND -> {
                         mBinding.idEditTextLayout.clearFocus()
-                        hideKeyboard()
+                        view?.hideKeyboard()
                     }
                     ON_CLICK_JOIN -> {
                         findNavController().navigate(R.id.action_parentJoinThirst_to_onboardingThird)
@@ -94,7 +93,7 @@ class ParentJoinThirdFragment:BaseFragment<FragmentParentJoinThirdBinding, Paren
             // 두 EditText의 텍스트가 null이 아닐 때 버튼의 색상을 변경
             mBinding.joinBtnOff.visibility = View.INVISIBLE
             mBinding.joinBtnOn.visibility = View.VISIBLE
-            hideKeyboard()
+            view?.hideKeyboard()
         } else {
             Log.d("TAG", "updateButtonColor: off")
             // 두 EditText 중 하나라도 텍스트가 null일 때 버튼의 색상을 기본 색상으로 변경
@@ -104,8 +103,5 @@ class ParentJoinThirdFragment:BaseFragment<FragmentParentJoinThirdBinding, Paren
         }
     }
 
-    private fun hideKeyboard() {
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view?.windowToken, 0)
-    }
+
 }

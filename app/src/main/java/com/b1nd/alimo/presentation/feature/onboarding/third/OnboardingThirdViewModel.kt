@@ -1,8 +1,8 @@
-package com.b1nd.alimo.feature.onboarding.third
+package com.b1nd.alimo.presentation.feature.onboarding.third
 
-import com.b1nd.alimo.base.BaseViewModel
+import com.b1nd.alimo.presentation.base.BaseViewModel
 
-class OnboardingThirdViewModel:BaseViewModel() {
+class OnboardingThirdViewModel: BaseViewModel() {
     
     fun onClickBack() = viewEvent(ON_CLICK_BACK)
 
