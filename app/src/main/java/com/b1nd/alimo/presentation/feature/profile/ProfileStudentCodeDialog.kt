@@ -13,7 +13,8 @@ import androidx.fragment.app.DialogFragment
 import com.b1nd.alimo.databinding.DialogStudentCodeBinding
 
 class ProfileStudentCodeDialog constructor(
-    private val onClickListener: ProfileStudentClickListener
+    private val onClickListener: ProfileStudentClickListener,
+    private val studentCode: String?
 ): DialogFragment() {
 
     private lateinit var binding: DialogStudentCodeBinding
@@ -30,12 +31,17 @@ class ProfileStudentCodeDialog constructor(
         savedInstanceState: Bundle?
     ): View? {
         binding = DialogStudentCodeBinding.inflate(inflater, container, false)
+        binding.textStudentCode.text = studentCode
         binding.layoutStudentCode.setOnClickListener {
             val manager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             manager.setPrimaryClip(
                 ClipData.newPlainText("학생코드가 복사되었습니다.", binding.textStudentCode.text.toString())
             )
             onClickListener.onCopy()
+            dialog?.dismiss()
+        }
+
+        binding.layoutClose.setOnClickListener {
             dialog?.dismiss()
         }
         return binding.root
