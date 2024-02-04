@@ -7,11 +7,12 @@
     android:background="#FFFFFF"
     tools:context=".presentation.MainActivity">
 
-    <com.b1nd.alimo.presentation.custom.CustomLine
-        android:id="@+id/image_line_curve"
-        android:layout_width="wrap_content"
+    <com.b1nd.alimo.presentation.custom.CustomFileDownload
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:fileName="rrr"
+        app:fileSize="121.3 KB"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

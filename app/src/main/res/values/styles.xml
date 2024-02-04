@@ -57,4 +57,10 @@
         <attr name="switchEnable" format="boolean"/>
         <attr name="switchChecked" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="custom_file_download">
+        <attr name="fileName" format="string"/>
+        <attr name="fileSize" format="string"/>
+        <attr name="link" format="string"/>
+    </declare-styleable>
 </resources>
