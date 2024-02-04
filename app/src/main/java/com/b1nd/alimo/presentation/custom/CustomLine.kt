@@ -36,13 +36,13 @@ class CustomLine(context: Context?, Attrif: AttributeSet) : View(context, Attrif
         rectF?.let {
 //            val radius = it.height() / 6 // 호의 반지름
             // y 길이 만큼의 선 그리기 (90도 호를 그릴 공간 제외)
-            val rr = 30f * resources.displayMetrics.density
-            path.moveTo(0f, 0f)
-            path.lineTo(it.left, it.bottom)
+            val rr = 15f * resources.displayMetrics.density
+            path.moveTo(2f, 0f)
+            path.lineTo(2f, it.bottom-rr)
 
-//            val arcRec = RectF(it.left, it.bottom-rr, it.left+rr, it.bottom)
+            val arcRec = RectF(2f, it.bottom-rr, 2f+rr, it.bottom)
 //            val arcRec = RectF(it.right - it.r    ight / 2, it.bottom - it.right / 2, it.right, it.bottom)
-//            path.arcTo(arcRec, 180f, -90f)
+            path.arcTo(arcRec, 180f, -90f)
 
             path.lineTo(it.right, it.bottom)
             canvas.drawPath(path, paint)

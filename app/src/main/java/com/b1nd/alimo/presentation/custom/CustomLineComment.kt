@@ -34,9 +34,8 @@ class CustomLineComment(context: Context?, Attrif: AttributeSet) : View(context,
         Log.d("TAG", "onDraw: $rectF")
         rectF?.let {
 //            val radius = it.height() / 6 // 호의 반지름
-            val rr = 30f * resources.displayMetrics.density
-            path.moveTo(0f, 0f)
-            path.lineTo(it.left, it.bottom)
+            path.moveTo(2f, 0f)
+            path.lineTo(2f, it.bottom)
             canvas.drawPath(path, paint)
         }
     }
