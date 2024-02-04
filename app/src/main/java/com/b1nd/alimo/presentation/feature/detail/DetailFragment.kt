@@ -15,6 +15,7 @@ import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentDetailBinding
 import com.b1nd.alimo.presentation.MainActivity
 import com.b1nd.alimo.presentation.base.BaseFragment
+import com.b1nd.alimo.presentation.custom.CustomFileDownload
 import com.b1nd.alimo.presentation.feature.detail.DetailViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.detail.DetailViewModel.Companion.ON_CLICK_SEND
 import com.b1nd.alimo.presentation.utiles.getTimeString
@@ -34,6 +35,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
     override fun initView() {
         (requireActivity() as? MainActivity)?.bottomVisible(false)
+        addFiles(testFiles)
         bindingViewEvent { event ->
             event.onSuccessEvent {
                 when(it) {
@@ -65,6 +67,11 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (requireActivity() as? MainActivity)?.bottomVisible(true)
+    }
+
     private fun testData(id: Int, comments: Boolean = false) =
         DetailCommentItem(
             id = id,
@@ -79,18 +86,23 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
             ) else null
         )
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        (requireActivity() as? MainActivity)?.bottomVisible(true)
-    }
-    companion object {
-        val testItem = DetailCommentItem(
-            id = 3,
-            "test",
-            "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
-            LocalDateTime.now(),
-            "testcontent\n알빠노\n라고할뻔",
-        null)
+    private fun addFiles(
+        testFiles: List<Triple<String, String, String>>
+    ) {
+        mBinding.layoutFiles.run {
+            testFiles.forEach {
+                val view = CustomFileDownload(requireContext(), null)
+                addView(view)
+                view.apply {
+                    setFileName(it.first)
+                    setFileSize(it.second)
+                    setFileLink(it.third)
+                    setOnClickListener {
+                        downloadFile(it)
+                    }
+                }
+            }
+        }
     }
 
     private fun downloadFile(
@@ -127,5 +139,19 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
         manager.enqueue(downloadManager)
     }
 
+    companion object {
+        val testFiles = listOf<Triple<String, String, String>>(
+            Triple("테스트 파일", "3 KB", "https://i.pinimg.com/originals/71/03/b9/7103b9cb185aa84b96e7c3ad4e613080.jpg"),
+            Triple("테스트 파일", "3 KB", "https://i.pinimg.com/originals/71/03/b9/7103b9cb185aa84b96e7c3ad4e613080.jpg"),
+            Triple("테스트 파일", "3 KB", "https://i.pinimg.com/originals/71/03/b9/7103b9cb185aa84b96e7c3ad4e613080.jpg")
+        )
+        val testItem = DetailCommentItem(
+            id = 3,
+            "test",
+            "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
+            LocalDateTime.now(),
+            "testcontent\n알빠노\n라고할뻔",
+            null)
+    }
 
 }

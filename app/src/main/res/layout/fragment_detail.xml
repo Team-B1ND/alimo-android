@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
             name="vm"
             type="com.b1nd.alimo.presentation.feature.detail.DetailViewModel"/>
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -91,21 +91,25 @@
                     app:layout_constraintTop_toBottomOf="@id/text_content"
                     app:layout_constraintStart_toStartOf="@id/text_content"
                     app:layout_constraintEnd_toEndOf="@id/layout_profile"/>
-                <com.b1nd.alimo.presentation.custom.CustomFileDownload
-                    android:id="@+id/fileDonwload"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:id="@+id/layout_files"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:visibility="visible"
+                    android:orientation="vertical"
+                    android:showDividers="middle"
+                    android:divider="@drawable/empty_divider"
                     app:layout_constraintTop_toBottomOf="@id/image_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:fileName="rrr"
-                    app:fileSize="121.3 KB"/>
+                    app:layout_constraintStart_toStartOf="@id/image_content"
+                    app:layout_constraintEnd_toEndOf="@id/image_content" />
                 <LinearLayout
                     android:id="@+id/layout_emoji"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
                     android:layout_marginTop="12dp"
                     android:background="@drawable/shape_gray100_4"
-                    app:layout_constraintTop_toBottomOf="@id/fileDonwload"
+                    app:layout_constraintTop_toBottomOf="@id/layout_files"
                     app:layout_constraintStart_toStartOf="@id/text_content"
                     app:layout_constraintEnd_toEndOf="@id/layout_profile">
                     <LinearLayout
