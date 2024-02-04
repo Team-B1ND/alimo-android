@@ -91,14 +91,21 @@
                     app:layout_constraintTop_toBottomOf="@id/text_content"
                     app:layout_constraintStart_toStartOf="@id/text_content"
                     app:layout_constraintEnd_toEndOf="@id/layout_profile"/>
-
+                <com.b1nd.alimo.presentation.custom.CustomFileDownload
+                    android:id="@+id/fileDonwload"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/image_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:fileName="rrr"
+                    app:fileSize="121.3 KB"/>
                 <LinearLayout
                     android:id="@+id/layout_emoji"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
                     android:layout_marginTop="12dp"
                     android:background="@drawable/shape_gray100_4"
-                    app:layout_constraintTop_toBottomOf="@id/image_content"
+                    app:layout_constraintTop_toBottomOf="@id/fileDonwload"
                     app:layout_constraintStart_toStartOf="@id/text_content"
                     app:layout_constraintEnd_toEndOf="@id/layout_profile">
                     <LinearLayout
