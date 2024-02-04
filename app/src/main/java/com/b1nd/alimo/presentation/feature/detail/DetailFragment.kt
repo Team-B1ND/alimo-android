@@ -67,18 +67,23 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
             LocalDateTime.now(),
             "testcontent\n알빠노\n라고할뻔",
             if (comments) listOf(
-                DetailCommentItem(
-                id = id,
-                "test",
-                "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
-                LocalDateTime.now(),
-                "testcontent\n알빠노\n라고할뻔",
-                null)
+                testItem,
+                testItem,
+                testItem
             ) else null
         )
 
     override fun onDestroyView() {
         super.onDestroyView()
         (requireActivity() as? MainActivity)?.bottomVisible(true)
+    }
+    companion object {
+        val testItem = DetailCommentItem(
+            id = 3,
+            "test",
+            "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
+            LocalDateTime.now(),
+            "testcontent\n알빠노\n라고할뻔",
+        null)
     }
 }

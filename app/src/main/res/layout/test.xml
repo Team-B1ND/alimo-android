@@ -7,17 +7,11 @@
     android:background="#FFFFFF"
     tools:context=".presentation.MainActivity">
 
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:background="#F0F0F0"
-        android:elevation="40dp"
-        android:gravity="center"
-        android:text="Hello elevation!"
-        android:stateListAnimator="@animator/anim_color_white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <com.b1nd.alimo.presentation.custom.CustomLine
+        android:id="@+id/image_line_curve"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

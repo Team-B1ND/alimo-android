@@ -24,6 +24,7 @@ class DetailCommentRv: PagingDataAdapter<DetailCommentItem, DetailCommentRv.View
             binding.textUserComment.text = it.content
             binding.textUserDatetime.text = it.createAt.toString()
             it.comments?.let {
+                binding.imageLine.visibility = View.VISIBLE
                 binding.rvCommentComment.visibility = View.VISIBLE
                 binding.rvCommentComment.adapter = DetailCommentCommentRv(it)
             }
