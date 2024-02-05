@@ -10,7 +10,9 @@ import com.b1nd.alimo.databinding.ItemCommentBinding
 import com.b1nd.alimo.presentation.utiles.loadImage
 import java.time.LocalDateTime
 
-class DetailCommentRv: PagingDataAdapter<DetailCommentItem, DetailCommentRv.ViewHolder>(diffCallback) {
+class DetailCommentRv constructor(
+    private val onClickReply: (DetailCommentItem) -> Unit
+): PagingDataAdapter<DetailCommentItem, DetailCommentRv.ViewHolder>(diffCallback) {
 
     inner class ViewHolder(binding: ItemCommentBinding): RecyclerView.ViewHolder(binding.root) {
         val binding = binding
@@ -27,6 +29,10 @@ class DetailCommentRv: PagingDataAdapter<DetailCommentItem, DetailCommentRv.View
                 binding.imageLine.visibility = View.VISIBLE
                 binding.rvCommentComment.visibility = View.VISIBLE
                 binding.rvCommentComment.adapter = DetailCommentCommentRv(it)
+            }
+
+            binding.textUserReplyButton.setOnClickListener {  view ->
+                onClickReply(it)
             }
         }
     }

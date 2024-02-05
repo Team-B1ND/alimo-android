@@ -57,7 +57,9 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
             }
         }
 
-        val adapter = DetailCommentRv()
+        val adapter = DetailCommentRv {
+            Log.d("TAG", "initView: $it")
+        }
         mBinding.rvComment.adapter = adapter
 
         lifecycleScope.launch(Dispatchers.IO) {
