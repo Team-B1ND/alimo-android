@@ -5,9 +5,11 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="imae_emoji">
-        <item name="android:layout_width">22dp</item>
-        <item name="android:layout_height">22dp</item>
+    <style name="image_emoji">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/ripple_gray100_4</item>
+        <item name="android:paddingVertical">5dp</item>
     </style>
 
     <style name="text_title">
