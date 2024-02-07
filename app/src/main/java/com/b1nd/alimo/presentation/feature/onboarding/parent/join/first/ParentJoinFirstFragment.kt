@@ -141,7 +141,9 @@ class ParentJoinFirstFragment : BaseFragment<FragmentParentJoinFirstBinding, Par
                 // 현재가 비어 있으면 이전 EditText의 숫자도 삭제됨
                 previousView?.text = null
                 previousView?.requestFocus()
-                updateEditTextBackground(previousView!!)
+                if (previousView != null) {
+                    updateEditTextBackground(previousView)
+                }
                 return true
             }
             return false
