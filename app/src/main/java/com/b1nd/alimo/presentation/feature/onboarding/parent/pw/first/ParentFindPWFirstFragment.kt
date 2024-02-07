@@ -1,9 +1,6 @@
 package com.b1nd.alimo.presentation.feature.onboarding.parent.pw.first
 
 import android.os.CountDownTimer
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -64,57 +61,15 @@ class ParentFindPWFirstFragment :
                     }
 
                     ParentJoinThirdViewModel.ON_CLICK_CHECK -> {
-
+                        mBinding.nextBtnOff.visibility = View.INVISIBLE
+                        mBinding.nextBtnOn.visibility = View.VISIBLE
+                        view?.hideKeyboard()
                     }
                 }
             }
         }
 
-        mBinding.idEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(
-                charSequence: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
-            }
-
-            override fun onTextChanged(
-                charSequence: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-                updateButtonColor()
-            }
-
-            override fun afterTextChanged(editable: Editable?) {}
-        })
-
         mBinding.checkLayout.bringToFront()
 
-
     }
-
-    private fun updateButtonColor() {
-        val text1 = mBinding.idEditText.text.toString().length
-
-
-        // 버튼의 색상을 변경하는 로직 추가
-        if (text1 == 6) {
-            Log.d("TAG", "updateButtonColor: on")
-            // 두 EditText의 텍스트가 null이 아닐 때 버튼의 색상을 변경
-            mBinding.nextBtnOff.visibility = View.INVISIBLE
-            mBinding.nextBtnOn.visibility = View.VISIBLE
-        } else {
-            Log.d("TAG", "updateButtonColor: off")
-            // 두 EditText 중 하나라도 텍스트가 null일 때 버튼의 색상을 기본 색상으로 변경
-            mBinding.nextBtnOff.visibility = View.VISIBLE
-            mBinding.nextBtnOn.visibility = View.INVISIBLE
-
-        }
-    }
-
-
-
 }
