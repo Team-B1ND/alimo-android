@@ -84,7 +84,7 @@
                 android:layout_height="52dp"
                 android:textColorHint="@drawable/hint_color"
                 android:hint="@string/new_password"
-
+                android:inputType="textPassword"
                 android:background="@drawable/edittext_border_background" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -108,7 +108,7 @@
                 android:layout_height="52dp"
                 android:textColorHint="@drawable/hint_color"
                 android:hint="@string/re_new_password"
-
+                android:inputType="textPassword"
                 android:background="@drawable/edittext_border_background" />
 
         </com.google.android.material.textfield.TextInputLayout>

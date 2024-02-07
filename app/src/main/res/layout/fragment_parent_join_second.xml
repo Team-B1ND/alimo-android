@@ -108,7 +108,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:hint="@string/student_login_pw"
                 android:textColorHint="@drawable/hint_color"
-
+                android:inputType="textPassword"
                 android:id="@+id/pw_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
@@ -136,7 +136,7 @@
                 android:layout_width="match_parent"
                 android:hint="@string/parent_join_pw"
                 android:textColorHint="@drawable/hint_color"
-
+                android:inputType="textPassword"
                 android:layout_height="52dp"
                 android:background="@drawable/edittext_border_background" />
 
