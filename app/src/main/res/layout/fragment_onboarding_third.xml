@@ -1,90 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <variable
             name="vm"
             type="com.b1nd.alimo.presentation.feature.onboarding.third.OnboardingThirdViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        android:layout_height="match_parent">
 
 
         <LinearLayout
             android:id="@+id/topBar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_back"
-                android:onClick="@{() -> vm.onClickBack()}"
                 android:background="@color/white"
-                android:padding="10dp" />
+                android:onClick="@{() -> vm.onClickBack()}"
+                android:padding="10dp"
+                android:src="@drawable/ic_back" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/question"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/onboarding_third_title"
-            app:layout_constraintTop_toBottomOf="@id/topBar"
-            app:layout_constraintStart_toStartOf="parent"
-            android:textFontWeight="700"
-            android:layout_marginTop="145dp"
             android:layout_marginStart="24dp"
-            android:textColor="@color/Main900" />
+            android:layout_marginTop="145dp"
+            android:text="@string/onboarding_third_title"
+            android:textColor="@color/Main900"
+            android:textFontWeight="700"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topBar" />
+
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/studentImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/img_student_on"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/btn_shape_rounded_on_2"
             android:onClick="@{() -> vm.onClickStudent()}"
-            android:background="@color/white"
+            android:src="@drawable/img_student_on"
             app:layout_constraintTop_toBottomOf="@id/question"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/parentImage"
-            android:layout_marginTop="12dp" />
+            app:layout_constraintBottom_toTopOf="@id/title"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="4dp"
+            />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/parentImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/img_parent_off"
-            android:background="@color/white"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/btn_shape_rounded_off"
             android:onClick="@{() -> vm.onClickParent()}"
-            app:layout_constraintStart_toEndOf="@id/studentImage"
-            app:layout_constraintTop_toBottomOf="@id/question"
+            android:src="@drawable/img_parent_off"
+            app:layout_constraintBottom_toTopOf="@id/title"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/question"
+            app:layout_constraintStart_toEndOf="@id/studentImage"
             android:layout_marginTop="12dp"
-            android:layout_marginStart="8dp" />
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginStart="4dp"/>
+
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="240dp"
             android:text="@string/onboarding_third_sub_title"
-            app:layout_constraintTop_toBottomOf="@id/studentImage"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/Gray500"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="24dp"
-            android:textColor="@color/Gray500" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/question"
+            />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/loginText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/joinBtn"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="16dp"
             android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/joinBtn"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="16dp">
+            app:layout_constraintStart_toStartOf="parent">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -95,11 +109,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login"
-                android:onClick="@{() -> vm.onClickLogin()}"
-                android:textColor="@color/Main500"
-                android:background="@drawable/bottom_line"
                 android:layout_marginStart="5dp"
+                android:background="@drawable/bottom_line"
+                android:onClick="@{() -> vm.onClickLogin()}"
+                android:text="@string/login"
+                android:textColor="@color/Main500"
                 android:textStyle="normal" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -107,35 +121,39 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/loginBtn"
-            android:layout_width="320dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/btn_shape_rounded_on"
+            android:onClick="@{() -> vm.onClickDodamLogin()}"
             android:text="@string/dodam_login"
             android:textColor="@color/Main900"
-            android:onClick="@{() -> vm.onClickDodamLogin()}"
-            android:visibility="visible"
             android:textFontWeight="700"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_marginBottom="30dp" />
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/joinBtn"
-            android:layout_width="320dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/btn_shape_rounded_on"
+            android:onClick="@{() -> vm.onClickJoin()}"
             android:text="@string/join"
             android:textColor="@color/Main900"
-            android:onClick="@{() -> vm.onClickJoin()}"
+            android:textFontWeight="700"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:visibility="invisible"
-            android:textFontWeight="700"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_marginBottom="30dp" />
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
