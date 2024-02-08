@@ -1,6 +1,8 @@
 package com.b1nd.alimo.presentation.feature.detail
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.b1nd.alimo.databinding.ItemCommentCommentBinding
@@ -33,6 +35,10 @@ class DetailCommentCommentRv constructor(
             binding.imageUserProfile.loadImage(it.authorProfile)
             binding.textUserComment.text = it.content
             binding.textUserDatetime.text = it.createAt.toString()
+            Log.d("TAG", "onBindViewHolder: ${items.size - position}")
+            if (items.size - position != 1) { // 마지막 댓글인 경우 선 안보이도록
+                binding.imageLine.visibility = View.VISIBLE
+            }
         }
     }
 }
