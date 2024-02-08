@@ -10,7 +10,11 @@
         android:label="onboardingFirstFragmentss" >
         <action
             android:id="@+id/action_onboardingFirst_to_onboardingSecond"
-            app:destination="@id/onboardingSecond"/>
+            app:destination="@id/onboardingSecond"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
     </fragment>
     <fragment
         android:id="@+id/onboardingSecond"
@@ -18,7 +22,11 @@
         android:label="onboardingSecondFragment" >
         <action
             android:id="@+id/action_onboardingSecond_to_onboardingThird"
-            app:destination="@id/onboardingThird"/>
+            app:destination="@id/onboardingThird"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
     </fragment>
     <fragment
         android:id="@+id/onboardingThird"
@@ -26,15 +34,28 @@
         android:label="onboardingThirdFragment" >
         <action
             android:id="@+id/action_onboardingThird_to_studentLoginFirst"
-            app:destination="@+id/studentLoginFirst" />
+            app:destination="@+id/studentLoginFirst"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
 
         <action
             android:id="@+id/action_onboardingThird_to_parentJoinFirst"
-            app:destination="@+id/parentJoinFirst" />
+            app:destination="@+id/parentJoinFirst"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
 
         <action
             android:id="@+id/action_onboardingThird_to_parentLoginFirst"
-            app:destination="@+id/parentLoginFirst" />
+            app:destination="@+id/parentLoginFirst"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
+
 
     </fragment>
 
@@ -53,7 +74,18 @@
         android:label="parentJoinFirstFragment" >
         <action
             android:id="@+id/action_parentJoinFirst_to_parentJoinSecond"
-            app:destination="@+id/parentJoinSecond" />
+            app:destination="@+id/parentJoinSecond"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
+        <action
+            android:id="@+id/action_parentJoinFirst_to_parentLoginFirst"
+            app:destination="@+id/parentLoginFirst"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
     </fragment>
     <fragment
         android:id="@+id/parentJoinSecond"
@@ -61,15 +93,30 @@
         android:label="parentJoinSecondFragment" >
         <action
             android:id="@+id/action_parentJoinSecond_to_parentJoinThird"
-            app:destination="@id/parentJoinThirst" />
+            app:destination="@id/parentJoinThird"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
+        <action
+            android:id="@+id/action_parentJoinSecond_to_parentLoginFirst"
+            app:destination="@id/parentLoginFirst"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
     </fragment>
     <fragment
-        android:id="@+id/parentJoinThirst"
+        android:id="@+id/parentJoinThird"
         android:name="com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdFragment"
         android:label="parentJoinThirdFragment" >
         <action
-            android:id="@+id/action_parentJoinThird_to_parentJoinSecond"
-            app:destination="@+id/parentJoinSecond" />
+            android:id="@+id/action_parentJoinThirst_to_onboardingThird"
+            app:destination="@id/onboardingThird"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
     </fragment>
 
 
@@ -79,11 +126,19 @@
         android:label="parentLoginFirstFragment">
         <action
             android:id="@+id/action_parentLoginFirst_to_parentJoinFirst"
-            app:destination="@id/parentJoinFirst"/>
+            app:destination="@id/parentJoinFirst"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
 
         <action
             android:id="@+id/action_parentLoginFirst_to_parentFindPWFirst"
-            app:destination="@+id/parentFindPWFirst"/>
+            app:destination="@+id/parentFindPWFirst"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
     </fragment>
 
 
@@ -94,12 +149,26 @@
         android:label="parentFindPWFirstFragment">
         <action
             android:id="@+id/action_parentFindPWFirst_to_parentFindPWSecond"
-            app:destination="@+id/parentFindPWSecond"/>
+            app:destination="@+id/parentFindPWSecond"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
     </fragment>
+
     <fragment
         android:id="@+id/parentFindPWSecond"
-        android:name="com.b1nd.alimo.presentation.feature.onboarding.parent.pw.second.ParnetFindPWSecondFragment"
-        android:label="parentFindPWSecondFragment"/>
+        android:name="com.b1nd.alimo.presentation.feature.onboarding.parent.pw.second.ParentFindPWSecondFragment"
+        android:label="parentFindPWSecondFragment">
+
+        <action
+            android:id="@+id/action_parentFindPwSecond_to_onBoardingThird"
+            app:destination="@+id/onboardingThird"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
+    </fragment>
 
 
 

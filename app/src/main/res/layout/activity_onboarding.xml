@@ -4,12 +4,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/onboardingFragment"
+            android:id="@+id/nav_host_onboarding"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:name="androidx.navigation.fragment.NavHostFragment"
+            android:background="@color/white"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/onboarding_nav"/>
+            app:navGraph="@navigation/onboarding_nav"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
