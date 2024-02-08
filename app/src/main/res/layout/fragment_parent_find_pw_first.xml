@@ -115,7 +115,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/nextBtnOff"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_width="320dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
             android:background="@drawable/btn_shape_rounded_off"
@@ -124,12 +124,14 @@
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/nextBtnOn"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_width="320dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
             android:background="@drawable/btn_shape_rounded_on"
@@ -139,7 +141,9 @@
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
