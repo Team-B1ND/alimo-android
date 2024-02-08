@@ -21,6 +21,7 @@
             android:id="@+id/nav_bottom"
             android:layout_width="match_parent"
             android:layout_height="67dp"
+            android:paddingHorizontal="16dp"
             android:background="@drawable/shape_white_top_16"
             android:elevation="500dp"
             android:outlineAmbientShadowColor="#FF000000"
