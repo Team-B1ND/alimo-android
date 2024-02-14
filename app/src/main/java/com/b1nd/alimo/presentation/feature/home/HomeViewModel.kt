@@ -19,7 +19,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val repository: HomeRepository
 ): BaseViewModel() {
-    val pagingData = repository.getNotice().cachedIn(viewModelScope)
+    val pagingData = repository.getPost().cachedIn(viewModelScope)
 
     private val _sideEffect = Channel<HomeSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()

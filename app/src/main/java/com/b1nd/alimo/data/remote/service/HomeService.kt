@@ -19,7 +19,7 @@ class HomeService @Inject constructor(
     private val httpClient: HttpClient
 ) {
 
-    suspend fun getNotice(
+    suspend fun getPost(
         page: Int
     ): Resource<BaseResponse<List<NotificationModel>>> {
         Log.d("TAG", "getNotice: $page")
