@@ -4,12 +4,12 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.toTests
-import com.b1nd.alimo.data.remote.service.HomeServices
+import com.b1nd.alimo.data.remote.service.HomeService
 import com.b1nd.alimo.presentation.feature.post.PostItem
 import javax.inject.Inject
 
 class HomePagingSource @Inject constructor(
-    private val homeServices: HomeServices
+    private val homeService: HomeService
 ): PagingSource<Int, PostItem>() {
     override fun getRefreshKey(state: PagingState<Int, PostItem>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -24,7 +24,7 @@ class HomePagingSource @Inject constructor(
 //            if (!Random.nextBoolean()) {
 //                throw Exception("test Error")
 //            }
-            val response = homeServices.getNotice(page = page)
+            val response = homeService.getNotice(page = page)
             when (response) {
                 is Resource.Success -> {
                     LoadResult.Page(

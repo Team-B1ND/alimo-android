@@ -1,7 +1,7 @@
 package com.b1nd.alimo.di
 
 import com.b1nd.alimo.data.remote.pagesource.HomePagingSource
-import com.b1nd.alimo.data.remote.service.HomeServices
+import com.b1nd.alimo.data.remote.service.HomeService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +14,6 @@ object PageModule {
 
     @Singleton
     @Provides
-    fun provideHomePagingSource(homeServices: HomeServices): HomePagingSource =
-        HomePagingSource(homeServices)
+    fun provideHomePagingSource(homeService: HomeService): HomePagingSource =
+        HomePagingSource(homeService)
 }
