@@ -23,3 +23,5 @@ class HideAnimListener(private val view: View): Animation.AnimationListener {
 
 fun getTimeString(extension: String): String =
     LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss")) + "." + extension
+
+

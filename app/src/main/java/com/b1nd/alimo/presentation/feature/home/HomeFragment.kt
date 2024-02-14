@@ -5,13 +5,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentHomeBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.post.PostItem
 import com.b1nd.alimo.presentation.feature.post.PostRecyclerAdapter
+import com.b1nd.alimo.presentation.utiles.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -32,16 +32,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
         }
         mBinding.rvCategory.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        val adapter = PostRecyclerAdapter() {
-            Log.d("TAG", "initView: ${it.id}")
-
-            val navigate =
-                HomeFragmentDirections.actionNavItemHomeToDetailFragment(
-                    it.id
-                )
-            findNavController().navigate(navigate)
-        }
-        mBinding.rvPost.adapter = adapter
+        initNotice()
 
 
         lifecycleScope.launch(Dispatchers.Main) { // 가상 로딩 재현
@@ -64,9 +55,29 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
             }
 
 
-            adapter.submitData(PagingData.from(listOf(testData(2), testData(3), testData(4), testData(5), testData(6), testData(7), testData(8), testData(9), testData(10), testData(11), testData(12), testData(13), testData(14), testData(15), testData(16))))
-            Log.d("TAG", "initView: ${adapter.itemCount}")
+//            adapter.submitData(PagingData.from(listOf(testData(2), testData(3), testData(4), testData(5), testData(6), testData(7), testData(8), testData(9), testData(10), testData(11), testData(12), testData(13), testData(14), testData(15), testData(16))))
+//            Log.d("TAG", "initView: ${adapter.itemCount}")
         }
+    }
+
+    private fun initNotice() {
+        val adapter = PostRecyclerAdapter() {
+            Log.d("TAG", "initView: ${it.id}")
+
+            val navigate =
+                HomeFragmentDirections.actionNavItemHomeToDetailFragment(
+                    it.id
+                )
+            findNavController().navigate(navigate)
+        }
+
+        mBinding.rvPost.adapter = adapter
+
+
+        collectFlow(viewModel.pagingData) {
+            adapter.submitData(lifecycle, it)
+        }
+
     }
 
     private fun testData(id: Int): PostItem =
