@@ -14,7 +14,7 @@ class HomeRepository @Inject constructor(
     private val homeService: HomeService
 ) {
 
-    fun getNotice(
+    fun getPost(
     ): Flow<PagingData<PostItem>> =
         Pager(
             config = PagingConfig(pageSize = 15),

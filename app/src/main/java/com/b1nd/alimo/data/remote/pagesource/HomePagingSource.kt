@@ -24,7 +24,7 @@ class HomePagingSource @Inject constructor(
 //            if (!Random.nextBoolean()) {
 //                throw Exception("test Error")
 //            }
-            val response = homeService.getNotice(page = page)
+            val response = homeService.getPost(page = page)
             when (response) {
                 is Resource.Success -> {
                     LoadResult.Page(
