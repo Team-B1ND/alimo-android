@@ -1,14 +1,19 @@
 package com.b1nd.alimo.data.remote.service
 
 import android.util.Log
+import com.b1nd.alimo.data.Env
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.NotificationModel
+import com.b1nd.alimo.data.remote.makeApiGetRequest
 import com.b1nd.alimo.data.remote.response.BaseResponse
+import com.b1nd.alimo.data.remote.response.home.HomeCategoryResponse
 import io.ktor.client.HttpClient
+import io.ktor.client.request.header
+import io.ktor.client.request.headers
+import kotlinx.coroutines.flow.Flow
 import java.time.LocalDateTime
 import javax.inject.Inject
 import kotlin.random.Random
-
 
 class HomeService @Inject constructor(
     private val httpClient: HttpClient
@@ -20,6 +25,15 @@ class HomeService @Inject constructor(
         Log.d("TAG", "getNotice: $page")
         return Resource.Success(dummyNotice(page))
     }
+
+    suspend fun getCategory(
+
+    ): Flow<Resource<BaseResponse<HomeCategoryResponse>>> =
+        makeApiGetRequest(httpClient, "/member/category-list") {
+            headers {
+                header("Authorization", "Bearer ${Env.testToken}")
+            }
+        }
 
     private suspend fun dummyNotice(
         page: Int
