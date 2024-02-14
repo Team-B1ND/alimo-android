@@ -24,15 +24,14 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="330dp"
             android:text="."
             android:textFontWeight="700"
             android:textColor="@color/white"
             android:textSize="54dp"
             app:layout_constraintStart_toEndOf="@id/onboardingTitleTextView"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/onboardingTitleTextView" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/onboarding_sub_title"
