@@ -11,6 +11,7 @@ import com.b1nd.alimo.databinding.FragmentStudentLoginFirstBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACKGROUND
+import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_LOGIN_OFF
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_LOGIN_ON
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
@@ -36,6 +37,9 @@ class StudentLoginFirstFragment:
                         mBinding.idEditText.clearFocus()
                         mBinding.pwEditText.clearFocus()
                         view?.hideKeyboard()
+                    }
+                    ON_CLICK_LOGIN_OFF -> {
+                        viewModel.tokenCheck()
                     }
                 }
             }

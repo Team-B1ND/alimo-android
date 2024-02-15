@@ -3,6 +3,7 @@ package com.b1nd.alimo.di
 import android.content.Context
 import androidx.room.Room
 import com.b1nd.alimo.data.local.dao.ExampleDao
+import com.b1nd.alimo.data.local.dao.FirebaseTokenDao
 import com.b1nd.alimo.data.local.database.AlimoDataBase
 import com.b1nd.alimo.presentation.utiles.Env
 import dagger.Module
@@ -33,5 +34,11 @@ object LocalModule {
     fun provideExampleDao(
         alimoDataBase: AlimoDataBase
     ): ExampleDao = alimoDataBase.exampleDao()
+
+    @Provides
+    @Singleton
+    fun provideFirebaseTokenDao(
+        alimoDataBase: AlimoDataBase
+    ): FirebaseTokenDao = alimoDataBase.firebaseTokenDao()
 
 }
