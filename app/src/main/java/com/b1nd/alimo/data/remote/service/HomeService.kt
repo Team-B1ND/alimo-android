@@ -48,7 +48,11 @@ class HomeService @Inject constructor(
                     content = "$i content",
                     speaker = Random.nextBoolean(),
                     createdAt = LocalDateTime.now(),
-                    member = "$i member"
+                    member = "$i member",
+                    memberProfile = "https://i.namu.wiki/i/oWwzGY2QClH5wDvwfZ5XEKVDHzeCj9iK07xicokv1huyYoLtheLWjCJIundAFcC6AjIi2zNgpQ4IFtPNvnb5IXC92lAyS7dx-wC6P1DImBr5KfqzoPpWZZAE_UY8RqV6yx0XUrL90gt7m63EA3-H_A.webp",
+                    image = null,
+                    isBookmark = Random.nextBoolean(),
+                    isNew = true,
                 )
             )
         }

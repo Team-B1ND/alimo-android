@@ -3,22 +3,21 @@ package com.b1nd.alimo.data.remote.pagesource
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.b1nd.alimo.data.Resource
-import com.b1nd.alimo.data.model.toTests
+import com.b1nd.alimo.data.model.NotificationModel
 import com.b1nd.alimo.data.remote.service.HomeService
-import com.b1nd.alimo.presentation.feature.post.PostItem
 import javax.inject.Inject
 
 class HomePagingSource @Inject constructor(
     private val homeService: HomeService
-): PagingSource<Int, PostItem>() {
-    override fun getRefreshKey(state: PagingState<Int, PostItem>): Int? {
+): PagingSource<Int, NotificationModel>() {
+    override fun getRefreshKey(state: PagingState<Int, NotificationModel>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PostItem> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, NotificationModel> {
         val page = params.key ?: 1
         return try {
 //            if (!Random.nextBoolean()) {
@@ -28,7 +27,7 @@ class HomePagingSource @Inject constructor(
             when (response) {
                 is Resource.Success -> {
                     LoadResult.Page(
-                        data = response.data!!.data.toTests(),
+                        data = response.data!!.data,
                         prevKey = null,
                         nextKey = if (response.data.data.isEmpty()) null else page + 1
                     )

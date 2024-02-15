@@ -9,14 +9,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentHomeBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
-import com.b1nd.alimo.presentation.feature.post.PostItem
 import com.b1nd.alimo.presentation.feature.post.PostRecyclerAdapter
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 
 @AndroidEntryPoint
 class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fragment_home) {
@@ -30,10 +28,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
 
         lifecycleScope.launch(Dispatchers.Main) { // 가상 로딩 재현
             delay(1000)
-            val testNotice= Pair("버그가 생겼어요!", "테스트")
-            mBinding.textNotice.text = testNotice.first
-            mBinding.textNoticeAuthor.text = " · ${testNotice.second}"
-            mBinding.textNoticeAuthor.isVisible = true
 
 
 
@@ -51,7 +45,14 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
 
                         }
 
-                        HomeFound.Notice -> {}
+                        HomeFound.Notice -> {
+                            lifecycleScope.launch(Dispatchers.Main) {
+                                val testNotice= Pair("버그가 생겼어요!", "테스트")
+                                mBinding.textNotice.text = testNotice.first
+                                mBinding.textNoticeAuthor.text = " · ${testNotice.second}"
+                                mBinding.textNoticeAuthor.isVisible = true
+                            }
+                        }
                         HomeFound.Post -> {}
                     }
                 }
@@ -62,11 +63,11 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
 
     private fun initNotice() {
         val adapter = PostRecyclerAdapter() {
-            Log.d("TAG", "initView: ${it.id}")
+            Log.d("TAG", "initView: ${it.notificationId}")
 
             val navigate =
                 HomeFragmentDirections.actionNavItemHomeToDetailFragment(
-                    it.id
+                    it.notificationId
                 )
             findNavController().navigate(navigate)
         }
@@ -97,18 +98,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
             }
         }
     }
-
-    private fun testData(id: Int): PostItem =
-        PostItem(
-            id,
-            "test",
-            "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
-            LocalDateTime.now(),
-            "testcontent\n알빠노\n라고할뻔",
-            "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
-            false,
-            false
-        )
 
 
 }
