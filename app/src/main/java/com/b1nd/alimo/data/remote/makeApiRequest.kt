@@ -9,7 +9,7 @@ import io.ktor.client.request.post
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-internal inline fun <reified T> makeApiPostRequest(
+internal suspend inline fun <reified T> makeApiPostRequest(
     httpClient: HttpClient,
     endpoint: String,
     crossinline block: HttpRequestBuilder.() -> Unit
@@ -24,7 +24,7 @@ internal inline fun <reified T> makeApiPostRequest(
     }
 }
 
-internal inline fun <reified T> makeApiGetRequest(
+internal suspend inline fun <reified T> makeApiGetRequest(
     httpClient: HttpClient,
     endpoint: String,
     crossinline block: HttpRequestBuilder.() -> Unit
