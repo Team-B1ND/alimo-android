@@ -7,9 +7,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
 import com.b1nd.alimo.R
+import com.b1nd.alimo.data.model.NotificationModel
 import com.b1nd.alimo.databinding.FragmentBookmarkBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
-import com.b1nd.alimo.presentation.feature.post.PostItem
 import com.b1nd.alimo.presentation.feature.post.PostRecyclerAdapter
 import com.b1nd.alimo.presentation.utiles.startAnimationWithHide
 import com.b1nd.alimo.presentation.utiles.startAnimationWithShow
@@ -28,7 +28,7 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
         val adapter = PostRecyclerAdapter {
             val navigate =
                 BookmarkFragmentDirections.actionNavItemBookmarkToDetailFragment(
-                    it.id
+                    it.notificationId
                 )
             findNavController().navigate(navigate)
         }
@@ -59,16 +59,18 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
         }
     }
 
-    private fun testData(id: Int): PostItem =
-        PostItem(
+    private fun testData(id: Int): NotificationModel =
+        NotificationModel(
             id,
             "test",
+            "member",
             "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
-            LocalDateTime.now(),
+            createdAt = LocalDateTime.now(),
             "testcontent\n알빠노\n라고할뻔",
+            false,
             "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
-            true,
-            false
+            isBookmark = false,
+            isNew = true
         )
 
 }

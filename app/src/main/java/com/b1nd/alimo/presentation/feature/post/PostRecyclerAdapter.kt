@@ -7,13 +7,13 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.b1nd.alimo.R
+import com.b1nd.alimo.data.model.NotificationModel
 import com.b1nd.alimo.databinding.ItemPostBinding
 import com.b1nd.alimo.presentation.utiles.loadImage
-import java.time.LocalDateTime
 
 class PostRecyclerAdapter constructor(
-    private val onClick: (PostItem) -> Unit
-): PagingDataAdapter<PostItem, PostRecyclerAdapter.ViewHolder>(diffCallback) {
+    private val onClick: (NotificationModel) -> Unit
+): PagingDataAdapter<NotificationModel, PostRecyclerAdapter.ViewHolder>(diffCallback) {
 
     inner class ViewHolder(binding: ItemPostBinding): RecyclerView.ViewHolder(binding.root) {
         val binding = binding
@@ -25,8 +25,8 @@ class PostRecyclerAdapter constructor(
         val item = getItem(position)
         item?.let {
             with(binding) {
-                if (item.authorProfile != null) {
-                    imageProfile.loadImage(item.authorProfile)
+                if (item.memberProfile != null) {
+                    imageProfile.loadImage(item.memberProfile)
                 }
                 if (item.image != null) {
                     imageContent.visibility = View.VISIBLE
@@ -39,8 +39,8 @@ class PostRecyclerAdapter constructor(
                     imageBookmark.setImageResource(R.drawable.ic_bookmark)
                 }
 
-                textAuthor.text = item.author
-                textDate.text = item.createAt.toString()
+                textAuthor.text = item.member
+                textDate.text = item.createdAt.toString()
                 textContent.text = item.content
             }
             binding.layoutPost.setOnClickListener {
@@ -54,23 +54,12 @@ class PostRecyclerAdapter constructor(
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<PostItem>() {
-            override fun areItemsTheSame(oldItem: PostItem, newItem: PostItem): Boolean =
-                oldItem.id == newItem.id
+        private val diffCallback = object : DiffUtil.ItemCallback<NotificationModel>() {
+            override fun areItemsTheSame(oldItem: NotificationModel, newItem: NotificationModel): Boolean =
+                oldItem.notificationId == newItem.notificationId
 
-            override fun areContentsTheSame(oldItem: PostItem, newItem: PostItem): Boolean =
+            override fun areContentsTheSame(oldItem: NotificationModel, newItem: NotificationModel): Boolean =
                 oldItem == newItem
         }
     }
 }
-
-data class PostItem(
-    val id: Int,
-    val author: String,
-    val authorProfile: String?,
-    val createAt: LocalDateTime,
-    val content: String,
-    val image: String?,
-    val isBookmark: Boolean,
-    val isNew: Boolean
-)
