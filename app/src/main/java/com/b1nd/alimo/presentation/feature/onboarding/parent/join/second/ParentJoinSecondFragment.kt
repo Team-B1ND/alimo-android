@@ -26,15 +26,23 @@ class ParentJoinSecondFragment :
         bindingViewEvent { event ->
             event.onSuccessEvent {
                 when (it) {
-                    ON_CLICK_BACK ->{
+                    ON_CLICK_BACK -> {
                         findNavController().popBackStack()
                     }
+
                     ON_CLICK_LOGIN -> {
                         findNavController().navigate(R.id.action_parentJoinSecond_to_parentLoginFirst)
                     }
+
                     ON_CLICK_NEXT -> {
-                        findNavController().navigate(R.id.action_parentJoinSecond_to_parentJoinThird)
+
+                        if (comparisonPassword()) {
+                            findNavController().navigate(R.id.action_parentJoinSecond_to_parentJoinThird)
+                        } else {
+                            mBinding.errorText.visibility = View.VISIBLE
+                        }
                     }
+
                     ON_CLICK_BACKGROUND -> {
                         Log.d("TAG", "initView: background")
                         mBinding.idEditTextLayout.clearFocus()
@@ -51,9 +59,20 @@ class ParentJoinSecondFragment :
 
         // TextWatcher를 이용하여 EditText의 텍스트 변화 감지
         mBinding.idEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            }
 
-            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
                 updateButtonColor()
             }
 
@@ -61,9 +80,20 @@ class ParentJoinSecondFragment :
         })
 
         mBinding.pwEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            }
 
-            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
                 updateButtonColor()
             }
 
@@ -71,9 +101,20 @@ class ParentJoinSecondFragment :
         })
 
         mBinding.verifyPwEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            }
 
-            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
                 updateButtonColor()
             }
 
@@ -84,7 +125,7 @@ class ParentJoinSecondFragment :
     private fun updateButtonColor() {
         val text1 = mBinding.idEditText.text.toString().trim { it <= ' ' }
         val text2 = mBinding.pwEditText.text.toString().trim { it <= ' ' }
-        val text3 = mBinding.verifyPwEditText.text.toString().trim{ it <= ' '}
+        val text3 = mBinding.verifyPwEditText.text.toString().trim { it <= ' ' }
 
         // 버튼의 색상을 변경하는 로직 추가
         if (text1.isNotEmpty() && text2.isNotEmpty() && text3.isNotEmpty()) {
@@ -99,6 +140,12 @@ class ParentJoinSecondFragment :
             mBinding.loginBtnOn.visibility = View.INVISIBLE
 
         }
+    }
+
+    private fun comparisonPassword(): Boolean {
+        val password = mBinding.pwEditText.text.toString()
+        val verifyPassword = mBinding.verifyPwEditText.text.toString()
+        return password == verifyPassword
     }
 
 
