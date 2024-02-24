@@ -10,7 +10,9 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.pw.second.ParentFin
 import com.b1nd.alimo.presentation.feature.onboarding.parent.pw.second.ParentFindPWSecondViewModel.Companion.ON_CLICK_DONE
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ParentFindPWSecondFragment:
     BaseFragment<FragmentParentFindPwSecondBinding, ParentFindPWSecondViewModel>(
     R.layout.fragment_parent_find_pw_second

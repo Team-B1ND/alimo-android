@@ -8,7 +8,9 @@ import com.b1nd.alimo.databinding.FragmentOnboardingSecondBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.onboarding.second.OnboardingSecondViewModel.Companion.ON_CLICK_START
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OnboardingSecondFragment:
     BaseFragment<FragmentOnboardingSecondBinding, OnboardingSecondViewModel>(
     R.layout.fragment_onboarding_second) {

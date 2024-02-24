@@ -1,8 +1,13 @@
 package com.b1nd.alimo.presentation.feature.onboarding.parent.pw.first
 
 import com.b1nd.alimo.presentation.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ParentFindPWFirstViewModel: BaseViewModel() {
+@HiltViewModel
+class ParentFindPWFirstViewModel @Inject constructor(
+
+): BaseViewModel() {
     fun onClickCertification() = viewEvent(ON_CLICK_CERTIFICATION)
     fun onClickCheck() = viewEvent(ON_CLICK_CHECK)
     fun onClickBack() = viewEvent(ON_CLICK_BACK)
