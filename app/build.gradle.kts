@@ -25,6 +25,8 @@ android {
 
         buildConfigField("String", "SERVER_URL", "${prperties["SERVER_URL"]}")
 
+        buildConfigField("String", "DAUTH_SERVER_URL", "${prperties["DAUTH_SERVER_URL"]}")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

@@ -2,6 +2,7 @@ package com.b1nd.alimo.presentation.feature.onboarding.student.first
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.b1nd.alimo.BuildConfig
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.remote.request.DodamRequest
 import com.b1nd.alimo.data.remote.request.StudentLoginRequest
@@ -102,8 +103,8 @@ class StudentLoginViewModel @Inject constructor(
                 DodamRequest(
                     id = id,
                     pw = pw,
-                    clientId = "4223f614b89e4f48b35da7075a88e8f0abf86d57bf8847c3bb8c53a6ed206092",
-                    redirectUrl = "http://13.125.37.125/redirect"
+                    clientId = BuildConfig.CLIENT_ID,
+                    redirectUrl = BuildConfig.REDIRECT_URL
                 )
             ).catch {
                 Log.d("TAG", "checkStudentCode: ${it.message}")
