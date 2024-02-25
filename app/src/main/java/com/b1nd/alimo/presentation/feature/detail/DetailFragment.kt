@@ -106,28 +106,17 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 imageLove,
                 imageSad
             )
-            when (emoji) {
-                ON_CLICK_OKAY -> {
-                    emojis.removeAt(0)
-                    imageOkay.animAlpha(1f)
-                }
-                ON_CLICK_ANGRY -> {
-                    emojis.removeAt(1)
-                    imageAngry.animAlpha(1f)
-                }
-                ON_CLICK_LAUGH -> {
-                    emojis.removeAt(2)
-                    imageLaugh.animAlpha(1f)
-                }
-                ON_CLICK_LOVE -> {
-                    emojis.removeAt(3)
-                    imageLove.animAlpha(1f)
-                }
-                ON_CLICK_SAD -> {
-                    emojis.removeAt(4)
-                    imageSad.animAlpha(1f)
-                }
-                else -> {}
+            val emojiIndex = when (emoji) {
+                ON_CLICK_OKAY -> 0
+                ON_CLICK_ANGRY -> 1
+                ON_CLICK_LAUGH -> 2
+                ON_CLICK_LOVE -> 3
+                ON_CLICK_SAD -> 4
+                else -> null
+            }
+            if (emojiIndex != null) {
+                emojis.removeAt(emojiIndex)
+                    .animAlpha(1f)
             }
             emojis.forEach {
                 it.animAlpha(emojiAlpha)
