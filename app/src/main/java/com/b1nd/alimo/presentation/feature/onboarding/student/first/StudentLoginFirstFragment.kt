@@ -5,6 +5,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentStudentLoginFirstBinding
@@ -15,7 +16,10 @@ import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLogin
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_LOGIN_ON
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class StudentLoginFirstFragment:
     BaseFragment<FragmentStudentLoginFirstBinding, StudentLoginViewModel>(
     R.layout.fragment_student_login_first
@@ -23,6 +27,29 @@ class StudentLoginFirstFragment:
     override val viewModel: StudentLoginViewModel by viewModels()
 
     override fun initView() {
+
+        lifecycleScope.launch {
+            viewModel.dodamCode.collect{
+                val code = it.code
+                Log.d("TAG", "cccccccccc: ")
+                if (code == null){
+                    Log.d("TAG", "아이디 비번 확인")
+                    return@collect
+                }else{
+                    Log.d("TAG", "initView: ${code}")
+                    viewModel.login(code)
+                }
+
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.loginState.collect{
+                Log.d("TAG", "${it.accessToken}, ${it.refreshToken} ")
+            }
+        }
+
+
         bindingViewEvent { event ->
             event.onSuccessEvent {
                 when(it){
@@ -30,7 +57,10 @@ class StudentLoginFirstFragment:
                         findNavController().popBackStack()
                     }
                     ON_CLICK_LOGIN_ON -> {
-
+                        val id = mBinding.idEditText.text.toString()
+                        val pw = mBinding.pwEditText.text.toString()
+                        val hashedPw = viewModel.sha512(pw)
+                        viewModel.getCode(id, hashedPw)
                     }
                     ON_CLICK_BACKGROUND -> {
                         Log.d("TAG", "initView: background")
@@ -40,7 +70,7 @@ class StudentLoginFirstFragment:
                     }
                     ON_CLICK_LOGIN_OFF -> {
                         viewModel.tokenCheck()
-                    }
+                    } 
                 }
             }
         }
@@ -68,6 +98,8 @@ class StudentLoginFirstFragment:
             override fun afterTextChanged(editable: Editable?) {}
         })
     }
+
+
 
     private fun updateButtonColor() {
         val text1 = mBinding.idEditText.text.toString().trim { it <= ' ' }
