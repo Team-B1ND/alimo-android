@@ -15,8 +15,14 @@ import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentDetailBinding
 import com.b1nd.alimo.presentation.MainActivity
 import com.b1nd.alimo.presentation.base.BaseFragment
+import com.b1nd.alimo.presentation.custom.CustomEmoji
 import com.b1nd.alimo.presentation.custom.CustomFileDownload
+import com.b1nd.alimo.presentation.feature.detail.DetailViewModel.Companion.ON_CLICK_ANGRY
 import com.b1nd.alimo.presentation.feature.detail.DetailViewModel.Companion.ON_CLICK_BACK
+import com.b1nd.alimo.presentation.feature.detail.DetailViewModel.Companion.ON_CLICK_LAUGH
+import com.b1nd.alimo.presentation.feature.detail.DetailViewModel.Companion.ON_CLICK_LOVE
+import com.b1nd.alimo.presentation.feature.detail.DetailViewModel.Companion.ON_CLICK_OKAY
+import com.b1nd.alimo.presentation.feature.detail.DetailViewModel.Companion.ON_CLICK_SAD
 import com.b1nd.alimo.presentation.feature.detail.DetailViewModel.Companion.ON_CLICK_SEND
 import com.b1nd.alimo.presentation.utiles.getTimeString
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
@@ -53,6 +59,21 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
                         }
                     }
+                    ON_CLICK_OKAY -> {
+                        clickEmoji(it)
+                    }
+                    ON_CLICK_ANGRY -> {
+                        clickEmoji(it)
+                    }
+                    ON_CLICK_LAUGH -> {
+                        clickEmoji(it)
+                    }
+                    ON_CLICK_LOVE -> {
+                        clickEmoji(it)
+                    }
+                    ON_CLICK_SAD -> {
+                        clickEmoji(it)
+                    }
                 }
             }
         }
@@ -72,6 +93,56 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     override fun onDestroyView() {
         super.onDestroyView()
         (requireActivity() as? MainActivity)?.bottomVisible(true)
+    }
+
+    private fun clickEmoji(
+        emoji: String
+    ) {
+        with(mBinding) {
+            val emojis = mutableListOf(
+                imageOkay,
+                imageAngry,
+                imageLaugh,
+                imageLove,
+                imageSad
+            )
+            when (emoji) {
+                ON_CLICK_OKAY -> {
+                    emojis.removeAt(0)
+                    imageOkay.animAlpha(1f)
+                }
+                ON_CLICK_ANGRY -> {
+                    emojis.removeAt(1)
+                    imageAngry.animAlpha(1f)
+                }
+                ON_CLICK_LAUGH -> {
+                    emojis.removeAt(2)
+                    imageLaugh.animAlpha(1f)
+                }
+                ON_CLICK_LOVE -> {
+                    emojis.removeAt(3)
+                    imageLove.animAlpha(1f)
+                }
+                ON_CLICK_SAD -> {
+                    emojis.removeAt(4)
+                    imageSad.animAlpha(1f)
+                }
+                else -> {}
+            }
+            emojis.forEach {
+                it.animAlpha(emojiAlpha)
+            }
+        }
+    }
+
+    private fun CustomEmoji.animAlpha(alpha: Float) {
+        if (this.alpha == emojiAlpha && alpha == emojiAlpha ) {
+            return
+        } else {
+            this.animate()
+                .alpha(alpha)
+                .setDuration(200)
+        }
     }
 
     private fun testData(id: Int, comments: Boolean = false) =
@@ -142,6 +213,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     }
 
     companion object {
+        const val emojiAlpha = 0.3f
         val testFiles = listOf<Triple<String, String, String>>(
             Triple("테스트 파일", "3 KB", "https://i.pinimg.com/originals/71/03/b9/7103b9cb185aa84b96e7c3ad4e613080.jpg"),
             Triple("테스트 파일", "3 KB", "https://i.pinimg.com/originals/71/03/b9/7103b9cb185aa84b96e7c3ad4e613080.jpg"),
