@@ -8,6 +8,8 @@ import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.NotificationModel
 import com.b1nd.alimo.data.repository.HomeRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
+import com.b1nd.alimo.presentation.utiles.Env.NETWORK_ERROR_MESSAGE
+import com.b1nd.alimo.presentation.utiles.launchIO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -48,11 +50,20 @@ class HomeViewModel @Inject constructor(
     private val _categoryData: MutableStateFlow<List<HomeCategoryRvItem>> = MutableStateFlow(emptyList())
     val categoryData = _categoryData.asStateFlow()
 
-    init {
+    private val _errorCount = MutableStateFlow(0)
+    val errorCount = _errorCount.asStateFlow()
+
+    fun loadMyCategory() =
         viewModelScope.launch(Dispatchers.IO) {
             repository.getCategory().collectLatest {
                 when(it) {
                     is Resource.Error -> {
+                        if (it.error?.message == "Network is unreachable") {
+                            _errorCount.value += 1
+                            if (errorCount.value == 0) {
+                                _sideEffect.send(HomeSideEffect.NetworkError(NETWORK_ERROR_MESSAGE))
+                            }
+                        }
                         _sideEffect.send(HomeSideEffect.NotFound(HomeFound.Category))
                     }
                     is Resource.Loading -> {}
@@ -61,6 +72,7 @@ class HomeViewModel @Inject constructor(
                             _sideEffect.send(HomeSideEffect.NotFound(HomeFound.Category))
                             return@collectLatest
                         }
+                        _errorCount.value = 0
                         _categoryData.value = it.data.data.roles.map { category ->
                             HomeCategoryRvItem(category, false)
                         }
@@ -68,13 +80,20 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
-    }
-
 
     fun setCategory(
         category: String
     ) {
         Log.d("TAG", "setCategory: $category")
         _category.value = category
+    }
+
+    fun addErrorCount() {
+        if (errorCount.value == 0) {
+            launchIO {
+                _sideEffect.send(HomeSideEffect.NetworkError(NETWORK_ERROR_MESSAGE))
+            }
+        }
+        _errorCount.value += 1
     }
 }
