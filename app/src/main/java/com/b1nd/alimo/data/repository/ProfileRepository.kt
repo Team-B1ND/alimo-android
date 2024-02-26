@@ -1,5 +1,6 @@
 package com.b1nd.alimo.data.repository
 
+import com.b1nd.alimo.data.Env.testToken
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.remote.makeApiGetRequest
 import com.b1nd.alimo.data.remote.response.BaseResponse
@@ -16,7 +17,6 @@ import javax.inject.Inject
 class ProfileRepository @Inject constructor(
     private val httpClient: HttpClient
 ): ProfileService {
-    private val testToken = "eyJKV1QiOiJBQ0NFU1MiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiQXV0aG9yaXphdGlvbiI6IlRFTVAiLCJpYXQiOjE3MDY2MTQwODcsImV4cCI6MTcwNjYxNTg4N30.1v8MifrBvkb25PJTYwzQ_bGd6VBwt0Bbvntd1Yw-pM-0Y4VqO574DoE-OFo_S8ktCP8BejHVGKMeyeXEatgmzQ"
 
     override suspend fun getInfo(): Flow<Resource<BaseResponse<ProfileInfoResponse>>> =
         makeApiGetRequest(httpClient, "/member/info") {
@@ -26,7 +26,7 @@ class ProfileRepository @Inject constructor(
         }
 
     override suspend fun getCategory(): Flow<Resource<BaseResponse<ProfileCategoryResponse>>> =
-        makeApiGetRequest(httpClient, "/member/role-list") {
+        makeApiGetRequest(httpClient, "/member/category-list") {
             headers {
                 header("Authorization", "Bearer $testToken")
             }
