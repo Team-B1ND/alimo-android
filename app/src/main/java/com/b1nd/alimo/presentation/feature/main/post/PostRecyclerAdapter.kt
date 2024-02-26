@@ -38,7 +38,7 @@ class PostRecyclerAdapter constructor(
                 if (item.isBookmark) {
                     imageBookmark.setImageResource(R.drawable.ic_bookmark)
                 }
-
+                textTitle.text = item.title
                 textAuthor.text = item.member
                 textDate.text = item.createdAt.toString()
                 textContent.text = item.content
