@@ -1,4 +1,4 @@
-package com.b1nd.alimo.presentation.feature.home
+package com.b1nd.alimo.presentation.feature.main.home
 
 import android.util.Log
 import androidx.core.view.isVisible
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentHomeBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
-import com.b1nd.alimo.presentation.feature.post.PostRecyclerAdapter
+import com.b1nd.alimo.presentation.feature.main.post.PostRecyclerAdapter
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -66,7 +66,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
             Log.d("TAG", "initView: ${it.notificationId}")
 
             val navigate =
-                HomeFragmentDirections.actionNavItemHomeToDetailFragment(
+                com.b1nd.alimo.presentation.feature.home.HomeFragmentDirections.actionNavItemHomeToDetailFragment(
                     it.notificationId
                 )
             findNavController().navigate(navigate)

@@ -1,12 +1,12 @@
-package com.b1nd.alimo.presentation
+package com.b1nd.alimo.presentation.feature.main
 
 import android.view.View
 import androidx.activity.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.b1nd.alimo.R
-import com.b1nd.alimo.presentation.base.BaseActivity
 import com.b1nd.alimo.databinding.ActivityMainBinding
+import com.b1nd.alimo.presentation.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

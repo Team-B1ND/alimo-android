@@ -1,4 +1,4 @@
-package com.b1nd.alimo.presentation.feature.home
+package com.b1nd.alimo.presentation.feature.main.home
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn

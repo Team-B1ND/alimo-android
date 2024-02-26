@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/nav_item_home"
-        android:name="com.b1nd.alimo.presentation.feature.home.HomeFragment"
+        android:name="com.b1nd.alimo.presentation.feature.main.home.HomeFragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_nav_item_home_to_detailFragment"
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.b1nd.alimo.presentation.feature.detail.DetailFragment"
+        android:name="com.b1nd.alimo.presentation.feature.main.detail.DetailFragment"
         android:label="DetailFragment" >
         <argument
             android:name="id"
@@ -26,7 +26,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_item_bookmark"
-        android:name="com.b1nd.alimo.presentation.feature.bookmark.BookmarkFragment"
+        android:name="com.b1nd.alimo.presentation.feature.main.bookmark.BookmarkFragment"
         android:label="BookmarkFragment" >
         <action
             android:id="@+id/action_nav_item_bookmark_to_detailFragment"
@@ -38,6 +38,6 @@
     </fragment>
     <fragment
         android:id="@+id/nav_item_my"
-        android:name="com.b1nd.alimo.presentation.feature.profile.ProfileFragment"
+        android:name="com.b1nd.alimo.presentation.feature.main.profile.ProfileFragment"
         android:label="ProfileFragment" />
 </navigation>

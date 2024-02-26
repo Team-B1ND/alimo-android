@@ -1,4 +1,4 @@
-package com.b1nd.alimo.presentation.feature.profile
+package com.b1nd.alimo.presentation.feature.main.profile
 
 import com.b1nd.alimo.data.remote.response.profile.ProfileInfoResponse
 

@@ -1,4 +1,4 @@
-package com.b1nd.alimo.presentation.feature.profile
+package com.b1nd.alimo.presentation.feature.main.profile
 
 import android.content.ClipData
 import android.content.ClipboardManager

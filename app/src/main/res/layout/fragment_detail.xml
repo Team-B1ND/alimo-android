@@ -3,7 +3,7 @@
     <data>
         <variable
             name="vm"
-            type="com.b1nd.alimo.presentation.feature.detail.DetailViewModel"/>
+            type="com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

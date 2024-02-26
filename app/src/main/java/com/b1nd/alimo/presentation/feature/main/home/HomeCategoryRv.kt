@@ -1,4 +1,4 @@
-package com.b1nd.alimo.presentation.feature.home
+package com.b1nd.alimo.presentation.feature.main.home
 
 import android.content.Context
 import android.view.LayoutInflater
