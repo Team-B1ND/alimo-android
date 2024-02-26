@@ -10,15 +10,15 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
-    private val homePagingSource: HomePagingSource,
     private val homeService: HomeService
 ) {
 
     fun getPost(
+        category: String
     ): Flow<PagingData<NotificationModel>> =
         Pager(
             config = PagingConfig(pageSize = 15),
-            pagingSourceFactory = { homePagingSource }
+            pagingSourceFactory = { HomePagingSource(homeService, category) }
         ).flow
 
 

@@ -87,7 +87,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
             this.add(HomeCategoryRvItem("...", false))
         }
         mBinding.rvCategory.adapter = HomeCategoryRv(testCategoryItem, requireContext()) {
-
+            viewModel.setCategory(it.category)
         }
         mBinding.rvCategory.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         collectFlow(viewModel.categoryData) {
@@ -95,6 +95,8 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
             category.add(0, HomeCategoryRvItem("전체", false))
             mBinding.rvCategory.adapter = HomeCategoryRv(category, requireContext()) {
                 // TODO(현재 게시글 초기화 -> 재로딩)
+                viewModel.setCategory(it.category)
+                mBinding.rvPost.scrollToPosition(0);
             }
         }
     }
