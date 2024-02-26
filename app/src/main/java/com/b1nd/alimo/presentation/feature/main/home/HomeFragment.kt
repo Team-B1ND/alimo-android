@@ -5,6 +5,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentHomeBinding
@@ -20,7 +21,7 @@ import kotlinx.coroutines.launch
 class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fragment_home) {
 
     override val viewModel: HomeViewModel by viewModels()
-
+    private lateinit var adapter: PostRecyclerAdapter
     override fun initView() {
         initError()
         initNotice()
@@ -62,7 +63,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
 
 
     private fun initNotice() {
-        val adapter = PostRecyclerAdapter() {
+        adapter = PostRecyclerAdapter() {
             Log.d("TAG", "initView: ${it.notificationId}")
 
             val navigate =
@@ -95,8 +96,9 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
             category.add(0, HomeCategoryRvItem("전체", false))
             mBinding.rvCategory.adapter = HomeCategoryRv(category, requireContext()) {
                 // TODO(현재 게시글 초기화 -> 재로딩)
-                viewModel.setCategory(it.category)
                 mBinding.rvPost.scrollToPosition(0);
+                adapter.submitData(lifecycle, PagingData.empty())
+                viewModel.setCategory(it.category)
             }
         }
     }
