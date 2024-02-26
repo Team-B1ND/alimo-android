@@ -82,7 +82,7 @@
                 android:layout_height="59dp"
                 android:layout_marginTop="36dp"
                 android:background="@color/white"
-                app:title="알림 설정"
+                app:title="@string/profile_alarm"
                 app:titleColor="@color/Main900"
                 app:switchVisible="true"
                 app:layout_constraintTop_toBottomOf="@id/layout_category"/>
@@ -99,7 +99,7 @@
                 android:background="@drawable/ripple_white"
                 android:clickable="true"
                 android:onClick="@{() -> vm.onClickPrivatePolicy()}"
-                app:title="개인정보 이용 약관"
+                app:title="@string/profile_privacy_policy"
                 app:titleColor="@color/Main900"
                 app:layout_constraintTop_toBottomOf="@id/divider_alarm"/>
             <com.b1nd.alimo.presentation.custom.CustomSettingCard
@@ -109,7 +109,7 @@
                 android:background="@drawable/ripple_white"
                 android:clickable="true"
                 android:onClick="@{() -> vm.onClickServicePolicy()}"
-                app:title="서비스 정책"
+                app:title="@string/profile_service_policy"
                 app:titleColor="@color/Main900"
                 app:layout_constraintTop_toBottomOf="@id/card_privacy_policy"/>
             <com.b1nd.alimo.presentation.custom.CustomSettingCard
@@ -117,9 +117,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="59dp"
                 android:background="@color/white"
-                app:title="버전"
+                app:title="@string/profile_version"
                 app:titleColor="@color/Main900"
                 app:layout_constraintTop_toBottomOf="@id/card_service_policy"/>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divider_logout"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="12dp"
+                app:dividerColor="@color/Gray100"
+                app:layout_constraintTop_toBottomOf="@id/card_version"/>
+
             <com.b1nd.alimo.presentation.custom.CustomSettingCard
                 android:id="@+id/card_logout"
                 android:layout_width="match_parent"
@@ -127,14 +136,25 @@
                 android:background="@drawable/ripple_white"
                 android:clickable="true"
                 android:onClick="@{() -> vm.onClickLogout()}"
-                app:title="로그아웃"
+                app:title="@string/logout"
                 app:titleColor="@color/Red500"
-                app:layout_constraintTop_toBottomOf="@id/card_version"/>
+                app:layout_constraintTop_toBottomOf="@id/divider_logout"/>
+
+            <com.b1nd.alimo.presentation.custom.CustomSettingCard
+                android:id="@+id/card_withdrawal"
+                android:layout_width="match_parent"
+                android:layout_height="59dp"
+                android:background="@drawable/ripple_white"
+                android:clickable="true"
+                android:onClick="@{() -> vm.onClickWithdrawal()}"
+                app:title="@string/profile_withdrawal"
+                app:titleColor="@color/Red500"
+                app:layout_constraintTop_toBottomOf="@id/card_logout"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/Gray100"
-                app:layout_constraintTop_toBottomOf="@id/card_logout"
+                app:layout_constraintTop_toBottomOf="@id/card_withdrawal"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
 

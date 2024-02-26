@@ -17,6 +17,11 @@ import com.b1nd.alimo.presentation.feature.main.profile.ProfileViewModel.Compani
 import com.b1nd.alimo.presentation.feature.main.profile.ProfileViewModel.Companion.ON_CLICK_PRIVATE_POLICY
 import com.b1nd.alimo.presentation.feature.main.profile.ProfileViewModel.Companion.ON_CLICK_SERVICE_POLICY
 import com.b1nd.alimo.presentation.feature.main.profile.ProfileViewModel.Companion.ON_CLICK_STUDENT_CODE
+import com.b1nd.alimo.presentation.feature.main.profile.ProfileViewModel.Companion.ON_CLICK_WITHDRAWAL
+import com.b1nd.alimo.presentation.feature.main.profile.student.ProfileStudentClickListener
+import com.b1nd.alimo.presentation.feature.main.profile.student.ProfileStudentCodeDialog
+import com.b1nd.alimo.presentation.feature.main.profile.withdrawal.ProfileWithdrawalClickListener
+import com.b1nd.alimo.presentation.feature.main.profile.withdrawal.ProfileWithdrawalDialog
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.collectStateFlow
 import com.b1nd.alimo.presentation.utiles.loadImage
@@ -26,12 +31,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.layout.fragment_profile),
-    ProfileStudentClickListener {
+class ProfileFragment:
+    BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.layout.fragment_profile),
+    ProfileStudentClickListener,
+    ProfileWithdrawalClickListener
+{
 
     override val viewModel: ProfileViewModel by viewModels()
     private val dialog: ProfileStudentCodeDialog by lazy {
         ProfileStudentCodeDialog(this, viewModel.state.value.data?.childCode)
+    }
+
+    private val withdrawalDialog: ProfileWithdrawalDialog by lazy {
+        ProfileWithdrawalDialog(this)
     }
     override fun initView() {
 
@@ -93,6 +105,9 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
                     ON_CLICK_LOGOUT -> {
 
                     }
+                    ON_CLICK_WITHDRAWAL -> {
+                        withdrawalDialog.show(super.getChildFragmentManager(), "withdrawalDialog")
+                    }
                 }
             }
         }
@@ -106,5 +121,9 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             CustomSnackBar(requireView(), "복사에 성공하였습니다!").show()
         }
+    }
+
+    override fun onWithdrawal() {
+
     }
 }
