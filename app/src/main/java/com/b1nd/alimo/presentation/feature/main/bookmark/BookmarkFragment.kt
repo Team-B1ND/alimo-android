@@ -27,7 +27,7 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
     override fun initView() {
         val adapter = PostRecyclerAdapter {
             val navigate =
-                com.b1nd.alimo.presentation.feature.bookmark.BookmarkFragmentDirections.actionNavItemBookmarkToDetailFragment(
+                BookmarkFragmentDirections.actionNavItemBookmarkToDetailFragment(
                     it.notificationId
                 )
             findNavController().navigate(navigate)

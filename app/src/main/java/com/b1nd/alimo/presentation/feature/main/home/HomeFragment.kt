@@ -66,7 +66,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
             Log.d("TAG", "initView: ${it.notificationId}")
 
             val navigate =
-                com.b1nd.alimo.presentation.feature.home.HomeFragmentDirections.actionNavItemHomeToDetailFragment(
+                HomeFragmentDirections.actionNavItemHomeToDetailFragment(
                     it.notificationId
                 )
             findNavController().navigate(navigate)
