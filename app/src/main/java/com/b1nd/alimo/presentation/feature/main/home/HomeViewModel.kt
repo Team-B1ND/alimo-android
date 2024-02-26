@@ -2,8 +2,10 @@ package com.b1nd.alimo.presentation.feature.main.home
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.b1nd.alimo.data.Resource
+import com.b1nd.alimo.data.model.NotificationModel
 import com.b1nd.alimo.data.repository.HomeRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +15,10 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,8 +31,16 @@ class HomeViewModel @Inject constructor(
     private val _category = MutableStateFlow("전체")
 
     val pagingData = _category.flatMapLatest {
-        repository.getPost(it)
-    }.cachedIn(viewModelScope)
+        flow {
+            try {
+                emitAll(repository.getPost(it).cachedIn(viewModelScope))
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.d("TAG", ": ${e.message}")
+                emitAll(emptyFlow<PagingData<NotificationModel>>())
+            }
+        }
+    }
 
     private val _sideEffect = Channel<HomeSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()

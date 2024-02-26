@@ -2,14 +2,20 @@ package com.b1nd.alimo.data.remote.service
 
 import android.util.Log
 import com.b1nd.alimo.data.Env
+import com.b1nd.alimo.data.Env.testToken
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.NotificationModel
 import com.b1nd.alimo.data.remote.makeApiGetRequest
+import com.b1nd.alimo.data.remote.mapper.toModels
 import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.response.home.HomeCategoryResponse
+import com.b1nd.alimo.data.remote.response.notification.NotificationResponse
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.headers
+import io.ktor.client.request.parameter
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -23,10 +29,28 @@ class HomeService @Inject constructor(
         page: Int,
         size: Int,
         category: String
-    ): Resource<BaseResponse<List<NotificationModel>>> {
-        Log.d("TAG", "getNotice: $page")
-        return Resource.Success(dummyNotice(page, category))
+    ): Resource<List<NotificationModel>> {
+        return try {
+            val body = httpClient.get("/notification/load") {
+                headers {
+                    header("Authorization", "Bearer $testToken")
+                }
+                parameter("page", page)
+                parameter("size", size)
+                parameter("category", category)
+            }.body<BaseResponse<List<NotificationResponse>>>()
+            Log.d("TAG", "getPost: $body")
+            Resource.Success(body.data.toModels())
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(e)
+        }
     }
+
+//    {
+//        Log.d("TAG", "getNotice: $page")
+//        return Resource.Success(dummyNotice(page, category))
+//    }
 
     suspend fun getCategory(
 

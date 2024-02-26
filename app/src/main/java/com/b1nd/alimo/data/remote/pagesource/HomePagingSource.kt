@@ -31,9 +31,9 @@ class HomePagingSource constructor(
             when (response) {
                 is Resource.Success -> {
                     LoadResult.Page(
-                        data = response.data!!.data,
+                        data = response.data?: emptyList(),
                         prevKey = null,
-                        nextKey = if (response.data.data.isEmpty()) null else page + 1
+                        nextKey = if (response.data.isNullOrEmpty()) null else page + 1
                     )
                 }
 
