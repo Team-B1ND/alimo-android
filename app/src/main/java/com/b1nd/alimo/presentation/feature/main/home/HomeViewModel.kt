@@ -1,5 +1,6 @@
 package com.b1nd.alimo.presentation.feature.main.home
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.b1nd.alimo.data.Resource
@@ -7,19 +8,26 @@ import com.b1nd.alimo.data.repository.HomeRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val repository: HomeRepository
 ): BaseViewModel() {
-    val pagingData = repository.getPost().cachedIn(viewModelScope)
+    private val _category = MutableStateFlow("전체")
+
+    val pagingData = _category.flatMapLatest {
+        repository.getPost(it)
+    }.cachedIn(viewModelScope)
 
     private val _sideEffect = Channel<HomeSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
@@ -47,5 +55,13 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+
+    fun setCategory(
+        category: String
+    ) {
+        Log.d("TAG", "setCategory: $category")
+        _category.value = category
     }
 }

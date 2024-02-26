@@ -20,10 +20,12 @@ class HomeService @Inject constructor(
 ) {
 
     suspend fun getPost(
-        page: Int
+        page: Int,
+        size: Int,
+        category: String
     ): Resource<BaseResponse<List<NotificationModel>>> {
         Log.d("TAG", "getNotice: $page")
-        return Resource.Success(dummyNotice(page))
+        return Resource.Success(dummyNotice(page, category))
     }
 
     suspend fun getCategory(
@@ -36,7 +38,8 @@ class HomeService @Inject constructor(
         }
 
     private suspend fun dummyNotice(
-        page: Int
+        page: Int,
+        category: String
     ): BaseResponse<List<NotificationModel>> {
         val nowPage = (15*page)
         val data = mutableListOf<NotificationModel>()
@@ -45,11 +48,11 @@ class HomeService @Inject constructor(
                 NotificationModel(
                     notificationId = i,
                     title = "$i i title",
-                    content = "$i content",
+                    content = "$i content $category",
                     speaker = Random.nextBoolean(),
                     createdAt = LocalDateTime.now(),
                     member = "$i member",
-                    memberProfile = "https://i.namu.wiki/i/oWwzGY2QClH5wDvwfZ5XEKVDHzeCj9iK07xicokv1huyYoLtheLWjCJIundAFcC6AjIi2zNgpQ4IFtPNvnb5IXC92lAyS7dx-wC6P1DImBr5KfqzoPpWZZAE_UY8RqV6yx0XUrL90gt7m63EA3-H_A.webp",
+                    memberProfile = "https://img2.sbs.co.kr/img/sbs_cms/WE/2019/08/09/WE97496996_ori.jpg",
                     image = null,
                     isBookmark = Random.nextBoolean(),
                     isNew = true,
