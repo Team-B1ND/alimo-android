@@ -5,6 +5,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.b1nd.alimo.R
@@ -78,6 +79,23 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
 
         collectFlow(viewModel.pagingData) {
             adapter.submitData(lifecycle, it)
+        }
+
+
+        adapter.addLoadStateListener { loadState ->
+            when(loadState.refresh) {
+                is LoadState.Error -> {
+                    // 에러 상태일 때 처리
+                    val errorState = loadState.refresh as LoadState.Error
+                    Log.d("TAG", "initNotice: ${errorState.error.message}")
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        delay(500)
+                        adapter.retry()
+                    }
+                }
+                else -> {}
+            }
+
         }
 
     }
