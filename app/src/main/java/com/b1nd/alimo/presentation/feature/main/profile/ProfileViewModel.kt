@@ -7,6 +7,7 @@ import com.b1nd.alimo.data.repository.AlarmRepository
 import com.b1nd.alimo.data.repository.ProfileRepository
 import com.b1nd.alimo.data.repository.TokenRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
+import com.b1nd.alimo.presentation.utiles.launchIO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
@@ -36,59 +37,73 @@ class ProfileViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(ProfileState())
     val state = _state.asStateFlow()
-    init {
-        viewModelScope.launch {
-            Log.d("TAG", ": start")
-            val job1 = async {
-                Log.d("TAG", ": hehe")
-                repository.getInfo().catch {
-//                    Log.d("TAG", ": ${it.message}")
-                    _sideEffect.send(ProfileSideEffect.FailedLoad(it))
-                }.collectLatest {
-                    if (it is Resource.Error) {
-                        Log.d("TAG", "${it.error?.message}: ")
-                    } else if (it is Resource.Success) {
-                        Log.d("TAG", ": ${it.data}")
-                    }
-                    Log.d("TAG", ": $it")
-                    _state.value = _state.value.copy(
-                        data = it.data?.data?.toModel()
-                    )
-                    Log.d("TAG", ": ${_state.value}")
-                }
-                Log.d("TAG", ": heheww")
-            }
 
-            val job2 = async {
-                repository.getCategory().catch {
-                    _sideEffect.send(ProfileSideEffect.FailedLoad(it))
-                }.collectLatest {
-                    if (it is Resource.Error) {
-                        Log.d("TAG", "${it.error?.message}: ")
-                    } else if (it is Resource.Success) {
-                        Log.d("TAG", ": ${it.data}")
-                    }
-                    _state.value = _state.value.copy(
-                        category = it.data?.data?.roles
-                    )
-                    Log.d("TAG", ": ${_state.value}")
+
+    fun loadProfile() = viewModelScope.launch {
+        Log.d("TAG", ": start")
+        val job1 = async {
+            Log.d("TAG", ": hehe")
+            repository.getInfo().catch {
+//                    Log.d("TAG", ": ${it.message}")
+                _sideEffect.send(ProfileSideEffect.FailedLoad(it))
+            }.collectLatest {
+                if (it is Resource.Error) {
+                    Log.d("TAG", "${it.error?.message}: ")
+                } else if (it is Resource.Success) {
+                    Log.d("TAG", ": ${it.data}")
                 }
+                Log.d("TAG", ": $it")
+                _state.value = _state.value.copy(
+                    data = it.data?.data?.toModel()
+                )
+                Log.d("TAG", ": ${_state.value}")
             }
-            job1.start()
-            job2.start()
-            job1.await()
-            job2.await()
-            _state.value = _state.value.copy(
-                loading = false
-            )
-            Log.d("TAG", ": End")
+            Log.d("TAG", ": heheww")
         }
+
+        val job2 = async {
+            repository.getCategory().catch {
+                _sideEffect.send(ProfileSideEffect.FailedLoad(it))
+            }.collectLatest {
+                if (it is Resource.Error) {
+                    Log.d("TAG", "${it.error?.message}: ")
+                } else if (it is Resource.Success) {
+                    Log.d("TAG", ": ${it.data}")
+                }
+                _state.value = _state.value.copy(
+                    category = it.data?.data?.roles
+                )
+                Log.d("TAG", ": ${_state.value}")
+            }
+        }
+        job1.start()
+        job2.start()
+        job1.await()
+        job2.await()
+        _state.value = _state.value.copy(
+            loading = false
+        )
+        Log.d("TAG", ": End")
     }
 
     fun addCategory() {
         _state.value = _state.value.copy(
             isAdd = true
         )
+    }
+
+    fun withdrawal() = launchIO {
+        repository.deleteWithdrawal().collectLatest {
+            when(it) {
+                is Resource.Success -> {
+                    _sideEffect.send(ProfileSideEffect.SuccessWithdrawal)
+                }
+                is Resource.Loading -> {}
+                is Resource.Error -> {
+                    _sideEffect.send(ProfileSideEffect.FailedWithdrawal(it.error?: Throwable()))
+                }
+            }
+        }
     }
 
     // 현재 알림 가져오기

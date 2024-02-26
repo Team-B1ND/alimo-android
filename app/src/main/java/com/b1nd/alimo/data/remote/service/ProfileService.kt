@@ -13,4 +13,6 @@ interface ProfileService {
 
     suspend fun getCategory(): Flow<Resource<BaseResponse<ProfileCategoryResponse>>>
     suspend fun setAlarmState(value: Boolean): Flow<Resource<Response>>
+
+    suspend fun deleteWithdrawal(): Flow<Resource<BaseResponse<String?>>>
 }

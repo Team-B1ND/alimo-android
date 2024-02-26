@@ -26,6 +26,7 @@ import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.collectStateFlow
 import com.b1nd.alimo.presentation.utiles.loadImage
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.shortToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -77,6 +78,12 @@ class ProfileFragment:
                 is ProfileSideEffect.FailedLoad -> {
                     Toast.makeText(requireContext(), "로딩에 실패하였습니다.", Toast.LENGTH_SHORT).show()
                 }
+                is ProfileSideEffect.FailedWithdrawal -> {
+                    requireContext().shortToast("회원탈퇴에 실패하였습니다.")
+                }
+                is ProfileSideEffect.SuccessWithdrawal -> {
+                    requireContext().shortToast("회원탈퇴에 성공하였습니다.")
+                }
             }
         }
 
@@ -117,6 +124,12 @@ class ProfileFragment:
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.loadProfile()
+    }
+
     override fun onCopy() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             CustomSnackBar(requireView(), "복사에 성공하였습니다!").show()
@@ -124,6 +137,6 @@ class ProfileFragment:
     }
 
     override fun onWithdrawal() {
-
+        viewModel.withdrawal()
     }
 }

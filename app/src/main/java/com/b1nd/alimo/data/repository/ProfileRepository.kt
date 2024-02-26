@@ -12,7 +12,12 @@ import com.b1nd.alimo.data.remote.service.ProfileService
 import com.b1nd.alimo.di.AppHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
+import io.ktor.client.call.body
+import io.ktor.client.request.delete
+import io.ktor.client.request.header
+import io.ktor.client.request.headers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 
@@ -37,8 +42,23 @@ class ProfileRepository @Inject constructor(
             httpClient = httpClient,
             endpoint = "/member/alarm-on-off"
         ){
-
             parameter("is_off_alarm", value)
         }
+        
+        
+        override suspend fun deleteWithdrawal(): Flow<Resource<BaseResponse<String?>>> = flow {
+        try {
+            emit(
+                Resource.Success(
+                    httpClient.delete("/member") {
+        
+                    }.body<BaseResponse<String?>>()
+                )
+            )
+        } catch (e: Exception) {
+            emit(Resource.Error(e))
+        }
+    }
+
 
 }
