@@ -1,4 +1,4 @@
-package com.b1nd.alimo.presentation.feature.bookmark
+package com.b1nd.alimo.presentation.feature.main.bookmark
 
 import android.util.Log
 import android.view.View
@@ -10,7 +10,7 @@ import com.b1nd.alimo.R
 import com.b1nd.alimo.data.model.NotificationModel
 import com.b1nd.alimo.databinding.FragmentBookmarkBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
-import com.b1nd.alimo.presentation.feature.post.PostRecyclerAdapter
+import com.b1nd.alimo.presentation.feature.main.post.PostRecyclerAdapter
 import com.b1nd.alimo.presentation.utiles.startAnimationWithHide
 import com.b1nd.alimo.presentation.utiles.startAnimationWithShow
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +27,7 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
     override fun initView() {
         val adapter = PostRecyclerAdapter {
             val navigate =
-                BookmarkFragmentDirections.actionNavItemBookmarkToDetailFragment(
+                com.b1nd.alimo.presentation.feature.bookmark.BookmarkFragmentDirections.actionNavItemBookmarkToDetailFragment(
                     it.notificationId
                 )
             findNavController().navigate(navigate)

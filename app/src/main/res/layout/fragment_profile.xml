@@ -5,7 +5,7 @@
     <data>
         <variable
             name="vm"
-            type="com.b1nd.alimo.presentation.feature.profile.ProfileViewModel" />
+            type="com.b1nd.alimo.presentation.feature.main.profile.ProfileViewModel" />
     </data>
     <ScrollView
         android:layout_width="match_parent"
