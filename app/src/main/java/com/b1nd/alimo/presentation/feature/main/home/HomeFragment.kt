@@ -13,6 +13,7 @@ import com.b1nd.alimo.databinding.FragmentHomeBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.main.post.PostRecyclerAdapter
 import com.b1nd.alimo.presentation.utiles.collectFlow
+import com.b1nd.alimo.presentation.utiles.shortToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -23,6 +24,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
 
     override val viewModel: HomeViewModel by viewModels()
     private lateinit var adapter: PostRecyclerAdapter
+
     override fun initView() {
         initError()
         initNotice()
@@ -38,13 +40,21 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.loadMyCategory()
+    }
+
     private fun initError() {
         collectFlow(viewModel.sideEffect) {
             when (it) {
                 is HomeSideEffect.NotFound -> {
                     when (it.found) {
                         is HomeFound.Category -> {
-
+                            lifecycleScope.launch(Dispatchers.Main) {
+                                delay(500)
+                                viewModel.loadMyCategory()
+                            }
                         }
 
                         HomeFound.Notice -> {
@@ -56,6 +66,11 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
                             }
                         }
                         HomeFound.Post -> {}
+                    }
+                }
+                is HomeSideEffect.NetworkError -> {
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        requireContext().shortToast(it.message)
                     }
                 }
             }
@@ -88,9 +103,10 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
                     // 에러 상태일 때 처리
                     val errorState = loadState.refresh as LoadState.Error
                     Log.d("TAG", "initNotice: ${errorState.error.message}")
+                    viewModel.addErrorCount()
                     lifecycleScope.launch(Dispatchers.Main) {
                         delay(500)
-                        adapter.retry()
+//                        adapter.retry()
                     }
                 }
                 else -> {}

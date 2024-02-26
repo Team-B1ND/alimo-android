@@ -7,6 +7,7 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -104,4 +105,13 @@ fun Fragment.startActivityWithFinishAll(activity: Class<*>) {
     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
     startActivity(intent)
     this.requireActivity().finishAffinity()
+}
+
+
+fun Context.shortToast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun Context.longToast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }
