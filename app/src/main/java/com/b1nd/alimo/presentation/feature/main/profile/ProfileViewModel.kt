@@ -89,10 +89,13 @@ class ProfileViewModel @Inject constructor(
 
     fun onClickLogout() = viewEvent(ON_CLICK_LOGOUT)
 
+    fun onClickWithdrawal() = viewEvent(ON_CLICK_WITHDRAWAL)
+
     companion object {
         const val ON_CLICK_STUDENT_CODE = "ON_CLICK_STUDENT_CODE"
         const val ON_CLICK_PRIVATE_POLICY = "ON_CLICK_PRIVATE_POLICY"
         const val ON_CLICK_SERVICE_POLICY = "ON_CLICK_SERVICE_POLICY"
         const val ON_CLICK_LOGOUT = "ON_CLICK_LOGOUT"
+        const val ON_CLICK_WITHDRAWAL = "ON_CLICK_WITHDRAWAL"
     }
 }
