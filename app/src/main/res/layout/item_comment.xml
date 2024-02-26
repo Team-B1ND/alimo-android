@@ -10,7 +10,7 @@
             android:layout_height="32dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="7dp"
-            android:src="@drawable/ic_launcher_background"
+            android:src="@drawable/ic_profile"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
         <TextView
