@@ -61,7 +61,10 @@ class ProfileFragment:
                     mBinding.textUserName.text = model.name
                 }
                 if (!it.isAdd) {
+                    viewModel.addCategory()
+                    mBinding.layoutCategory.removeAllViews()
                     it.category?.forEach { name ->
+                        Log.d("TAG", "initView: testss")
                         val card = CustomCategoryCard(requireContext(), null, name)
                         mBinding.layoutCategory.addView(card)
                     }

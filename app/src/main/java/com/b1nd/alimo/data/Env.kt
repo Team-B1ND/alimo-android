@@ -1,5 +1,5 @@
 package com.b1nd.alimo.data
 
 object Env {
-    const val testToken = "eyJKV1QiOiJBQ0NFU1MiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0IiwiQXV0aG9yaXphdGlvbiI6Ik1FTUJFUiIsImlhdCI6MTcwODk2ODQ2MiwiZXhwIjoxNzA4OTcwMjYyfQ.pdp8ELg-4SdUhQKVILkocvZ8OeL1hFVvH9FN3FXGbGAiJPZYi-7Pbl4t96aIemeLJTRH9afCvLTnjF8UKdtg9Q"
+    const val testToken = "eyJKV1QiOiJBQ0NFU1MiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0IiwiQXV0aG9yaXphdGlvbiI6Ik1FTUJFUiIsImlhdCI6MTcwOTAwNTkxMiwiZXhwIjoxNzA5MDA3NzEyfQ.LPBjUE82cc7R1xBC3b4V4CF6tGLsYZuNazsBvktAj5jqIMeab8fJg4AaowUtr2dzYtP5TVOy3oXEe9-n8nIFlg"
 }

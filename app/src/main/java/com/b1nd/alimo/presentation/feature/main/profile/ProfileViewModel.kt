@@ -44,7 +44,8 @@ class ProfileViewModel @Inject constructor(
                 }
                 Log.d("TAG", ": $it")
                 _state.value = _state.value.copy(
-                    data = it.data?.data?.toModel()
+                    data = it.data?.data?.toModel(),
+                    isAdd = false
                 )
                 Log.d("TAG", ": ${_state.value}")
             }
