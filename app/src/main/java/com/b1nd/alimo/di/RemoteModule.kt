@@ -15,6 +15,7 @@ import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
@@ -59,6 +60,11 @@ object RemoteModule {
             onResponse { response ->
                 Log.d("http_status:", "${response.status.value}")
             }
+        }
+        install(HttpTimeout) {
+            connectTimeoutMillis = 30000
+            socketTimeoutMillis = 30000
+            requestTimeoutMillis = 30000
         }
     }
 
