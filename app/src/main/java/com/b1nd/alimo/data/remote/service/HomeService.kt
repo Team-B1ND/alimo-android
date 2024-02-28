@@ -9,6 +9,7 @@ import com.b1nd.alimo.data.remote.makeApiGetRequest
 import com.b1nd.alimo.data.remote.mapper.toModels
 import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.response.home.HomeCategoryResponse
+import com.b1nd.alimo.data.remote.response.home.HomeSpeakerResponse
 import com.b1nd.alimo.data.remote.response.notification.NotificationResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -86,4 +87,11 @@ class HomeService @Inject constructor(
 
         return BaseResponse(status = 200, message = "success", data = data)
     }
+
+    suspend fun getSpeaker(): Flow<Resource<BaseResponse<HomeSpeakerResponse>>> =
+        makeApiGetRequest(httpClient, "/notification/speaker") {
+            headers {
+                header("Authorization", "Bearer $testToken")
+            }
+        }
 }

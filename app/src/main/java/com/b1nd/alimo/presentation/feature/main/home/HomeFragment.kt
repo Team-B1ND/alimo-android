@@ -28,6 +28,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
     override fun initView() {
         initError()
         initNotice()
+        initSpeaker()
         initCategory()
 
         lifecycleScope.launch(Dispatchers.Main) { // 가상 로딩 재현
@@ -45,6 +46,23 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
         viewModel.loadMyCategory()
     }
 
+    private fun initSpeaker() {
+        viewModel.loadSpeaker()
+
+        collectFlow(viewModel.speakerData) {
+            if (it == null) {
+                return@collectFlow
+            }
+            lifecycleScope.launch(Dispatchers.Main) {
+                mBinding.run {
+                    textNotice.text = it.title
+                    textNoticeAuthor.text = " ·  ${it.member}"
+                    textNoticeAuthor.isVisible = true
+                }
+            }
+        }
+    }
+
     private fun initError() {
         collectFlow(viewModel.sideEffect) {
             when (it) {
@@ -57,7 +75,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
                             }
                         }
 
-                        HomeFound.Notice -> {
+                        HomeFound.Speaker -> {
                             lifecycleScope.launch(Dispatchers.Main) {
                                 val testNotice= Pair("버그가 생겼어요!", "테스트")
                                 mBinding.textNotice.text = testNotice.first

@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.NotificationModel
+import com.b1nd.alimo.data.model.SpeakerModel
 import com.b1nd.alimo.data.repository.HomeRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
 import com.b1nd.alimo.presentation.utiles.Env.NETWORK_ERROR_MESSAGE
@@ -47,6 +48,9 @@ class HomeViewModel @Inject constructor(
     private val _sideEffect = Channel<HomeSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
 
+    private val _speakerData: MutableStateFlow<SpeakerModel?> = MutableStateFlow(null)
+    val speakerData = _speakerData.asStateFlow()
+
     private val _categoryData: MutableStateFlow<List<HomeCategoryRvItem>> = MutableStateFlow(emptyList())
     val categoryData = _categoryData.asStateFlow()
 
@@ -59,10 +63,7 @@ class HomeViewModel @Inject constructor(
                 when(it) {
                     is Resource.Error -> {
                         if (it.error?.message == "Network is unreachable") {
-                            _errorCount.value += 1
-                            if (errorCount.value == 0) {
-                                _sideEffect.send(HomeSideEffect.NetworkError(NETWORK_ERROR_MESSAGE))
-                            }
+                            addErrorCount()
                         }
                         _sideEffect.send(HomeSideEffect.NotFound(HomeFound.Category))
                     }
@@ -80,6 +81,24 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
+
+    fun loadSpeaker() = launchIO {
+        repository.getSpeaker().collectLatest {
+            when(it) {
+                is Resource.Success -> {
+                    _speakerData.value =  it.data?.data?.toModel()
+                }
+                is Resource.Loading -> {}
+
+                is Resource.Error -> {
+                    if (it.error?.message == "Network is unreachable") {
+                        return@collectLatest addErrorCount()
+                    }
+                    _sideEffect.send(HomeSideEffect.NotFound(HomeFound.Speaker))
+                }
+            }
+        }
+    }
 
     fun setCategory(
         category: String
