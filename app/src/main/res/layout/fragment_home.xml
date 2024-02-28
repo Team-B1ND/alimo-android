@@ -36,12 +36,13 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"/>
                         <LinearLayout
-                            android:id="@+id/layout_notice"
+                            android:id="@+id/layout_speaker"
                             android:layout_width="match_parent"
                             android:layout_height="36dp"
                             android:layout_marginHorizontal="5dp"
                             android:layout_marginTop="10dp"
-                            android:background="@drawable/shape_main100_4"
+                            android:background="@drawable/ripple_main100_4"
+                            android:clickable="true"
                             app:layout_constraintTop_toBottomOf="@id/text_top_logo"
                             app:layout_constraintStart_toStartOf="parent"
                             android:orientation="horizontal"
@@ -53,7 +54,7 @@
                                 android:src="@drawable/ic_loud_speaker"
                                 app:tint="@color/Main300" />
                             <TextView
-                                android:id="@+id/text_notice"
+                                android:id="@+id/text_speaker"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="7dp"
@@ -62,7 +63,7 @@
                                 android:textAllCaps="false"
                                 android:textFontWeight="500"/>
                             <TextView
-                                android:id="@+id/text_notice_author"
+                                android:id="@+id/text_speaker_author"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="· 테스트"
@@ -83,7 +84,7 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="4dp"
                 android:background="@color/white"
-                app:layout_constraintTop_toBottomOf="@id/layout_notice"
+                app:layout_constraintTop_toBottomOf="@id/layout_speaker"
                 app:layout_constraintStart_toStartOf="parent"/>
         </com.google.android.material.appbar.AppBarLayout>
         <androidx.constraintlayout.widget.ConstraintLayout

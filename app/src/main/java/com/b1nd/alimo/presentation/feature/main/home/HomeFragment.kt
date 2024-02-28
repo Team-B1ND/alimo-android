@@ -55,9 +55,9 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
             }
             lifecycleScope.launch(Dispatchers.Main) {
                 mBinding.run {
-                    textNotice.text = it.title
-                    textNoticeAuthor.text = " ·  ${it.member}"
-                    textNoticeAuthor.isVisible = true
+                    textSpeaker.text = it.title
+                    textSpeakerAuthor.text = " ·  ${it.member}"
+                    textSpeakerAuthor.isVisible = true
                 }
             }
         }
@@ -78,9 +78,9 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
                         HomeFound.Speaker -> {
                             lifecycleScope.launch(Dispatchers.Main) {
                                 val testNotice= Pair("버그가 생겼어요!", "테스트")
-                                mBinding.textNotice.text = testNotice.first
-                                mBinding.textNoticeAuthor.text = " · ${testNotice.second}"
-                                mBinding.textNoticeAuthor.isVisible = true
+                                mBinding.textSpeaker.text = testNotice.first
+                                mBinding.textSpeakerAuthor.text = " · ${testNotice.second}"
+                                mBinding.textSpeakerAuthor.isVisible = true
                             }
                         }
                         HomeFound.Post -> {}
