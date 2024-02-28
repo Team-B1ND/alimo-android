@@ -11,13 +11,21 @@ import androidx.navigation.fragment.findNavController
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentOnboardingFirstBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OnboardingFirstFragment:BaseFragment<FragmentOnboardingFirstBinding, OnboardingFirstViewModel>(R.layout.fragment_onboarding_first) {
     override val viewModel: OnboardingFirstViewModel by viewModels()
 
     override fun initView() {
         Handler().postDelayed({
-            findNavController().navigate(R.id.action_onboardingFirst_to_onboardingSecond)
+            if (viewModel.failed){
+                findNavController().navigate(R.id.action_onboardingFirst_to_onboardingSecond)
+            }else{
+                findNavController().navigate(R.id.action_onboardingFirst_to_onboardingSecond)
+
+//                startActivityWithFinishAll(MainActivity::class.java)
+            }
         }, 2000)
     }
 
