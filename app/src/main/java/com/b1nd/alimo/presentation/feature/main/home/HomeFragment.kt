@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentHomeBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
+import com.b1nd.alimo.presentation.feature.main.home.HomeViewModel.Companion.ON_CLICK_SPEAKER
 import com.b1nd.alimo.presentation.feature.main.post.PostRecyclerAdapter
 import com.b1nd.alimo.presentation.utiles.collectFlow
+import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import com.b1nd.alimo.presentation.utiles.shortToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -31,13 +33,18 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
         initSpeaker()
         initCategory()
 
-        lifecycleScope.launch(Dispatchers.Main) { // 가상 로딩 재현
-            delay(1000)
-
-
-
-//            adapter.submitData(PagingData.from(listOf(testData(2), testData(3), testData(4), testData(5), testData(6), testData(7), testData(8), testData(9), testData(10), testData(11), testData(12), testData(13), testData(14), testData(15), testData(16))))
-//            Log.d("TAG", "initView: ${adapter.itemCount}")
+        bindingViewEvent {
+            it.onSuccessEvent {
+                when(it) {
+                    ON_CLICK_SPEAKER -> {
+                        viewModel.speakerData.value?.run {
+                            val navigate = HomeFragmentDirections
+                                .actionNavItemHomeToDetailFragment(notificationId)
+                            findNavController().navigate(navigate)
+                        }
+                    }
+                }
+            }
         }
     }
 

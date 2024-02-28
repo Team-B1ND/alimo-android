@@ -115,4 +115,13 @@ class HomeViewModel @Inject constructor(
         }
         _errorCount.value += 1
     }
+
+    fun onClickSpeaker() {
+        viewEvent(ON_CLICK_SPEAKER)
+    }
+
+
+    companion object {
+        const val ON_CLICK_SPEAKER = "ON_CLICK_SPEAKER"
+    }
 }
