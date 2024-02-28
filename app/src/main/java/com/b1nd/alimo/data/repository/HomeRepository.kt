@@ -25,4 +25,9 @@ class HomeRepository @Inject constructor(
     suspend fun getCategory(
 
     ) = homeService.getCategory()
+
+
+    suspend fun getSpeaker(
+
+    ) = homeService.getSpeaker()
 }

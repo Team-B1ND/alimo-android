@@ -6,7 +6,7 @@ sealed class HomeSideEffect {
 }
 
 sealed class HomeFound {
-    object Notice: HomeFound()
+    object Speaker: HomeFound()
     object Category: HomeFound()
     object Post: HomeFound()
 }
