@@ -5,9 +5,11 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentParentLoginFirstBinding
+import com.b1nd.alimo.presentation.MainActivity
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_BACKGROUND
@@ -16,7 +18,9 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentL
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_LOGIN
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.startActivityWithFinishAll
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ParentLoginFirstFragment:
@@ -30,10 +34,13 @@ class ParentLoginFirstFragment:
             event.onSuccessEvent {
                 when(it){
                     ON_CLICK_BACK -> {
-                        findNavController().popBackStack()
+                        findNavController().navigate(R.id.action_parentLoginFirst_to_onboardingThird)
                     }
                     ON_CLICK_LOGIN -> {
-
+                        viewModel.login(
+                            mBinding.idEditText.text.toString(),
+                            mBinding.pwEditText.text.toString()
+                        )
                     }
                     ON_CLICK_BACKGROUND -> {
                         Log.d("TAG", "initView: background")
@@ -50,6 +57,15 @@ class ParentLoginFirstFragment:
                 }
             }
         }
+
+
+        lifecycleScope.launch {
+            viewModel.loginState.collect{
+                startActivityWithFinishAll(MainActivity::class.java)
+                Log.d("TAG", "${it.accessToken}, ${it.refreshToken} ")
+            }
+        }
+
         mBinding.idEditTextLayout.setEndIconOnClickListener {
             mBinding.idEditTextLayout.editText?.text = null
         }
