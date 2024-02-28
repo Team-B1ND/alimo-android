@@ -60,8 +60,6 @@ class StudentLoginViewModel @Inject constructor(
                             val refreshToken = resource.data?.data?.refreshToken
                             if (token != null && refreshToken != null) {
                                 tokenRepository.insert(token, refreshToken)
-
-
                                 _loginState.emit(
                                     LoginModel(
                                         accessToken = token,
@@ -112,21 +110,22 @@ class StudentLoginViewModel @Inject constructor(
                 when (resource) {
                     is Resource.Error -> {
                         Log.d("TAG", "실패: ${resource.error}")
+                        _dodamCode.emit(DodamState(
+                            error = "${resource.error}"
+                        ))
                     }
 
                     is Resource.Success -> {
                         if (resource.data?.data?.location != null) {
+
                             val code = resource.data.data.location.split("[=&]".toRegex())[1]
                             _dodamCode.emit(DodamState(code))
                             Log.d("TAG", "성공: ${code}")
                         }
                     }
-
                     is Resource.Loading -> {
                         Log.d("TAG", "로딩: ${resource.data}, ${resource.error}")
                     }
-
-                    else -> {}
                 }
             }
         }

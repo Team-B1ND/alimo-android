@@ -4,11 +4,13 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentStudentLoginFirstBinding
+import com.b1nd.alimo.presentation.MainActivity
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACKGROUND
@@ -16,6 +18,7 @@ import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLogin
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_LOGIN_ON
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.startActivityWithFinishAll
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -32,20 +35,24 @@ class StudentLoginFirstFragment:
             viewModel.dodamCode.collect{
                 val code = it.code
                 Log.d("TAG", "cccccccccc: ")
-                if (code == null){
-                    Log.d("TAG", "아이디 비번 확인")
-                    return@collect
-                }else{
-                    Log.d("TAG", "initView: ${code}")
+                if (code != null){
                     viewModel.login(code)
+                    Log.d("TAG", "initView: ${code}")
                 }
-
+                if (it.error != null){
+                    Toast.makeText(requireContext(), "아이디나 비밀번호를 다시 확인해주세요", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
         lifecycleScope.launch {
             viewModel.loginState.collect{
-                Log.d("TAG", "${it.accessToken}, ${it.refreshToken} ")
+                if(it.accessToken == null && it.refreshToken == null){
+                    Log.d("TAG", "로그인 실패: ${it.accessToken} ${it.refreshToken}")
+                }else{
+                    startActivityWithFinishAll(MainActivity::class.java)
+                    Log.d("TAG", "${it.accessToken}, ${it.refreshToken} ")
+                }
             }
         }
 

@@ -25,7 +25,14 @@ android {
 
         buildConfigField("String", "SERVER_URL", "${prperties["SERVER_URL"]}")
 
+        buildConfigField("String", "CLIENT_SECRET", "${prperties["CLIENT_SECRET"]}")
+
+        buildConfigField("String", "CLIENT_ID", "${prperties["CLIENT_ID"]}")
+
+        buildConfigField("String", "REDIRECT_URL", "${prperties["REDIRECT_URL"]}")
+
         buildConfigField("String", "DAUTH_SERVER_URL", "${prperties["DAUTH_SERVER_URL"]}")
+
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -19,7 +19,7 @@ class DodamRepository @Inject constructor(
     override suspend fun login(data: DodamRequest): Flow<Resource<BaseResponse<DodamResponse>>> =
         makeApiPostRequest(
             httpClient = httpClient,
-            endpoint = "/api/auth/login/"
+            endpoint = "/api/auth/login"
         ){
             setBody(data)
         }
