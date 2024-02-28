@@ -20,6 +20,9 @@ class CustomEmoji(
         )
     }
 
+    val count
+        get() = getCounts()
+
     init {
         initView()
         initAttrs(attrs)
@@ -42,6 +45,12 @@ class CustomEmoji(
             imageEmoji.setImageResource(typedArray.getResourceId(R.styleable.custom_emoji_image, 0))
         }
         typedArray.recycle()
+    }
+
+    fun getCounts(
+
+    ): String {
+        return binding.textCount.text.toString()
     }
 
     fun setCount(

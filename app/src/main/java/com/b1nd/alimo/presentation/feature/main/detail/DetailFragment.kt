@@ -24,6 +24,7 @@ import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_OKAY
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_SAD
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_SEND
+import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.getTimeString
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,10 +39,13 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     override val viewModel: DetailViewModel by viewModels()
 
     private val args: DetailFragmentArgs by navArgs()
-
+    private var pickEmoji: CustomEmoji? = null
     override fun initView() {
         (requireActivity() as? MainActivity)?.bottomVisible(false)
         addFiles(testFiles)
+        initSideEffect()
+
+
         bindingViewEvent { event ->
             event.onSuccessEvent {
                 when(it) {
@@ -90,6 +94,16 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
         }
     }
 
+    private fun initSideEffect() {
+        collectFlow(viewModel.sideEffect) {
+            when(it) {
+                is DetailSideEffect.FailedChangeEmoji -> {
+
+                }
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         (requireActivity() as? MainActivity)?.bottomVisible(true)
@@ -114,9 +128,33 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 ON_CLICK_SAD -> 4
                 else -> null
             }
+            emojis.getOrNull(emojiIndex?: 10)?.let {
+                if (pickEmoji == it) {
+                    return@clickEmoji
+                }
+            }
+            viewModel.setEmoji(
+                args.id,
+                emoji.split("_").last()
+            )
             if (emojiIndex != null) {
-                emojis.removeAt(emojiIndex)
-                    .animAlpha(1f)
+                val allAlpha = emojis.sumOf {
+                    (it.alpha*10).toInt()
+                }
+                Log.d("TAG", "clickEmoji: $allAlpha")
+                val item = emojis.removeAt(emojiIndex)
+                if (pickEmoji != null) {
+                    pickEmoji!!.setCount(
+                        (pickEmoji!!.count.toInt()-1).toString()
+                    )
+                }
+                pickEmoji = item
+
+                // 현재 모든 아이템이 선택되어있지 않던지, 아이템이 원래 선택이 안되있던가
+                val plus = if (allAlpha == 50 || item.alpha == emojiAlpha) 1 else -1
+                item.setCount((item.count.toInt()+plus).toString())
+                item.animAlpha(1f)
+                // 분기점 처리 지금 애가 선택된 애인가?
             }
             emojis.forEach {
                 it.animAlpha(emojiAlpha)
