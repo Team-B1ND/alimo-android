@@ -1,5 +1,6 @@
 package com.b1nd.alimo.presentation.feature.onboarding.parent.join.first
 
+
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -25,12 +26,17 @@ class IncorrectCodeDialog : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         binding = DialogIncorrectCodeBinding.inflate(inflater, container, false)
-
         binding.closeButton.setOnClickListener{
             dialog?.dismiss()
         }
         return binding.root
+    }
+
+    companion object {
+        // 다이얼로그를 생성하는 메서드를 추가하여 중복 생성을 방지합니다.
+        fun newInstance(): IncorrectCodeDialog {
+            return IncorrectCodeDialog()
+        }
     }
 }
