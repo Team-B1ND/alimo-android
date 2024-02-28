@@ -1,14 +1,45 @@
 package com.b1nd.alimo.presentation.feature.main.detail
 
 import android.util.Log
+import com.b1nd.alimo.data.Resource
+import com.b1nd.alimo.data.repository.DetailRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
+import com.b1nd.alimo.presentation.utiles.launchIO
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-
+   private val detailRepository: DetailRepository
 ): BaseViewModel() {
+
+    private val _sideEffect = Channel<DetailSideEffect>()
+    val sideEffect = _sideEffect.receiveAsFlow()
+
+    fun setEmoji(
+        notificationId: Int,
+        reaction: String
+    ) = launchIO {
+        detailRepository.patchEmojiEdit(
+            notificationId = notificationId,
+            reaction = reaction
+        ).collectLatest {
+            when(it) {
+                is Resource.Success -> {
+
+                }
+                is Resource.Loading -> {
+
+                }
+                is Resource.Error -> {
+                    _sideEffect.send(DetailSideEffect.FailedChangeEmoji)
+                }
+            }
+        }
+    }
 
     fun onClickBack() {
         Log.d("TAG", "onClickBack: ")

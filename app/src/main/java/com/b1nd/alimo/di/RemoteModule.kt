@@ -4,8 +4,10 @@ import LocalDateTimeTypeAdapter
 import android.util.Log
 import com.b1nd.alimo.BuildConfig
 import com.b1nd.alimo.data.local.dao.ExampleDao
+import com.b1nd.alimo.data.remote.service.DetailService
 import com.b1nd.alimo.data.remote.service.ExampleService
 import com.b1nd.alimo.data.remote.service.ProfileService
+import com.b1nd.alimo.data.repository.DetailRepository
 import com.b1nd.alimo.data.repository.ExampleRepository
 import com.b1nd.alimo.data.repository.ProfileRepository
 import dagger.Module
@@ -78,4 +80,9 @@ object RemoteModule {
     @Provides
     fun provideProfileRepository(httpClient: HttpClient): ProfileService =
         ProfileRepository(httpClient)
+
+    @Singleton
+    @Provides
+    fun provideDetailRepository(httpClient: HttpClient): DetailService =
+        DetailRepository(httpClient)
 }
