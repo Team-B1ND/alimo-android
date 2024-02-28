@@ -3,13 +3,6 @@ package com.b1nd.alimo.di
 import LocalDateTimeTypeAdapter
 import android.util.Log
 import com.b1nd.alimo.BuildConfig
-import com.b1nd.alimo.data.local.dao.ExampleDao
-import com.b1nd.alimo.data.local.dao.FirebaseTokenDao
-import com.b1nd.alimo.data.remote.service.ExampleService
-import com.b1nd.alimo.data.remote.service.ProfileService
-import com.b1nd.alimo.data.repository.ExampleRepository
-import com.b1nd.alimo.data.repository.FirebaseTokenRepository
-import com.b1nd.alimo.data.repository.ProfileRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,6 +29,7 @@ object RemoteModule {
 
     @Singleton
     @Provides
+    @AppHttpClient
     fun provideKtorHttpClient() = HttpClient(CIO) {
         install(ContentNegotiation) {
             gson {
@@ -66,17 +60,35 @@ object RemoteModule {
 
     @Singleton
     @Provides
-    fun provideExampleRepository(httpClient: HttpClient, exampleDao: ExampleDao): ExampleService =
-        ExampleRepository(httpClient, exampleDao)
+    @DAuthHttpClient
+    fun provideKtorDodamHttpClient() = HttpClient(CIO) {
+        install(ContentNegotiation) {
+            gson {
+                registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeTypeAdapter())
+                setPrettyPrinting()
+                setLenient()
+            }
+            json()
+        }
+        install(DefaultRequest) {
+            url(BuildConfig.DAUTH_SERVER_URL)
+            header(HttpHeaders.ContentType, ContentType.Application.Json)
+        }
+        install(Logging) {
+            logger = object : Logger {
+                override fun log(message: String) {
+                    Log.v("ktor_logger:", message)
+                }
+            }
+            level = LogLevel.ALL
+        }
+        install(ResponseObserver) {
+            onResponse { response ->
+                Log.d("http_status:", "${response.status.value}")
+            }
+        }
+    }
 
-    @Singleton
-    @Provides
-    fun provideFirebaseTokenRepository(firebaseTokenDao: FirebaseTokenDao): FirebaseTokenRepository =
-        FirebaseTokenRepository(firebaseTokenDao)
 
 
-    @Singleton
-    @Provides
-    fun provideProfileRepository(httpClient: HttpClient): ProfileService =
-        ProfileRepository(httpClient)
 }
