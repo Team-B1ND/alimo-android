@@ -2,6 +2,11 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="vm"
+            type="com.b1nd.alimo.presentation.feature.main.home.HomeViewModel" />
+    </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -43,6 +48,7 @@
                             android:layout_marginTop="10dp"
                             android:background="@drawable/ripple_main100_4"
                             android:clickable="true"
+                            android:onClick="@{() -> vm.onClickSpeaker()}"
                             app:layout_constraintTop_toBottomOf="@id/text_top_logo"
                             app:layout_constraintStart_toStartOf="parent"
                             android:orientation="horizontal"
