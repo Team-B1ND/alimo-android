@@ -169,13 +169,21 @@
             app:exitAnim="@anim/exit"
             app:popEnterAnim="@anim/enter"
             app:popExitAnim="@anim/exit"/>
+
+        <action
+            android:id="@+id/action_parentLoginFirst_to_onboardingThird"
+            app:destination="@id/onboardingThird"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
     </fragment>
 
 
 
     <fragment
         android:id="@+id/parentFindPWFirst"
-        android:name="com.b1nd.alimo.presentation.feature.onboarding.parent.pw.first.ParentFindPWFirstFragment"
+        android:name="com.b1nd.alimo.presentation.feature.onboarding.parent.pw.second.ParentFindPWSecondFragment"
         android:label="parentFindPWFirstFragment">
         <action
             android:id="@+id/action_parentFindPWFirst_to_parentFindPWSecond"

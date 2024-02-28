@@ -1,8 +1,13 @@
 package com.b1nd.alimo.presentation.feature.onboarding.third
 
 import com.b1nd.alimo.presentation.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class OnboardingThirdViewModel: BaseViewModel() {
+@HiltViewModel
+class OnboardingThirdViewModel @Inject constructor(
+
+): BaseViewModel() {
     
     fun onClickBack() = viewEvent(ON_CLICK_BACK)
 
