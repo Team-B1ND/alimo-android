@@ -81,6 +81,27 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
+    fun setAlarmState(value: Boolean){
+        Log.d("TAG", "$value: ")
+        viewModelScope.launch {
+            repository.setAlarmState(value).catch {
+                Log.d("TAG", "setAlarmState: $it")
+            }.collect{resource->
+                when(resource){
+                    is Resource.Error ->{
+                        Log.d("TAG", "에러: ${resource.error}")
+                    }
+                    is Resource.Success -> {
+                        Log.d("TAG", "성공: ${resource.data}")
+                    }
+                    else ->{
+
+                    }
+                }
+            }
+        }
+    }
+
     fun onClickStudentCode() = viewEvent(ON_CLICK_STUDENT_CODE)
 
     fun onClickPrivatePolicy() = viewEvent(ON_CLICK_PRIVATE_POLICY)

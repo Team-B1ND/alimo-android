@@ -37,6 +37,7 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
         collectStateFlow(viewModel.state) {
             lifecycleScope.launch(Dispatchers.Main) {
                 it.data?.let { model ->
+                    Log.d("TAG", "$model: ")
                     if (model.image != null) {
                         Log.d("TAG", "initView: 엄 이미지 바ㅏ인딩")
                         mBinding.imageProfile.loadImage(model.image)
@@ -45,6 +46,7 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
                         mBinding.textStudentCode.visibility = View.VISIBLE
                     }
                     mBinding.textUserName.text = model.name
+                    mBinding.cardAlarm.setSwitchChecked(model.isOffAlarm)
                 }
                 if (!it.isAdd) {
                     it.category?.forEach { name ->
@@ -52,6 +54,7 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
                         mBinding.layoutCategory.addView(card)
                     }
                 }
+
             }
 
         }
@@ -97,7 +100,8 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
         }
 
         mBinding.cardAlarm.setSwitchOnClickListener {
-
+            Log.d("TAG", "initView: $it")
+            viewModel.setAlarmState(it)
         }
     }
 

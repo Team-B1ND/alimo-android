@@ -2,7 +2,9 @@ package com.b1nd.alimo.data.repository
 
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.remote.makeApiGetRequest
+import com.b1nd.alimo.data.remote.makeApiPostRequest
 import com.b1nd.alimo.data.remote.response.BaseResponse
+import com.b1nd.alimo.data.remote.response.Response
 import com.b1nd.alimo.data.remote.response.profile.ProfileCategoryResponse
 import com.b1nd.alimo.data.remote.response.profile.ProfileInfoResponse
 import com.b1nd.alimo.data.remote.service.ProfileService
@@ -10,6 +12,7 @@ import com.b1nd.alimo.di.AppHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.request.header
 import io.ktor.client.request.headers
+import io.ktor.client.request.parameter
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -33,5 +36,15 @@ class ProfileRepository @Inject constructor(
             }
         }
 
+    override suspend fun setAlarmState(value: Boolean): Flow<Resource<Response>> =
+        makeApiPostRequest(
+            httpClient = httpClient,
+            endpoint = "/member/alarm-on-off"
+        ){
+            headers{
+                header("Authorization","Bearer $testToken")
+            }
+            parameter("is_off_alarm", value)
+        }
 
 }
