@@ -6,6 +6,7 @@ import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.response.profile.ProfileCategoryResponse
 import com.b1nd.alimo.data.remote.response.profile.ProfileInfoResponse
 import com.b1nd.alimo.data.remote.service.ProfileService
+import com.b1nd.alimo.di.AppHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.request.header
 import io.ktor.client.request.headers
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 
 class ProfileRepository @Inject constructor(
-    private val httpClient: HttpClient
+    @AppHttpClient private val httpClient: HttpClient
 ): ProfileService {
     private val testToken = "eyJKV1QiOiJBQ0NFU1MiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiQXV0aG9yaXphdGlvbiI6IlRFTVAiLCJpYXQiOjE3MDY2MTQwODcsImV4cCI6MTcwNjYxNTg4N30.1v8MifrBvkb25PJTYwzQ_bGd6VBwt0Bbvntd1Yw-pM-0Y4VqO574DoE-OFo_S8ktCP8BejHVGKMeyeXEatgmzQ"
 
