@@ -30,7 +30,6 @@
     <string name="cancel">닫기</string>
     <string name="pw_error">비밀번호가 다릅니다</string>
     <string name="authentication_code_error">인증코드가 올바르지 않습니다</string>
-    <string name="input_email">이메일을 입력해주세요</string>
 
 
 

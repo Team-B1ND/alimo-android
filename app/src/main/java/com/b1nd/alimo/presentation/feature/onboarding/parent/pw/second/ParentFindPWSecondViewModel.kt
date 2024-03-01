@@ -8,18 +8,13 @@ import javax.inject.Inject
 class ParentFindPWSecondViewModel @Inject constructor(
 
 ): BaseViewModel() {
-    fun onClickCertification() = viewEvent(ON_CLICK_CERTIFICATION)
-    fun onClickCheck() = viewEvent(ON_CLICK_CHECK)
     fun onClickBack() = viewEvent(ON_CLICK_BACK)
-    fun onClickNext() = viewEvent(ON_CLICK_NEXT)
+    fun onClickDone() = viewEvent(ON_CLICK_DONE)
     fun onClickBackground() = viewEvent(ON_CLICK_BACKGROUND)
 
-
     companion object{
-        const val ON_CLICK_CERTIFICATION = "ON_CLICK_CERTIFICATION"
         const val ON_CLICK_BACK = "ON_CLICK_BACK"
+        const val ON_CLICK_DONE = "ON_CLICK_DONE"
         const val ON_CLICK_BACKGROUND = "ON_CLICK_BACKGROUND"
-        const val ON_CLICK_CHECK = "ON_CLICK_CHECK"
-        const val ON_CLICK_NEXT = "ON_CLICK_NEXT"
     }
 }
