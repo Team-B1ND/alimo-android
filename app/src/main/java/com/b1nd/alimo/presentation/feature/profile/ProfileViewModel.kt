@@ -3,6 +3,7 @@ package com.b1nd.alimo.presentation.feature.profile
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.data.Resource
+import com.b1nd.alimo.data.repository.AlarmRepository
 import com.b1nd.alimo.data.repository.ProfileRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,8 +19,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val repository: ProfileRepository
+    private val repository: ProfileRepository,
+    private val alarmRepository: AlarmRepository
 ): BaseViewModel() {
+
+    private val _settingState =  MutableStateFlow(true)
+    val settingState = _settingState.asStateFlow()
 
     private val _sideEffect = Channel<ProfileSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
@@ -81,6 +86,12 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
+    fun load(){
+        viewModelScope.launch {
+            _settingState.value = alarmRepository.getAlarmState()
+        }
+    }
+
     fun setAlarmState(value: Boolean){
         Log.d("TAG", "$value: ")
         viewModelScope.launch {
@@ -99,6 +110,7 @@ class ProfileViewModel @Inject constructor(
                     }
                 }
             }
+            alarmRepository.setAlarmState(value)
         }
     }
 

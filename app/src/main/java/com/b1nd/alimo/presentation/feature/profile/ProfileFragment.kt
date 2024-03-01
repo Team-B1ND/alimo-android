@@ -33,7 +33,8 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
         ProfileStudentCodeDialog(this, viewModel.state.value.data?.childCode)
     }
     override fun initView() {
-
+        viewModel.load()
+        observeState()
         collectStateFlow(viewModel.state) {
             lifecycleScope.launch(Dispatchers.Main) {
                 it.data?.let { model ->
@@ -103,6 +104,15 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
             Log.d("TAG", "initView: $it")
             viewModel.setAlarmState(it)
         }
+    }
+
+    private fun observeState() {
+
+        collectStateFlow(viewModel.settingState) {
+            mBinding.cardAlarm.setSwitchChecked(it)
+        }
+
+
     }
 
     override fun onCopy() {

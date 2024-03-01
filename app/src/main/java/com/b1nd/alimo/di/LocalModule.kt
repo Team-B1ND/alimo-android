@@ -1,6 +1,7 @@
 package com.b1nd.alimo.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.b1nd.alimo.data.local.dao.ExampleDao
 import com.b1nd.alimo.data.local.dao.FirebaseTokenDao
@@ -48,5 +49,12 @@ object LocalModule {
     fun provideTokenDao(
         alimoDataBase: AlimoDataBase
     ): TokenDao = alimoDataBase.tokenDao()
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(
+        @ApplicationContext context: Context
+    ): SharedPreferences = context
+        .getSharedPreferences("alimo_prefs", Context.MODE_PRIVATE)
 
 }
