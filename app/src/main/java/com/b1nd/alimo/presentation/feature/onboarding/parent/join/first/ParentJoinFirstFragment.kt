@@ -1,6 +1,8 @@
 package com.b1nd.alimo.presentation.feature.onboarding.parent.join.first
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -78,7 +80,10 @@ class ParentJoinFirstFragment :
                     }
 
                     ON_CLICK_STUDENT_CODE -> {
-
+                        Log.d("TAG", "studentCode: click")
+                        val url = "https://subsequent-grouse.super.site/"
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        startActivity(intent)
                     }
 
                     ON_CLICK_BACKGROUND -> {
