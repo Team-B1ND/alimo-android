@@ -63,6 +63,7 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
         NotificationModel(
             id,
             "test",
+            0,
             "member",
             "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
             createdAt = LocalDateTime.now(),
@@ -70,7 +71,10 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
             false,
             "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
             isBookmark = false,
-            isNew = true
+            isNew = true,
+            emoji = "OKAY",
+            images = emptyList(),
+            files = emptyList()
         )
 
 }

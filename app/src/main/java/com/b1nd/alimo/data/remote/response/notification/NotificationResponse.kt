@@ -1,6 +1,5 @@
 package com.b1nd.alimo.data.remote.response.notification
 
-import com.b1nd.alimo.data.model.NotificationModel
 import com.google.gson.annotations.SerializedName
 import java.time.LocalDateTime
 
@@ -12,6 +11,8 @@ data class NotificationResponse(
     val title: String,
     @SerializedName("name")
     val name: String,
+    @SerializedName("memberId")
+    val memberId: Int,
     @SerializedName("profileImage")
     val profileImage: String?,
     @SerializedName("createdAt")
@@ -22,19 +23,12 @@ data class NotificationResponse(
     val speaker: Boolean,
     @SerializedName("image")
     val image: String?,
-    @SerializedName("isBookmark")
+    @SerializedName("isBookMarked")
     val isBookmark: Boolean = false,
-) {
-    fun toModel() = NotificationModel(
-        notificationId = notificationId,
-        title = title,
-        member = name,
-        memberProfile = profileImage,
-        createdAt = createdAt,
-        content = content,
-        speaker = speaker,
-        image = image,
-        isBookmark = isBookmark,
-        isNew = false
-    )
-}
+    @SerializedName("emoji")
+    val emoji: String?,
+    @SerializedName("images")
+    val images: List<FileResponse>,
+    @SerializedName("files")
+    val files: List<FileResponse>,
+)

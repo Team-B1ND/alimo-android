@@ -1,8 +1,10 @@
 package com.b1nd.alimo.presentation.feature.main.post
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +22,7 @@ class PostRecyclerAdapter constructor(
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val binding = holder.binding
         val item = getItem(position)
@@ -28,9 +31,15 @@ class PostRecyclerAdapter constructor(
                 if (item.memberProfile != null) {
                     imageProfile.loadImage(item.memberProfile)
                 }
-                if (item.image != null) {
+                if (item.images.isNotEmpty()) {
                     imageContent.visibility = View.VISIBLE
-                    imageContent.loadImage(item.image)
+                    imageContent.loadImage(item.images[0].fileUrl)
+                }
+                if (item.files.isNotEmpty()) {
+                    val file = item.files[0]
+                    layoutFile.isVisible = true
+                    textFileName.text = file.fileName + "." + file.filetype
+                    textFileCount.text = "총 ${item.files.size}개 파일"
                 }
                 if (item.isNew) {
                     imageNewBadge.visibility = View.VISIBLE
