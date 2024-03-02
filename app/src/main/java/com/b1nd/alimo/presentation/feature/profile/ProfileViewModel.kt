@@ -23,7 +23,7 @@ class ProfileViewModel @Inject constructor(
     private val alarmRepository: AlarmRepository
 ): BaseViewModel() {
 
-    private val _settingState =  MutableStateFlow(true)
+    private val _settingState =  MutableStateFlow(false)
     val settingState = _settingState.asStateFlow()
 
     private val _sideEffect = Channel<ProfileSideEffect>()
