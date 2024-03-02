@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 data class NotificationModel(
     val notificationId: Int,
     val title: String,
+    val memberId: Int,
     val member: String,
     val memberProfile: String?,
     val createdAt: LocalDateTime,
@@ -13,7 +14,10 @@ data class NotificationModel(
     val speaker: Boolean,
     val image: String?,
     val isBookmark: Boolean,
-    val isNew: Boolean
+    val isNew: Boolean,
+    val emoji: String?,
+    val images: List<FileModel>,
+    val files: List<FileModel>,
 )
 
 //data class NotificationModel(

@@ -18,9 +18,7 @@ import io.ktor.client.request.header
 import io.ktor.client.request.headers
 import io.ktor.client.request.parameter
 import kotlinx.coroutines.flow.Flow
-import java.time.LocalDateTime
 import javax.inject.Inject
-import kotlin.random.Random
 
 class HomeService @Inject constructor(
     private val httpClient: HttpClient
@@ -62,31 +60,31 @@ class HomeService @Inject constructor(
             }
         }
 
-    private suspend fun dummyNotice(
-        page: Int,
-        category: String
-    ): BaseResponse<List<NotificationModel>> {
-        val nowPage = (15*page)
-        val data = mutableListOf<NotificationModel>()
-        for (i in nowPage..nowPage+14) {
-            data.add(
-                NotificationModel(
-                    notificationId = i,
-                    title = "$i i title",
-                    content = "$i content $category",
-                    speaker = Random.nextBoolean(),
-                    createdAt = LocalDateTime.now(),
-                    member = "$i member",
-                    memberProfile = "https://img2.sbs.co.kr/img/sbs_cms/WE/2019/08/09/WE97496996_ori.jpg",
-                    image = null,
-                    isBookmark = Random.nextBoolean(),
-                    isNew = true,
-                )
-            )
-        }
-
-        return BaseResponse(status = 200, message = "success", data = data)
-    }
+//    private suspend fun dummyNotice(
+//        page: Int,
+//        category: String
+//    ): BaseResponse<List<NotificationModel>> {
+//        val nowPage = (15*page)
+//        val data = mutableListOf<NotificationModel>()
+//        for (i in nowPage..nowPage+14) {
+//            data.add(
+//                NotificationModel(
+//                    notificationId = i,
+//                    title = "$i i title",
+//                    content = "$i content $category",
+//                    speaker = Random.nextBoolean(),
+//                    createdAt = LocalDateTime.now(),
+//                    member = "$i member",
+//                    memberProfile = "https://img2.sbs.co.kr/img/sbs_cms/WE/2019/08/09/WE97496996_ori.jpg",
+//                    image = null,
+//                    isBookmark = Random.nextBoolean(),
+//                    isNew = true,
+//                )
+//            )
+//        }
+//
+//        return BaseResponse(status = 200, message = "success", data = data)
+//    }
 
     suspend fun getSpeaker(): Flow<Resource<BaseResponse<HomeSpeakerResponse>>> =
         makeApiGetRequest(httpClient, "/notification/speaker") {
