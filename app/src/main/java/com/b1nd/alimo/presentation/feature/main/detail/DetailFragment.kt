@@ -79,17 +79,6 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 }
             }
         }
-
-//        val adapter = DetailCommentPagingRv {
-//            Log.d("TAG", "initView: $it")
-//        }
-//        mBinding.rvComment.adapter = adapter
-
-//        lifecycleScope.launch(Dispatchers.IO) {
-//            delay(1000)
-//            val testData = PagingData.from(listOf(testData(0), testData(1, true), testData(2), ))
-//            adapter.submitData(testData)
-//        }
     }
 
 
@@ -122,9 +111,11 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                     }
                     if (it.images.isNotEmpty()) {
                         imageContent.isVisible = true
-//                        imageContent.loadImage(it.images[0].fileUrl)
+                        imageContent.loadImage(it.images[0].fileUrl)
                     }
                     if (it.files.isNotEmpty()) {
+                        layoutFiles.isVisible = true
+                        layoutFiles.removeAllViews()
                         addFiles(it.files)
                     }
                     // TODO(내가 반응한 이모지 표시하기)
@@ -238,7 +229,6 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
         mBinding.layoutFiles.run {
             files.forEach {
                 val view = CustomFileDownload(requireContext(), null)
-                addView(view)
                 view.apply {
                     setFileName(it.fileName)
                     setFileSize(it.fileSize.toString())
@@ -247,6 +237,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         downloadFile(it)
                     }
                 }
+                addView(view)
             }
         }
     }
