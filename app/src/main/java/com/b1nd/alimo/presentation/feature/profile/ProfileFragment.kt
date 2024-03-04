@@ -21,6 +21,7 @@ import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.collectStateFlow
 import com.b1nd.alimo.presentation.utiles.loadImage
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.startActivityWithFinishAll
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,6 +36,7 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
     override fun initView() {
         viewModel.load()
         observeState()
+        viewModel.tokenCheck()
         collectStateFlow(viewModel.state) {
             lifecycleScope.launch(Dispatchers.Main) {
                 it.data?.let { model ->
@@ -94,7 +96,7 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
 
                     }
                     ON_CLICK_LOGOUT -> {
-
+                        viewModel.logout()
                     }
                 }
             }
@@ -104,7 +106,13 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
             Log.d("TAG", "initView: $it")
             viewModel.setAlarmState(it)
         }
+        collectStateFlow(viewModel.logoutState) {
+            if (it) {
+                startActivityWithFinishAll(OnboardingActivity::class.java)
+            }
+        }
     }
+
 
     private fun observeState() {
 

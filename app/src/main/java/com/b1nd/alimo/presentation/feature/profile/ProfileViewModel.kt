@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.repository.AlarmRepository
 import com.b1nd.alimo.data.repository.ProfileRepository
+import com.b1nd.alimo.data.repository.TokenRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -20,11 +21,15 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val repository: ProfileRepository,
-    private val alarmRepository: AlarmRepository
+    private val alarmRepository: AlarmRepository,
+    private val tokenRepository: TokenRepository
 ): BaseViewModel() {
 
     private val _settingState =  MutableStateFlow(false)
     val settingState = _settingState.asStateFlow()
+
+    private val _logoutState =  MutableStateFlow(false)
+    val logoutState = _logoutState.asStateFlow()
 
     private val _sideEffect = Channel<ProfileSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
@@ -110,10 +115,27 @@ class ProfileViewModel @Inject constructor(
                     }
                 }
             }
+            Log.d("TAG", "알람 $value: ")
             alarmRepository.setAlarmState(value)
         }
     }
 
+    fun logout(){
+        viewModelScope.launch {
+            kotlin.runCatching {
+                tokenRepository.deleteToken()
+            }.onSuccess {
+                tokenCheck()
+                _logoutState.value = true
+            }
+        }
+    }
+
+    fun tokenCheck(){
+        viewModelScope.launch {
+            Log.d("TAG", "tokenCheck: ${tokenRepository.getToken()} ")
+        }
+    }
     fun onClickStudentCode() = viewEvent(ON_CLICK_STUDENT_CODE)
 
     fun onClickPrivatePolicy() = viewEvent(ON_CLICK_PRIVATE_POLICY)

@@ -6,4 +6,6 @@ interface TokenService {
     suspend fun getToken(): TokenModel
 
     suspend fun insert(token: String,refreshToken: String)
+
+    suspend fun deleteToken()
 }

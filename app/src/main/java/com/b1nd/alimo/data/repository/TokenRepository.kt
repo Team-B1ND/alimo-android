@@ -19,4 +19,9 @@ class TokenRepository @Inject constructor(
         tokenDao.insert(TokenEntity(token = token, refreshToken = refreshToken))
     }
 
+    override suspend fun deleteToken() {
+        tokenDao.deleteToken()
+    }
+
+
 }
