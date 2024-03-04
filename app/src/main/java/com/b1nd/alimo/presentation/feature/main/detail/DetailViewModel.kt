@@ -2,11 +2,14 @@ package com.b1nd.alimo.presentation.feature.main.detail
 
 import android.util.Log
 import com.b1nd.alimo.data.Resource
+import com.b1nd.alimo.data.model.DetailNotificationModel
 import com.b1nd.alimo.data.repository.DetailRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
 import com.b1nd.alimo.presentation.utiles.launchIO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
@@ -16,8 +19,31 @@ class DetailViewModel @Inject constructor(
    private val detailRepository: DetailRepository
 ): BaseViewModel() {
 
+    private val _notificationState = MutableStateFlow<DetailNotificationModel?>(null)
+    val notificationState = _notificationState.asStateFlow()
+
     private val _sideEffect = Channel<DetailSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
+
+    fun loadNotification(
+        notificationId: Int
+    ) = launchIO {
+        detailRepository.loadNotification(
+            notificationId = notificationId
+        ).collectLatest {
+            when(it) {
+                is Resource.Success -> {
+                    _notificationState.value = it.data?.data
+                }
+                is Resource.Loading -> {
+
+                }
+                is Resource.Error -> {
+                    _sideEffect.send(DetailSideEffect.FailedNotificationLoad(it.error?: Throwable()))
+                }
+            }
+        }
+    }
 
     fun setEmoji(
         notificationId: Int,

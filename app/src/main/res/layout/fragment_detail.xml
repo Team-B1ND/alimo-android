@@ -36,7 +36,7 @@
                     android:layout_height="36dp"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="20dp"
-                    android:src="@drawable/ic_red_badge"
+                    android:src="@drawable/ic_profile"
                     app:layout_constraintTop_toBottomOf="@id/image_back_button"
                     app:layout_constraintStart_toStartOf="parent"/>
                 <TextView
@@ -86,7 +86,7 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_launcher_background"
                     android:clipToOutline="true"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintDimensionRatio="284:257"
                     app:layout_constraintTop_toBottomOf="@id/text_content"
                     app:layout_constraintStart_toStartOf="@id/text_author"
