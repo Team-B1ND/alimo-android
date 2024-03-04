@@ -42,6 +42,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 //        addFiles(testFiles)
         initSideEffect()
         initNotice()
+        initEmoji()
 
 
         bindingViewEvent { event ->
@@ -81,6 +82,27 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
         }
     }
 
+    private fun initEmoji() {
+        viewModel.loadEmoji(args.id)
+        collectFlow(viewModel.emojiState) {
+            mBinding.run {
+                val emojis = mutableListOf(
+                    imageOkay,
+                    imageAngry,
+                    imageLaugh,
+                    imageLove,
+                    imageSad
+                )
+                it.forEach { emoji ->
+                    val index = getEmojiIndex(emoji.emojiName)
+                    if (index != null) {
+                        emojis[index].setCount(emoji.count.toString())
+                    }
+                }
+            }
+        }
+    }
+
 
     private fun initSideEffect() {
         collectFlow(viewModel.sideEffect) {
@@ -89,6 +111,9 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
                 }
                 is DetailSideEffect.FailedNotificationLoad -> {
+
+                }
+                is DetailSideEffect.FailedEmojiLoad -> {
 
                 }
             }
@@ -170,7 +195,9 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
             emojis.getOrNull(emojiIndex?: 10)?.let { // 이모지 존재여부
                 if (pickEmoji == it) { // 이모지 중복 클릭 처리
                     pickEmoji = null
-                    it.animAlpha(1f)
+                    emojis.forEach {
+                        it.animAlpha(1f)
+                    }
                     return@clickEmoji
                 }
             }
@@ -280,9 +307,10 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
         emoji: String
     ): Int? {
         var nowEmoji = emoji
-        if (emoji.length > 5) {
-            nowEmoji = "OK_CLICK_${emoji}"
+        if (emoji.length < 6) {
+            nowEmoji = "ON_CLICK_${emoji}"
         }
+        Log.d("TAG", "getEmojiIndex: $nowEmoji")
         val emojiIndex = when (nowEmoji) {
             ON_CLICK_OKAY -> 0
             ON_CLICK_ANGRY -> 1

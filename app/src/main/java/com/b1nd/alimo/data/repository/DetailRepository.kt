@@ -3,10 +3,14 @@ package com.b1nd.alimo.data.repository
 import com.b1nd.alimo.data.Env.testToken
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.DetailNotificationModel
+import com.b1nd.alimo.data.model.EmojiModel
 import com.b1nd.alimo.data.remote.mapper.toModel
+import com.b1nd.alimo.data.remote.mapper.toModels
 import com.b1nd.alimo.data.remote.request.detail.DetailEmojiRequest
 import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.response.detail.DetailNotificationResponse
+import com.b1nd.alimo.data.remote.response.detail.EmojiResponse
+import com.b1nd.alimo.data.remote.safeFlow
 import com.b1nd.alimo.data.remote.service.DetailService
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -66,6 +70,24 @@ class DetailRepository @Inject constructor(
         } catch (e: Exception) {
             emit(Resource.Error(e))
         }
+    }
+
+    override suspend fun loadEmoji(notificationId: Int): Flow<Resource<BaseResponse<List<EmojiModel>>>> = safeFlow {
+        val response = httpClient.get("/emoji/load/${notificationId}") {
+            headers {
+                header("Authorization", "Bearer $testToken")
+            }
+        }.body<BaseResponse<List<EmojiResponse>>>()
+
+        emit(
+            Resource.Success(
+                BaseResponse(
+                    status = response.status,
+                    message = response.message,
+                    data = response.data.toModels()
+                )
+            )
+        )
     }
 
 
