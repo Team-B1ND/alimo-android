@@ -13,6 +13,7 @@ import com.b1nd.alimo.databinding.FragmentProfileBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.custom.CustomCategoryCard
 import com.b1nd.alimo.presentation.custom.CustomSnackBar
+import com.b1nd.alimo.presentation.feature.onboarding.OnboardingActivity
 import com.b1nd.alimo.presentation.feature.profile.ProfileViewModel.Companion.ON_CLICK_LOGOUT
 import com.b1nd.alimo.presentation.feature.profile.ProfileViewModel.Companion.ON_CLICK_PRIVATE_POLICY
 import com.b1nd.alimo.presentation.feature.profile.ProfileViewModel.Companion.ON_CLICK_SERVICE_POLICY
@@ -49,7 +50,7 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
                         mBinding.textStudentCode.visibility = View.VISIBLE
                     }
                     mBinding.textUserName.text = model.name
-                    mBinding.cardAlarm.setSwitchChecked(model.isOffAlarm)
+                    viewModel.setAlarmState(model.isOffAlarm)
                 }
                 if (!it.isAdd) {
                     it.category?.forEach { name ->
