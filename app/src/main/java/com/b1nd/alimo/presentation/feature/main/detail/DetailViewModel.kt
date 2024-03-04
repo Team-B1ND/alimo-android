@@ -3,6 +3,7 @@ package com.b1nd.alimo.presentation.feature.main.detail
 import android.util.Log
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.DetailNotificationModel
+import com.b1nd.alimo.data.model.EmojiModel
 import com.b1nd.alimo.data.repository.DetailRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
 import com.b1nd.alimo.presentation.utiles.launchIO
@@ -21,6 +22,9 @@ class DetailViewModel @Inject constructor(
 
     private val _notificationState = MutableStateFlow<DetailNotificationModel?>(null)
     val notificationState = _notificationState.asStateFlow()
+
+    private val _emojiState = MutableStateFlow<List<EmojiModel>>(emptyList())
+    val emojiState = _emojiState.asStateFlow()
 
     private val _sideEffect = Channel<DetailSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
@@ -45,6 +49,24 @@ class DetailViewModel @Inject constructor(
         }
     }
 
+    fun loadEmoji(
+        notificationId: Int
+    ) = launchIO {
+        detailRepository.loadEmoji(
+            notificationId = notificationId
+        ).collectLatest {
+            when(it) {
+                is Resource.Success -> {
+                    _emojiState.value = it.data?.data?: emptyList()
+                }
+                is Resource.Loading -> {}
+                is Resource.Error -> {
+                    _sideEffect.send(DetailSideEffect.FailedEmojiLoad(it.error?: Throwable()))
+                }
+            }
+        }
+    }
+
     fun setEmoji(
         notificationId: Int,
         reaction: String
@@ -55,7 +77,7 @@ class DetailViewModel @Inject constructor(
         ).collectLatest {
             when(it) {
                 is Resource.Success -> {
-
+                    loadEmoji(notificationId)
                 }
                 is Resource.Loading -> {
 
