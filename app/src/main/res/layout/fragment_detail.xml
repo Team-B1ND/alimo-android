@@ -101,8 +101,8 @@
                     android:showDividers="middle"
                     android:divider="@drawable/empty_divider"
                     app:layout_constraintTop_toBottomOf="@id/image_content"
-                    app:layout_constraintStart_toStartOf="@id/image_content"
-                    app:layout_constraintEnd_toEndOf="@id/image_content" />
+                    app:layout_constraintStart_toStartOf="@id/text_author"
+                    app:layout_constraintEnd_toEndOf="@id/text_title" />
                 <TextView
                     android:id="@+id/text_date"
                     android:layout_width="wrap_content"
