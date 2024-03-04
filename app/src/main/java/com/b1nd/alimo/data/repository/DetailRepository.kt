@@ -2,11 +2,15 @@ package com.b1nd.alimo.data.repository
 
 import com.b1nd.alimo.data.Env.testToken
 import com.b1nd.alimo.data.Resource
+import com.b1nd.alimo.data.model.DetailNotificationModel
+import com.b1nd.alimo.data.remote.mapper.toModel
 import com.b1nd.alimo.data.remote.request.detail.DetailEmojiRequest
 import com.b1nd.alimo.data.remote.response.BaseResponse
+import com.b1nd.alimo.data.remote.response.detail.DetailNotificationResponse
 import com.b1nd.alimo.data.remote.service.DetailService
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.headers
 import io.ktor.client.request.patch
@@ -38,6 +42,30 @@ class DetailRepository @Inject constructor(
             emit(Resource.Error(e))
         }
 
+    }
+
+    override suspend fun loadNotification(
+        notificationId: Int
+    ): Flow<Resource<BaseResponse<DetailNotificationModel>>> = flow {
+        try {
+            val body = httpClient.get("/notification/read/${notificationId}") {
+                headers {
+                    header("Authorization", "Bearer $testToken")
+                }
+            }.body<BaseResponse<DetailNotificationResponse>>()
+
+            emit(
+                Resource.Success(
+                    BaseResponse(
+                        status = body.status,
+                        message = body.message,
+                        data = body.data.toModel()
+                    )
+                )
+            )
+        } catch (e: Exception) {
+            emit(Resource.Error(e))
+        }
     }
 
 

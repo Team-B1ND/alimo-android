@@ -6,12 +6,12 @@ import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import android.util.Patterns
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.paging.PagingData
 import com.b1nd.alimo.R
+import com.b1nd.alimo.data.model.FileModel
 import com.b1nd.alimo.databinding.FragmentDetailBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.custom.CustomEmoji
@@ -26,12 +26,9 @@ import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_SEND
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.getTimeString
+import com.b1nd.alimo.presentation.utiles.loadImage
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 
 @AndroidEntryPoint
 class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.layout.fragment_detail) {
@@ -42,8 +39,9 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     private var pickEmoji: CustomEmoji? = null
     override fun initView() {
         (requireActivity() as? MainActivity)?.bottomVisible(false)
-        addFiles(testFiles)
+//        addFiles(testFiles)
         initSideEffect()
+        initNotice()
 
 
         bindingViewEvent { event ->
@@ -82,23 +80,75 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
             }
         }
 
-        val adapter = DetailCommentRv {
-            Log.d("TAG", "initView: $it")
-        }
-        mBinding.rvComment.adapter = adapter
+//        val adapter = DetailCommentPagingRv {
+//            Log.d("TAG", "initView: $it")
+//        }
+//        mBinding.rvComment.adapter = adapter
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            delay(1000)
-            val testData = PagingData.from(listOf(testData(0), testData(1, true), testData(2), ))
-            adapter.submitData(testData)
-        }
+//        lifecycleScope.launch(Dispatchers.IO) {
+//            delay(1000)
+//            val testData = PagingData.from(listOf(testData(0), testData(1, true), testData(2), ))
+//            adapter.submitData(testData)
+//        }
     }
+
 
     private fun initSideEffect() {
         collectFlow(viewModel.sideEffect) {
             when(it) {
                 is DetailSideEffect.FailedChangeEmoji -> {
 
+                }
+                is DetailSideEffect.FailedNotificationLoad -> {
+
+                }
+            }
+        }
+    }
+
+    private fun initNotice() {
+        viewModel.loadNotification(args.id)
+
+        collectFlow(viewModel.notificationState) {
+            mBinding.run {
+                it?.let {
+                    Log.d("TAG", "initNotice: ${it.emoji}")
+                    textTitle.text = it.title
+                    textAuthor.text = it.member
+                    textContent.text = it.content
+                    textDate.text = it.createdAt.toString()
+                    if (it.memberProfile != null) {
+                        imageProfile.loadImage(it.memberProfile)
+                    }
+                    if (it.images.isNotEmpty()) {
+                        imageContent.isVisible = true
+//                        imageContent.loadImage(it.images[0].fileUrl)
+                    }
+                    if (it.files.isNotEmpty()) {
+                        addFiles(it.files)
+                    }
+                    // TODO(내가 반응한 이모지 표시하기)
+                    val emojis = mutableListOf(
+                        imageOkay,
+                        imageAngry,
+                        imageLaugh,
+                        imageLove,
+                        imageSad
+                    )
+                    if (it.emoji != null) {
+                        getEmojiIndex(it.emoji)?.let { index ->
+                            emojis[index].animAlpha(1f)
+                            emojis.removeAt(index)
+                        }
+                        emojis.forEach { emoji ->
+                            emoji.animAlpha(emojiAlpha)
+                        }
+                    }
+
+                    val adapter = DetailCommentRv(it.comments) {
+                        Log.d("TAG", "initView: $it")
+                    }
+                    mBinding.rvComment.adapter = adapter
                 }
             }
         }
@@ -120,23 +170,19 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 imageLove,
                 imageSad
             )
-            val emojiIndex = when (emoji) {
-                ON_CLICK_OKAY -> 0
-                ON_CLICK_ANGRY -> 1
-                ON_CLICK_LAUGH -> 2
-                ON_CLICK_LOVE -> 3
-                ON_CLICK_SAD -> 4
-                else -> null
-            }
-            emojis.getOrNull(emojiIndex?: 10)?.let {
-                if (pickEmoji == it) {
-                    return@clickEmoji
-                }
-            }
+            val emojiIndex = getEmojiIndex(emoji)
             viewModel.setEmoji(
                 args.id,
                 emoji.split("_").last()
             )
+
+            emojis.getOrNull(emojiIndex?: 10)?.let { // 이모지 존재여부
+                if (pickEmoji == it) { // 이모지 중복 클릭 처리
+                    pickEmoji = null
+                    it.animAlpha(1f)
+                    return@clickEmoji
+                }
+            }
             if (emojiIndex != null) {
                 val allAlpha = emojis.sumOf {
                     (it.alpha*10).toInt()
@@ -171,32 +217,32 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 .setDuration(200)
         }
     }
-
-    private fun testData(id: Int, comments: Boolean = false) =
-        DetailCommentItem(
-            id = id,
-            "test",
-            "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
-            LocalDateTime.now(),
-            "testcontent\n알빠노\n라고할뻔",
-            if (comments) listOf(
-                testItem,
-                testItem,
-                testItem
-            ) else null
-        )
+//`
+//    private fun testData(id: Int, comments: Boolean = false) =
+//        DetailCommentItem(
+//            id = id,
+//            "test",
+//            "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
+//            LocalDateTime.now(),
+//            "testcontent\n알빠노\n라고할뻔",
+//            if (comments) listOf(
+//                testItem,
+//                testItem,
+//                testItem
+//            ) else null
+//        )`
 
     private fun addFiles(
-        testFiles: List<Triple<String, String, String>>
+        files: List<FileModel>
     ) {
         mBinding.layoutFiles.run {
-            testFiles.forEach {
+            files.forEach {
                 val view = CustomFileDownload(requireContext(), null)
                 addView(view)
                 view.apply {
-                    setFileName(it.first)
-                    setFileSize(it.second)
-                    setFileLink(it.third)
+                    setFileName(it.fileName)
+                    setFileSize(it.fileSize.toString())
+                    setFileLink(it.fileUrl)
                     setOnClickListener {
                         downloadFile(it)
                     }
@@ -239,6 +285,24 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
         manager.enqueue(downloadManager)
     }
 
+    private fun getEmojiIndex(
+        emoji: String
+    ): Int? {
+        var nowEmoji = emoji
+        if (emoji.length > 5) {
+            nowEmoji = "OK_CLICK_${emoji}"
+        }
+        val emojiIndex = when (nowEmoji) {
+            ON_CLICK_OKAY -> 0
+            ON_CLICK_ANGRY -> 1
+            ON_CLICK_LAUGH -> 2
+            ON_CLICK_LOVE -> 3
+            ON_CLICK_SAD -> 4
+            else -> null
+        }
+        return emojiIndex
+    }
+
     companion object {
         const val emojiAlpha = 0.3f
         val testFiles = listOf<Triple<String, String, String>>(
@@ -246,13 +310,13 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
             Triple("테스트 파일", "3 KB", "https://i.pinimg.com/originals/71/03/b9/7103b9cb185aa84b96e7c3ad4e613080.jpg"),
             Triple("테스트 파일", "3 KB", "https://i.pinimg.com/originals/71/03/b9/7103b9cb185aa84b96e7c3ad4e613080.jpg")
         )
-        val testItem = DetailCommentItem(
-            id = 3,
-            "test",
-            "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
-            LocalDateTime.now(),
-            "testcontent\n알빠노\n라고할뻔",
-            null)
+//        val testItem = DetailCommentItem(
+//            id = 3,
+//            "test",
+//            "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
+//            LocalDateTime.now(),
+//            "testcontent\n알빠노\n라고할뻔",
+//            null)
     }
 
 }
