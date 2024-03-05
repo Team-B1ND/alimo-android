@@ -10,8 +10,6 @@ import com.b1nd.alimo.data.remote.response.profile.ProfileInfoResponse
 import com.b1nd.alimo.data.remote.service.ProfileService
 import com.b1nd.alimo.di.AppHttpClient
 import io.ktor.client.HttpClient
-import io.ktor.client.request.header
-import io.ktor.client.request.headers
 import io.ktor.client.request.parameter
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -24,16 +22,12 @@ class ProfileRepository @Inject constructor(
 
     override suspend fun getInfo(): Flow<Resource<BaseResponse<ProfileInfoResponse>>> =
         makeApiGetRequest(httpClient, "/member/info") {
-            headers {
-                header("Authorization", "Bearer $testToken")
-            }
+
         }
 
     override suspend fun getCategory(): Flow<Resource<BaseResponse<ProfileCategoryResponse>>> =
         makeApiGetRequest(httpClient, "/member/role-list") {
-            headers {
-                header("Authorization", "Bearer $testToken")
-            }
+
         }
 
     override suspend fun setAlarmState(value: Boolean): Flow<Resource<Response>> =
@@ -41,9 +35,7 @@ class ProfileRepository @Inject constructor(
             httpClient = httpClient,
             endpoint = "/member/alarm-on-off"
         ){
-            headers{
-                header("Authorization","Bearer $testToken")
-            }
+
             parameter("is_off_alarm", value)
         }
 
