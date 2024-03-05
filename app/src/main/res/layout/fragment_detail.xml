@@ -73,6 +73,8 @@
                     android:layout_marginTop="12dp"
                     android:text="너 좀 수상함... 아니 그게 아니라 수상함...문화상품권 \n받으러오셈."
                     android:textColor="@color/Main900"
+                    android:autoLink="web"
+                    android:linksClickable="true"
                     app:layout_constraintTop_toBottomOf="@id/text_author"
                     app:layout_constraintStart_toStartOf="@id/text_author"
                     app:layout_constraintEnd_toEndOf="@id/text_title"
