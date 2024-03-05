@@ -19,7 +19,7 @@ class OnboardingFirstFragment:BaseFragment<FragmentOnboardingFirstBinding, Onboa
 
     override fun initView() {
         Handler().postDelayed({
-            if (viewModel.failed){
+            if (viewModel.tokenCheck()){
                 findNavController().navigate(R.id.action_onboardingFirst_to_onboardingSecond)
             }else{
                 findNavController().navigate(R.id.action_onboardingFirst_to_onboardingSecond)
