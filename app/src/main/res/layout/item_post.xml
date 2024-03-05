@@ -105,7 +105,7 @@
                 android:layout_height="28dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="10dp"
-                android:src="@drawable/ic_image_dowload"
+                android:src="@drawable/ic_clip_download"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
             <TextView
