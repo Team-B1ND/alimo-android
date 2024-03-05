@@ -17,6 +17,10 @@ interface DetailService {
         notificationId: Int
     ): Flow<Resource<BaseResponse<DetailNotificationModel>>>
 
+    suspend fun pathBookmark(
+        notificationId: Int
+    ): Flow<Resource<BaseResponse<String?>>>
+
     suspend fun loadEmoji(
         notificationId: Int
     ): Flow<Resource<BaseResponse<List<EmojiModel>>>>

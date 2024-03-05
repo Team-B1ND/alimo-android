@@ -7,4 +7,10 @@ data class BaseResponse<T> (
     val status: Int,
     val message: String,
     val data: T
-)
+) {
+    fun newResponse(data: T) = BaseResponse(
+        status = status,
+        message = message,
+        data = data
+    )
+}

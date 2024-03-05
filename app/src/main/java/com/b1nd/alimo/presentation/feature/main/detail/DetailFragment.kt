@@ -17,8 +17,11 @@ import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.custom.CustomEmoji
 import com.b1nd.alimo.presentation.custom.CustomFileDownload
 import com.b1nd.alimo.presentation.feature.main.MainActivity
+import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.BOOKMARK
+import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.NOT_BOOKMARK
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_ANGRY
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_BACK
+import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_BOOKMARK
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_LAUGH
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_LOVE
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_OKAY
@@ -43,7 +46,6 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
         initSideEffect()
         initNotice()
         initEmoji()
-
 
         bindingViewEvent { event ->
             event.onSuccessEvent {
@@ -76,6 +78,10 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                     }
                     ON_CLICK_SAD -> {
                         clickEmoji(it)
+                    }
+                    ON_CLICK_BOOKMARK -> {
+//                        Log.d("TAG", "initView: ${mBinding.imageBookmark.tag.toString()}")
+                        viewModel.pathBookmark(args.id)
                     }
                 }
             }
@@ -116,6 +122,13 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 is DetailSideEffect.FailedEmojiLoad -> {
 
                 }
+                is DetailSideEffect.SuccessChangeBookmark -> {
+                    Log.d("TAG", "initSideEffect: ewqqwe")
+                    changeBookmark()
+                }
+                is DetailSideEffect.FailedChangeBookmark -> {
+
+                }
             }
         }
     }
@@ -142,6 +155,10 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         layoutFiles.isVisible = true
                         layoutFiles.removeAllViews()
                         addFiles(it.files)
+                    }
+                    if (it.isBookmark) {
+                        imageBookmark.setImageResource(R.drawable.ic_bookmark)
+                        imageBookmark.tag = BOOKMARK
                     }
                     // TODO(내가 반응한 이모지 표시하기)
                     val emojis = mutableListOf(
@@ -223,6 +240,17 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
             emojis.forEach {
                 it.animAlpha(emojiAlpha)
             }
+        }
+    }
+    private fun changeBookmark() {
+        mBinding.run {
+            val isBookmark = imageBookmark.tag.toString() == BOOKMARK
+            imageBookmark.setImageResource(
+                if (isBookmark) R.drawable.ic_not_bookmark
+                else R.drawable.ic_bookmark
+            )
+            imageBookmark.tag = if (isBookmark) NOT_BOOKMARK else BOOKMARK
+
         }
     }
 

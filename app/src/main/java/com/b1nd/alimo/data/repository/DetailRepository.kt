@@ -18,6 +18,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.headers
 import io.ktor.client.request.patch
+import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -70,6 +71,17 @@ class DetailRepository @Inject constructor(
         } catch (e: Exception) {
             emit(Resource.Error(e))
         }
+    }
+
+    override suspend fun pathBookmark(notificationId: Int): Flow<Resource<BaseResponse<String?>>> = safeFlow {
+        val response = httpClient.post("/bookmark/patch/${notificationId}") {
+            headers {
+                header("Authorization", "Bearer $testToken")
+            }
+        }.body<BaseResponse<String?>>()
+        emit(
+            Resource.Success(response)
+        )
     }
 
     override suspend fun loadEmoji(notificationId: Int): Flow<Resource<BaseResponse<List<EmojiModel>>>> = safeFlow {
