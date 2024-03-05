@@ -49,6 +49,28 @@ class DetailViewModel @Inject constructor(
         }
     }
 
+    fun pathBookmark(
+        notificationId: Int
+    ) = launchIO {
+        detailRepository.pathBookmark(
+            notificationId = notificationId
+        ).collectLatest {
+            when(it) {
+                is Resource.Success -> {
+                    if ((it.data?.status ?: 500) == 500) {
+                        _sideEffect.send(DetailSideEffect.FailedChangeBookmark(it.error?: Throwable()))
+                        return@collectLatest
+                    }
+                    _sideEffect.send(DetailSideEffect.SuccessChangeBookmark)
+                }
+                is Resource.Loading -> {}
+                is Resource.Error -> {
+                    _sideEffect.send(DetailSideEffect.FailedChangeBookmark(it.error?: Throwable()))
+                }
+            }
+        }
+    }
+
     fun loadEmoji(
         notificationId: Int
     ) = launchIO {
@@ -117,5 +139,9 @@ class DetailViewModel @Inject constructor(
         const val ON_CLICK_LAUGH = "ON_CLICK_LAUGH"
         const val ON_CLICK_SAD = "ON_CLICK_SAD"
         const val ON_CLICK_ANGRY = "ON_CLICK_ANGRY"
+
+
+        const val NOT_BOOKMARK = "NOT_BOOKMARK"
+        const val BOOKMARK = "BOOKMARK"
     }
 }

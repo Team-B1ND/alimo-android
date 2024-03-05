@@ -123,6 +123,7 @@
                     android:clickable="true"
                     android:onClick="@{() -> vm.onClickBookmark()}"
                     android:background="@drawable/ripple_white"
+                    android:tag="@{vm.NOT_BOOKMARK}"
                     android:src="@drawable/ic_not_bookmark"
                     app:layout_constraintTop_toBottomOf="@id/text_date"
                     app:layout_constraintEnd_toEndOf="@id/text_title"/>
