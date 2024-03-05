@@ -286,7 +286,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 val view = CustomFileDownload(requireContext(), null)
                 view.apply {
                     setFileName(it.fileName)
-                    setFileSize(it.fileSize.toString())
+                    setFileSize(it.fileSize)
                     setFileLink(it.fileUrl)
                     setOnClickListener {
                         downloadFile(it)
