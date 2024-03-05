@@ -11,6 +11,7 @@ import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentParentLoginFirstBinding
 import com.b1nd.alimo.presentation.MainActivity
 import com.b1nd.alimo.presentation.base.BaseFragment
+import com.b1nd.alimo.presentation.custom.CustomSnackBar
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_BACKGROUND
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_FIND_PW
@@ -28,8 +29,8 @@ class ParentLoginFirstFragment:
     R.layout.fragment_parent_login_first
 ) {
     override val viewModel: ParentLoginFirstViewModel by viewModels()
-
     override fun initView() {
+        val snackBar = CustomSnackBar.make(requireView(), "미구현 기능입니다.")
         bindingViewEvent { event ->
             event.onSuccessEvent {
                 when(it){
@@ -52,7 +53,9 @@ class ParentLoginFirstFragment:
                         findNavController().navigate(R.id.action_parentLoginFirst_to_parentJoinFirst)
                     }
                     ON_CLICK_FIND_PW -> {
-                        findNavController().navigate(R.id.action_parentLoginFirst_to_parentFindPWFirst)
+
+                        snackBar.show()
+//                        findNavController().navigate(R.id.action_parentLoginFirst_to_parentFindPWFirst)
                     }
                 }
             }
