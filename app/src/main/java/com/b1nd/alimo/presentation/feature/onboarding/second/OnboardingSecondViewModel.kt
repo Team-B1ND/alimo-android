@@ -24,6 +24,14 @@ class OnboardingSecondViewModel @Inject constructor(
         }
     }
 
+    fun setAlarm(
+        state: Boolean
+    ){
+        viewModelScope.launch {
+            alarmRepository.setAlarmState(state)
+        }
+    }
+
 
     companion object{
         const val ON_CLICK_START = "ON_CLICK_START"

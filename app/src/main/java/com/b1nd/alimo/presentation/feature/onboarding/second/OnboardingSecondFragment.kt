@@ -3,6 +3,7 @@ package com.b1nd.alimo.presentation.feature.onboarding.second
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -27,7 +28,8 @@ class OnboardingSecondFragment:
         viewModel.alarmCheck()
 
         collectStateFlow(viewModel.alarmState){
-            if(!it){
+            Log.d("TAG", "알림 $it ")
+            if(it == false){
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // Q는 Android 10을 나타냅니다.
                     if (ContextCompat.checkSelfPermission(
                             requireContext(),
@@ -49,6 +51,23 @@ class OnboardingSecondFragment:
 
                     }
                 }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 30) { // 알림 권한 요청 코드인지 확인합니다.
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 알림 권한이 허용된 경우
+                // 권한이 허용되었을 때 실행할 작업을 여기에 추가합니다.
+                viewModel.setAlarm(true)
+//                Toast.makeText(requireContext(), "알림 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
+            } else {
+                // 알림 권한이 거부된 경우
+                // 권한이 거부되었을 때 실행할 작업을 여기에 추가합니다.
+                viewModel.setAlarm(false)
+//                Toast.makeText(requireContext(), "알림 권한이 거부되었습니다.", Toast.LENGTH_SHORT).show()
             }
         }
     }
