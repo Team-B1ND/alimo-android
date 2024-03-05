@@ -171,6 +171,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                     if (it.emoji != null) {
                         getEmojiIndex(it.emoji)?.let { index ->
                             emojis[index].animAlpha(1f)
+                            pickEmoji = emojis[index]
                             emojis.removeAt(index)
                         }
                         emojis.forEach { emoji ->
