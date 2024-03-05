@@ -10,7 +10,7 @@ import com.b1nd.alimo.data.remote.response.onbaording.parent.ChildCodeResponse
 import com.b1nd.alimo.data.remote.response.onbaording.parent.MemberNameResponse
 import com.b1nd.alimo.data.remote.response.onbaording.parent.ParentLoginResponse
 import com.b1nd.alimo.data.remote.service.ParentJoinService
-import com.b1nd.alimo.di.AppHttpClient
+import com.b1nd.alimo.di.NoTokenHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ParentJoinRepository @Inject constructor(
-    @AppHttpClient private val httpClient: HttpClient
+    @NoTokenHttpClient private val httpClient: HttpClient
 ): ParentJoinService {
     override suspend fun singUp(data: ParentJoinRequest): Flow<Resource<Response>> =
         makeApiPostRequest(

@@ -6,14 +6,14 @@ import com.b1nd.alimo.data.remote.request.StudentLoginRequest
 import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.response.onbaording.studnet.StudentLoginResponse
 import com.b1nd.alimo.data.remote.service.StudentLoginService
-import com.b1nd.alimo.di.AppHttpClient
+import com.b1nd.alimo.di.NoTokenHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.request.setBody
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class StudentLoinRepository @Inject constructor(
-    @AppHttpClient private val httpClient: HttpClient
+    @NoTokenHttpClient private val httpClient: HttpClient
 ): StudentLoginService {
     override suspend fun login(data: StudentLoginRequest): Flow<Resource<BaseResponse<StudentLoginResponse>>> =
         makeApiPostRequest(
