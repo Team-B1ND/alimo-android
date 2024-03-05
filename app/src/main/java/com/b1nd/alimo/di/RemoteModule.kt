@@ -77,15 +77,18 @@ object RemoteModule {
             bearer {
                 loadTokens {
                     val accessToken = tokenRepository.getToken().token?: ""
+                    Log.d("TAG", ": 1엑세스 $accessToken")
                     BearerTokens(accessToken, "")
                 }
                 refreshTokens {
                     val refreshToken = tokenRepository.getToken().refreshToken?: ""
+                    Log.d("TAG", ": 리플레쉬$refreshToken")
 
                     val accessToken = client.post("${BuildConfig.SERVER_URL}/refresh"){
                         markAsRefreshTokenRequest()
                         setBody(TokenRequest(refreshToken = refreshToken))
                     }.body<Resource<BaseResponse<RefreshTokenResponse>>>().data?.data?.accessToken?: ""
+                    Log.d("TAG", ": 2엑세스$accessToken")
                     BearerTokens(accessToken, "")
                 }
                 sendWithoutRequest {request ->
@@ -122,6 +125,37 @@ object RemoteModule {
         }
         install(DefaultRequest) {
             url(BuildConfig.DAUTH_SERVER_URL)
+            header(HttpHeaders.ContentType, ContentType.Application.Json)
+        }
+        install(Logging) {
+            logger = object : Logger {
+                override fun log(message: String) {
+                    Log.v("ktor_logger:", message)
+                }
+            }
+            level = LogLevel.ALL
+        }
+        install(ResponseObserver) {
+            onResponse { response ->
+                Log.d("http_status:", "${response.status.value}")
+            }
+        }
+    }
+
+    @Singleton
+    @Provides
+    @NoTokenHttpClient
+    fun provideKtorNoTokenHttpClient() = HttpClient(CIO) {
+        install(ContentNegotiation) {
+            gson {
+                registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeTypeAdapter())
+                setPrettyPrinting()
+                setLenient()
+            }
+            json()
+        }
+        install(DefaultRequest) {
+            url(BuildConfig.SERVER_URL)
             header(HttpHeaders.ContentType, ContentType.Application.Json)
         }
         install(Logging) {
