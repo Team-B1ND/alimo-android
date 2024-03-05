@@ -4,7 +4,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -39,9 +38,7 @@ class StudentLoginFirstFragment:
                     viewModel.login(code)
                     Log.d("TAG", "initView: ${code}")
                 }
-                if (it.error != null){
-                    Toast.makeText(requireContext(), "아이디나 비밀번호를 다시 확인해주세요", Toast.LENGTH_SHORT).show()
-                }
+                
             }
         }
 
