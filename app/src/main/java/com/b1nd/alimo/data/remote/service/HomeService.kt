@@ -7,6 +7,7 @@ import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.NotificationModel
 import com.b1nd.alimo.data.remote.makeApiGetRequest
 import com.b1nd.alimo.data.remote.mapper.toModels
+import com.b1nd.alimo.data.remote.request.detail.DetailEmojiRequest
 import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.response.home.HomeCategoryResponse
 import com.b1nd.alimo.data.remote.response.home.HomeSpeakerResponse
@@ -17,6 +18,8 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.headers
 import io.ktor.client.request.parameter
+import io.ktor.client.request.patch
+import io.ktor.client.request.setBody
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -92,4 +95,17 @@ class HomeService @Inject constructor(
                 header("Authorization", "Bearer $testToken")
             }
         }
+
+    suspend fun patchEmoji(
+        notificationId: Int,
+        emoji: String
+    ): BaseResponse<String?> =
+        httpClient.patch("/emoji/status/${notificationId}") {
+            headers {
+                header("Authorization", "Bearer $testToken")
+            }
+            setBody(
+                DetailEmojiRequest(emoji)
+            )
+        }.body<BaseResponse<String?>>()
 }

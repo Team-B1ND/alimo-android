@@ -1,6 +1,8 @@
 package com.b1nd.alimo.presentation.feature.main.post
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +14,19 @@ import com.b1nd.alimo.R
 import com.b1nd.alimo.data.model.NotificationModel
 import com.b1nd.alimo.databinding.ItemPostBinding
 import com.b1nd.alimo.presentation.utiles.loadImage
+import com.b1nd.alimo.presentation.utiles.setImageResourceAndClearTint
 
 class PostRecyclerAdapter constructor(
+    private val context: Context,
+    private val onClickEmoji: (notificationId: Int, emoji: String) -> Unit,
     private val onClick: (NotificationModel) -> Unit
 ): PagingDataAdapter<NotificationModel, PostRecyclerAdapter.ViewHolder>(diffCallback) {
 
     inner class ViewHolder(binding: ItemPostBinding): RecyclerView.ViewHolder(binding.root) {
         val binding = binding
     }
+
+
 
 
     @SuppressLint("SetTextI18n")
@@ -47,13 +54,34 @@ class PostRecyclerAdapter constructor(
                 if (item.isBookmark) {
                     imageBookmark.setImageResource(R.drawable.ic_bookmark)
                 }
+                if (item.emoji != null) {
+                    val resource = when(item.emoji) {
+                        "ANGRY" -> R.drawable.ic_angry
+                        "LAUGH" -> R.drawable.ic_laugh
+                        "LOVE" -> R.drawable.ic_love
+                        "OKAY" -> R.drawable.ic_okay
+                        else -> R.drawable.ic_sad
+                    }
+                    imageAddEmoji.setImageResourceAndClearTint(resource)
+                }
+                val menu = PostEmojiPopup(context, emojis) {
+                    Log.d("TAG", "onBindViewHolder: $it")
+                    onClickEmoji(item.notificationId, it.title)
+                    imageAddEmoji.setImageResourceAndClearTint(it.resId)
+                }
                 textTitle.text = item.title
                 textAuthor.text = item.member
                 textDate.text = item.createdAt.toString()
                 textContent.text = item.content
-            }
-            binding.layoutPost.setOnClickListener {
-                onClick(item)
+
+                imageAddEmoji.setOnClickListener {
+                    menu.showAsDropDown(imageAddEmoji)
+//                    onClickEmoji(item.notificationId, item.emoji)
+                }
+
+                layoutPost.setOnClickListener {
+                    onClick(item)
+                }
             }
         }
     }
@@ -70,5 +98,12 @@ class PostRecyclerAdapter constructor(
             override fun areContentsTheSame(oldItem: NotificationModel, newItem: NotificationModel): Boolean =
                 oldItem == newItem
         }
+        private val emojis = listOf(
+            PostEmojiPopUpModel("ANGRY", R.drawable.ic_angry),
+            PostEmojiPopUpModel("LAUGH", R.drawable.ic_laugh),
+            PostEmojiPopUpModel("LOVE", R.drawable.ic_love),
+            PostEmojiPopUpModel("OKAY", R.drawable.ic_okay),
+            PostEmojiPopUpModel("SAD", R.drawable.ic_sad),
+        )
     }
 }

@@ -3,6 +3,7 @@ package com.b1nd.alimo.presentation.feature.main.home
 sealed class HomeSideEffect {
     data class NotFound(val found: HomeFound): HomeSideEffect()
     data class NetworkError(val message: String): HomeSideEffect()
+    object FailedChangeEmoji: HomeSideEffect()
 }
 
 sealed class HomeFound {
