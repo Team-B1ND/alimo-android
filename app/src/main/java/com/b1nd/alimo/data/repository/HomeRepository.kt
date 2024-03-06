@@ -8,11 +8,13 @@ import com.b1nd.alimo.data.model.NotificationModel
 import com.b1nd.alimo.data.remote.pagesource.HomePagingSource
 import com.b1nd.alimo.data.remote.safeFlow
 import com.b1nd.alimo.data.remote.service.HomeService
+import com.b1nd.alimo.data.remote.service.PostService
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
-    private val homeService: HomeService
+    private val homeService: HomeService,
+    private val postService: PostService
 ) {
 
     fun getPost(
@@ -41,6 +43,15 @@ class HomeRepository @Inject constructor(
             notificationId = notificationId,
             emoji = emoji
         ).apply {
+            errorCheck()
+        }
+        emit(Resource.Success(null))
+    }
+
+    suspend fun patchBookmark(
+        notificationId: Int
+    ) = safeFlow<String?> {
+        postService.pathBookmark(notificationId).apply {
             errorCheck()
         }
         emit(Resource.Success(null))

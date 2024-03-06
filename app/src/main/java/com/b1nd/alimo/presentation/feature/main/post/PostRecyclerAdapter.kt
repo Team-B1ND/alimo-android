@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -18,6 +19,7 @@ import com.b1nd.alimo.presentation.utiles.setImageResourceAndClearTint
 
 class PostRecyclerAdapter constructor(
     private val context: Context,
+    private val onClickBookmark: (notificationId: Int) -> Unit,
     private val onClickEmoji: (notificationId: Int, emoji: String) -> Unit,
     private val onClick: (NotificationModel) -> Unit
 ): PagingDataAdapter<NotificationModel, PostRecyclerAdapter.ViewHolder>(diffCallback) {
@@ -52,8 +54,9 @@ class PostRecyclerAdapter constructor(
                     imageNewBadge.visibility = View.VISIBLE
                 }
                 if (item.isBookmark) {
-                    imageBookmark.setImageResource(R.drawable.ic_bookmark)
+                    imageBookmark.setBookmark(true)
                 }
+
                 if (item.emoji != null) {
                     val resource = when(item.emoji) {
                         "ANGRY" -> R.drawable.ic_angry
@@ -79,11 +82,21 @@ class PostRecyclerAdapter constructor(
 //                    onClickEmoji(item.notificationId, item.emoji)
                 }
 
+                imageBookmark.setOnClickListener {
+                    imageBookmark.setBookmark(imageBookmark.tag != "bookmark")
+                    onClickBookmark(item.notificationId)
+                }
+
                 layoutPost.setOnClickListener {
                     onClick(item)
                 }
             }
         }
+    }
+
+    private fun ImageView.setBookmark(isBookmarked: Boolean) {
+        this.tag = if (isBookmarked) "bookmark" else "not_bookmark"
+        this.setImageResource(if (isBookmarked) R.drawable.ic_bookmark else R.drawable.ic_not_bookmark)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
