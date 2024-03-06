@@ -39,7 +39,7 @@ class HomeRepository @Inject constructor(
         notificationId: Int,
         emoji: String
     ) = safeFlow<String?> {
-        homeService.patchEmoji(
+        postService.patchEmoji(
             notificationId = notificationId,
             emoji = emoji
         ).apply {
