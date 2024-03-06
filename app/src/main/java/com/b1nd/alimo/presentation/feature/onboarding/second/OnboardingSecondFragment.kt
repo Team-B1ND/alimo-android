@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentOnboardingSecondBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
@@ -21,10 +22,12 @@ class OnboardingSecondFragment:
     BaseFragment<FragmentOnboardingSecondBinding, OnboardingSecondViewModel>(
     R.layout.fragment_onboarding_second) {
     override val viewModel: OnboardingSecondViewModel by viewModels()
+    private val args: OnboardingSecondFragmentArgs by navArgs()
 
     override fun initView() {
-        val snackBar = CustomSnackBar.make(requireView(), "세션이 만료 되었어요")
-//        snackBar.show()
+        if(args.token == "만료"){
+            CustomSnackBar.make(requireView(), "세션이 만료 되었어요").show()
+        }
         viewModel.alarmCheck()
 
         collectStateFlow(viewModel.alarmState){

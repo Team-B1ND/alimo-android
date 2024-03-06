@@ -1,16 +1,19 @@
 package com.b1nd.alimo.di
 
 import LocalDateTimeTypeAdapter
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import com.b1nd.alimo.BuildConfig
-import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.remote.request.TokenRequest
 import com.b1nd.alimo.data.remote.response.BaseResponse
-import com.b1nd.alimo.data.remote.response.token.RefreshTokenResponse
+import com.b1nd.alimo.data.remote.response.token.TokenResponse
 import com.b1nd.alimo.data.repository.TokenRepository
+import com.b1nd.alimo.presentation.feature.onboarding.OnboardingActivity
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -46,7 +49,8 @@ object RemoteModule {
     @Provides
     @AppHttpClient
     fun provideKtorHttpClient(
-        tokenRepository: TokenRepository
+        tokenRepository: TokenRepository,
+        @ApplicationContext context: Context
     ) = HttpClient(CIO) {
         install(ContentNegotiation) {
             gson {
@@ -73,26 +77,41 @@ object RemoteModule {
                 Log.d("http_status:", "${response.status.value}")
             }
         }
-        install(Auth){
+        install(Auth) {
             bearer {
                 loadTokens {
-                    val accessToken = tokenRepository.getToken().token?: ""
+                    val accessToken = tokenRepository.getToken().token ?: ""
                     Log.d("TAG", ": 1엑세스 $accessToken")
                     BearerTokens(accessToken, "")
                 }
                 refreshTokens {
-                    val refreshToken = tokenRepository.getToken().refreshToken?: ""
+                    val refreshToken = tokenRepository.getToken().refreshToken ?: ""
                     Log.d("TAG", ": 리플레쉬$refreshToken")
 
-                    val accessToken = client.post("${BuildConfig.SERVER_URL}/refresh"){
+                    val data = client.post("${BuildConfig.SERVER_URL}/refresh") {
                         markAsRefreshTokenRequest()
                         setBody(TokenRequest(refreshToken = refreshToken))
-                    }.body<Resource<BaseResponse<RefreshTokenResponse>>>().data?.data?.accessToken?: ""
-                    Log.d("TAG", ": 2엑세스$accessToken")
+                    }.body<BaseResponse<TokenResponse>>()
+                    if (data.status == 401) {
+                        // intent to onboarding 현재 context에서
+                        // TODO : Delete Access Token and Refresh Token
+
+                        tokenRepository.insert("만료", "")
+                        val intent = Intent(
+                            context,
+                            OnboardingActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        intent.putExtra("data", "만료")
+                        context.startActivity(
+                            intent
+                        )
+                    }
+                    val accessToken = data.data.accessToken ?: ""
+                    Log.d("TAG", "ddfs: $data")
                     BearerTokens(accessToken, "")
                 }
-                sendWithoutRequest {request ->
-                    when(request.url.toString()){
+                sendWithoutRequest { request ->
+                    when (request.url.toString()) {
                         "${BuildConfig.SERVER_URL}/refresh" -> false
                         else -> true
                     }
@@ -109,6 +128,7 @@ object RemoteModule {
             accept(ContentType.Application.Json)
         }
     }
+
     private const val TIME_OUT = 60_000L
 
     @Singleton
@@ -172,7 +192,6 @@ object RemoteModule {
             }
         }
     }
-
 
 
 }

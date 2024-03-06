@@ -27,10 +27,15 @@ class OnboardingFirstFragment:BaseFragment<FragmentOnboardingFirstBinding, Onboa
         Handler().postDelayed({
             collectStateFlow(viewModel.tokenState) {
                 Log.d("TAG", "initView: $it")
-                if (it) {
-                    startActivityWithFinishAll(MainActivity::class.java)
+                if (it.token == "만료" || it.token == null) {
+                    val direction =
+                        OnboardingFirstFragmentDirections.actionOnboardingFirstToOnboardingSecond(
+                            it.token
+                        )
+                    findNavController().navigate(direction)
                 }else{
-                    findNavController().navigate(R.id.action_onboardingFirst_to_onboardingSecond)
+                    startActivityWithFinishAll(MainActivity::class.java)
+
                 }
             }
         }, 2000)
