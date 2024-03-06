@@ -92,7 +92,7 @@ class FirebaseMessageService : FirebaseMessagingService() {
         val notificationBuilder = NotificationCompat.Builder(this, "Alimo_default_channels")
             .setSmallIcon(R.drawable.ic_alimo) // 알림 아이콘
             .setContentTitle("Alimo") // 알림 제목
-            .setContentText("새 공지가 등록됬어요") // 알림 내용
+            .setContentText("$body") // 알림 내용
             .setAutoCancel(true) // 알림을 클릭하면 자동으로 닫힘
             .setSound(defaultSoundUri) // 알림 소리
             .setContentIntent(pendingIntent) // 알림 클릭 시 실행될 Intent
