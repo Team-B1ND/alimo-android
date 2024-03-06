@@ -27,6 +27,9 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
     override fun initView() {
         val adapter = PostRecyclerAdapter(
             requireContext(),
+            onClickBookmark = { notificationId ->  
+                
+            },
             onClickEmoji = { notificationId, emoji ->
                 
             }

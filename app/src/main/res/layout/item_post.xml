@@ -176,6 +176,7 @@
                 android:layout_height="24dp"
                 android:layout_gravity="bottom"
                 android:clickable="true"
+                android:tag="not_bookmark"
                 android:background="@drawable/ripple_white"
                 android:src="@drawable/ic_not_bookmark" />
         </LinearLayout>

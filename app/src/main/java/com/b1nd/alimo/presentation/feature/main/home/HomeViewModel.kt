@@ -139,6 +139,24 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun patchBookmark(
+        notificationId: Int
+    ) = launchIO {
+        repository.patchBookmark(
+            notificationId = notificationId
+        ).collectLatest {
+            when(it) {
+                is Resource.Success -> {
+
+                }
+                is Resource.Loading -> {}
+                is Resource.Error -> {
+                    _sideEffect.send(HomeSideEffect.FailedChangeBookmark)
+                }
+            }
+        }
+    }
+
     fun onClickSpeaker() =
         viewEvent(ON_CLICK_SPEAKER)
 

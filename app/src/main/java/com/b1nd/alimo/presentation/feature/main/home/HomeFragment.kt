@@ -119,6 +119,11 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
                         requireContext().shortToast("이모지를 설정하는데 실패하였습니다.")
                     }
                 }
+                is HomeSideEffect.FailedChangeBookmark -> {
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        requireContext().shortToast("북마크를 설정하는데 실패하였습니다.")
+                    }
+                }
             }
         }
     }
@@ -127,6 +132,9 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
     private fun initNotice() {
         adapter = PostRecyclerAdapter(
             context = requireContext(),
+            onClickBookmark = { notificationId ->
+                viewModel.patchBookmark(notificationId)
+            },
             onClickEmoji = { notificationId, emoji ->
                 viewModel.setEmoji(
                     notificationId = notificationId,
