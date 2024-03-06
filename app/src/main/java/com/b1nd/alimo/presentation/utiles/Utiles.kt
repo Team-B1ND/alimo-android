@@ -41,5 +41,3 @@ fun convertBytes(size: Int): String {
         else -> "${decimalFormat.format(size / tb)}TB"
     }
 }
-
-fun Int.toConvertBytes(): String = convertBytes(this)

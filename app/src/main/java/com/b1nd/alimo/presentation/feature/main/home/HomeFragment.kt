@@ -98,21 +98,35 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
                         requireContext().shortToast(it.message)
                     }
                 }
+                is HomeSideEffect.FailedChangeEmoji -> {
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        requireContext().shortToast("이모지를 설정하는데 실패하였습니다.")
+                    }
+                }
             }
         }
     }
 
 
     private fun initNotice() {
-        adapter = PostRecyclerAdapter() {
-            Log.d("TAG", "initView: ${it.notificationId}")
-
-            val navigate =
-                HomeFragmentDirections.actionNavItemHomeToDetailFragment(
-                    it.notificationId
+        adapter = PostRecyclerAdapter(
+            context = requireContext(),
+            onClickEmoji = { notificationId, emoji ->
+                viewModel.setEmoji(
+                    notificationId = notificationId,
+                    emoji = emoji
                 )
-            findNavController().navigate(navigate)
-        }
+            },
+            onClick = {
+                Log.d("TAG", "initView: ${it.notificationId}")
+
+                val navigate =
+                    HomeFragmentDirections.actionNavItemHomeToDetailFragment(
+                        it.notificationId
+                    )
+                findNavController().navigate(navigate)
+            }
+        )
 
         mBinding.rvPost.adapter = adapter
 
@@ -161,6 +175,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
             }
         }
     }
+
 
 
 }

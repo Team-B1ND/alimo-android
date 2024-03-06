@@ -6,6 +6,7 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.annotation.DrawableRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -105,3 +106,10 @@ fun Context.shortToast(message: String) {
 fun Context.longToast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }
+
+fun ImageView.setImageResourceAndClearTint(@DrawableRes id: Int) {
+    this.setImageResource(id)
+    this.imageTintList = null
+}
+
+fun Int.toConvertBytes(): String = convertBytes(this)

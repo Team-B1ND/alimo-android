@@ -13,4 +13,16 @@ data class BaseResponse<T> (
         message = message,
         data = data
     )
+
+    fun errorCheck(): BaseResponse<T> {
+        when(this.status) {
+            403 -> {
+                throw RuntimeException()
+            }
+            500 -> {
+                throw RuntimeException()
+            }
+        }
+        return this
+    }
 }

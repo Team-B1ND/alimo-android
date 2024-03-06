@@ -25,7 +25,12 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
     override val viewModel: BookmarkViewModel by viewModels()
 
     override fun initView() {
-        val adapter = PostRecyclerAdapter {
+        val adapter = PostRecyclerAdapter(
+            requireContext(),
+            onClickEmoji = { notificationId, emoji ->
+                
+            }
+        ) {
             val navigate =
                 BookmarkFragmentDirections.actionNavItemBookmarkToDetailFragment(
                     it.notificationId

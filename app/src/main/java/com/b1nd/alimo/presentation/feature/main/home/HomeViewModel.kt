@@ -69,7 +69,7 @@ class HomeViewModel @Inject constructor(
                     }
                     is Resource.Loading -> {}
                     is Resource.Success -> {
-                        if (it.data == null) {
+                        if (it.data?.data == null) {
                             _sideEffect.send(HomeSideEffect.NotFound(HomeFound.Category))
                             return@collectLatest
                         }
@@ -116,9 +116,31 @@ class HomeViewModel @Inject constructor(
         _errorCount.value += 1
     }
 
-    fun onClickSpeaker() {
-        viewEvent(ON_CLICK_SPEAKER)
+    fun setEmoji(
+        notificationId: Int,
+        emoji: String
+    ) = launchIO {
+        repository.patchEmoji(
+            notificationId = notificationId,
+            emoji = emoji
+        ).collectLatest {
+            when(it) {
+                is Resource.Success -> {
+
+                }
+                is Resource.Loading -> {}
+                is Resource.Error -> {
+                    if (it.error?.message == "Network is unreachable") {
+                        return@collectLatest addErrorCount()
+                    }
+                    _sideEffect.send(HomeSideEffect.FailedChangeEmoji)
+                }
+            }
+        }
     }
+
+    fun onClickSpeaker() =
+        viewEvent(ON_CLICK_SPEAKER)
 
 
     companion object {
