@@ -47,7 +47,7 @@ class PostRecyclerAdapter constructor(
                 if (item.files.isNotEmpty()) {
                     val file = item.files[0]
                     layoutFile.isVisible = true
-                    textFileName.text = file.fileName + "." + file.filetype
+                    textFileName.text = file.fileName
                     textFileCount.text = "총 ${item.files.size}개 파일"
                 }
                 if (item.isNew) {
