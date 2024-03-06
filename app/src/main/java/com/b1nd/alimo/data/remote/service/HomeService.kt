@@ -39,7 +39,7 @@ class HomeService @Inject constructor(
                 }
                 parameter("page", page)
                 parameter("size", size)
-                parameter("category", category)
+                parameter("category", if (category == "전체") "null" else category)
             }.body<BaseResponse<List<NotificationResponse>>>()
             Log.d("TAG", "getPost: $body")
             Resource.Success(body.data.toModels())
