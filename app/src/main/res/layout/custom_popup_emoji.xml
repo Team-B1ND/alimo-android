@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <LinearLayout
+        android:id="@+id/layout_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:background="@color/cardview_light_background"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout_popup"
+            android:layout_width="260dp"
+            android:layout_height="38dp"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal"
+            android:layout_gravity="top|center_horizontal"
+            android:gravity="center_vertical"
+            android:elevation="5dp"
+            android:background="@drawable/shape_white_8"/>
+
+    </LinearLayout>
+</layout>
