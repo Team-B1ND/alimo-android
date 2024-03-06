@@ -58,7 +58,7 @@
             android:layout_height="12dp"
             android:layout_gravity="bottom"
             android:layout_marginTop="10dp"
-            android:visibility="visible"
+            android:visibility="gone"
             android:src="@drawable/ic_new_badge"
             app:layout_constraintStart_toEndOf="@id/text_title"
             app:layout_constraintTop_toTopOf="parent"/>
