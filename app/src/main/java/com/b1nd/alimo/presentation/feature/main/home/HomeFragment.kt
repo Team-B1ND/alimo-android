@@ -1,5 +1,6 @@
 package com.b1nd.alimo.presentation.feature.main.home
 
+import android.os.Parcelable
 import android.util.Log
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -26,6 +27,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
 
     override val viewModel: HomeViewModel by viewModels()
     private lateinit var adapter: PostRecyclerAdapter
+    private var recyclerViewState: Parcelable? = null
 
     override fun initView() {
         initError()
@@ -51,6 +53,20 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
     override fun onStart() {
         super.onStart()
         viewModel.loadMyCategory()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // 스크롤 상태 저장
+        recyclerViewState = mBinding.rvPost.layoutManager?.onSaveInstanceState()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 스크롤 상태 복원
+        recyclerViewState?.let { state ->
+            mBinding.rvPost.layoutManager?.onRestoreInstanceState(state)
+        }
     }
 
     private fun initSpeaker() {
