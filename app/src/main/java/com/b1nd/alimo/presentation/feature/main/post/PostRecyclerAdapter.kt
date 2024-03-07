@@ -2,6 +2,7 @@ package com.b1nd.alimo.presentation.feature.main.post
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -66,11 +67,20 @@ class PostRecyclerAdapter constructor(
                         else -> R.drawable.ic_sad
                     }
                     imageAddEmoji.setImageResourceAndClearTint(resource)
+                    imageAddEmoji.tag = item.emoji
                 }
                 val menu = PostEmojiPopup(context, emojis) {
                     Log.d("TAG", "onBindViewHolder: $it")
                     onClickEmoji(item.notificationId, it.title)
-                    imageAddEmoji.setImageResourceAndClearTint(it.resId)
+                    Log.d("TAG", "onBindViewHolder: $")
+                    if (imageAddEmoji.tag == it.title) {
+                        imageAddEmoji.tag = "not_emoji"
+                        imageAddEmoji.setImageResource(R.drawable.ic_add_emoji)
+                        imageAddEmoji.imageTintList = ColorStateList.valueOf(context.getColor(R.color.Gray500))
+                    } else {
+                        imageAddEmoji.tag = it.title
+                        imageAddEmoji.setImageResourceAndClearTint(it.resId)
+                    }
                 }
                 textTitle.text = item.title
                 textAuthor.text = item.member
