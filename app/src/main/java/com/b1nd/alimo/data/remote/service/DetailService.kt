@@ -25,4 +25,10 @@ interface DetailService {
         notificationId: Int
     ): Flow<Resource<BaseResponse<List<EmojiModel>>>>
 
+    suspend fun postComment(
+        notificationId: Int,
+        text: String,
+        commentId: Int?
+    ): Flow<Resource<String?>>
+
 }

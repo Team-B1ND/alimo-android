@@ -1,18 +1,25 @@
 package com.b1nd.alimo.presentation.feature.main.detail
 
 import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.data.Resource
+import com.b1nd.alimo.data.model.CommentModel
 import com.b1nd.alimo.data.model.DetailNotificationModel
 import com.b1nd.alimo.data.model.EmojiModel
 import com.b1nd.alimo.data.repository.DetailRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
 import com.b1nd.alimo.presentation.utiles.launchIO
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -106,6 +113,47 @@ class DetailViewModel @Inject constructor(
                 }
                 is Resource.Error -> {
                     _sideEffect.send(DetailSideEffect.FailedChangeEmoji)
+                }
+            }
+        }
+    }
+    fun test() = launchIO {
+        delay(3000)
+        val testComment = _notificationState.value?.comments?: emptyList()
+        val e = testComment.toMutableList().apply {
+            add(CommentModel(0, "", "", LocalDateTime.now(), "", emptyList()))
+        }
+        _notificationState.value = _notificationState.value?.copy(
+            comments = e
+        )
+
+    }
+
+    fun postSend(
+        notificationId: Int,
+        text: String,
+        commentId: Int? = null
+    ) = launchIO {
+        detailRepository.postComment(
+            notificationId = notificationId,
+            text = text,
+            commentId = commentId
+        ).collectLatest {
+            when(it) {
+                is Resource.Success -> {
+                    // postion받고 state 갱신
+                    viewModelScope.launch(Dispatchers.IO) {
+                        val load = async {
+                            loadNotification(notificationId)
+                        }
+                        load.await()
+                        _sideEffect.send(DetailSideEffect.SuccessAddComment)
+
+                    }
+                }
+                is Resource.Loading -> {}
+                is Resource.Error -> {
+                    _sideEffect.send(DetailSideEffect.FailedPostComment(it.error?: Throwable()))
                 }
             }
         }
