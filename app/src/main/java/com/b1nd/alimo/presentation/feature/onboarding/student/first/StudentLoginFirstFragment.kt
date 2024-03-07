@@ -29,7 +29,7 @@ class StudentLoginFirstFragment:
     override val viewModel: StudentLoginViewModel by viewModels()
 
     override fun initView() {
-
+        // DAuth를 사용해서 코드를 가져온다면 로그인 실행
         lifecycleScope.launch {
             viewModel.dodamCode.collect{
                 val code = it.code
@@ -42,6 +42,7 @@ class StudentLoginFirstFragment:
             }
         }
 
+        // 로그인을 실행하고 됐는지 않됐는지 확인
         lifecycleScope.launch {
             viewModel.loginState.collect{
                 if(it.accessToken == null && it.refreshToken == null){
@@ -78,6 +79,7 @@ class StudentLoginFirstFragment:
                 }
             }
         }
+        // Text Delete Icon Click Event
         mBinding.idEditTextLayout.setEndIconOnClickListener {
             mBinding.idEditTextLayout.editText?.text = null
         }
@@ -104,7 +106,7 @@ class StudentLoginFirstFragment:
     }
 
 
-
+    // InputTextLayout에 글자가 있다면 다음 Fragmnet록 가는 버튼 활성화
     private fun updateButtonColor() {
         val text1 = mBinding.idEditText.text.toString().trim { it <= ' ' }
         val text2 = mBinding.pwEditText.text.toString().trim { it <= ' ' }

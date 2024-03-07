@@ -36,6 +36,7 @@ class ParentJoinThirdFragment :
         var finish = true
 
         lifecycleScope.launch {
+            // ParentJoinState상태에 따라 성공 혹은 실패
             viewModel.parentJoinState.collectLatest {
                 val accessToken = it.accessToken
                 val refreshToken = it.refreshToken
@@ -71,7 +72,7 @@ class ParentJoinThirdFragment :
                         mBinding.time.visibility = View.VISIBLE
                         mBinding.certification.visibility = View.GONE
 
-
+                        // 이메일 인증을 요청하면 5분 타이머 실행
                         object : CountDownTimer(300000, 1000) {
 
                             override fun onTick(millisUntilFinished: Long) {
@@ -92,6 +93,7 @@ class ParentJoinThirdFragment :
 
                     ON_CLICK_CHECK -> {
                         Log.d("TAG", "initView: ${args.email} ${ mBinding.idEditText.text.toString()}")
+                        // 서버로 인증 코드 전송
                         viewModel.emailCheck(
                             email = args.email,
                             code = mBinding.idEditText.text.toString()
@@ -102,6 +104,7 @@ class ParentJoinThirdFragment :
             }
         }
 
+        // 없으면 인증 요청, 확인 버튼이 안보임
         mBinding.checkLayout.bringToFront()
 
 

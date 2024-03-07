@@ -29,6 +29,7 @@ class ParentJoinThirdViewModel @Inject constructor(
     ){
         Log.d("TAG", "emailCheck: 시작")
         viewModelScope.launch {
+            // 인증 코드를 서버로 전송
             parentJoinRepository.emailCheck(
                 email = email,
                 code = code
@@ -40,6 +41,7 @@ class ParentJoinThirdViewModel @Inject constructor(
                         Log.d("TAG", "성공: ${resource.data}")
                         val token = resource.data?.data?.accessToken
                         val refreshToken = resource.data?.data?.refreshToken
+                        // 성공시 토큰 저장
                         if (token != null && refreshToken != null) {
                             tokenRepository.insert(token, refreshToken)
 
@@ -69,6 +71,7 @@ class ParentJoinThirdViewModel @Inject constructor(
         }
     }
 
+    // 인증 요청을 서버에 요청
     fun postEmail(
         email: String
     ){

@@ -28,6 +28,7 @@ class ParentLoginFirstViewModel @Inject constructor(
     private var _loginState = MutableSharedFlow<LoginModel>()
     val loginState: SharedFlow<LoginModel> = _loginState
 
+    // 학부모 로그인 기능
     fun login(email:String, password:String){
         viewModelScope.launch(Dispatchers.IO) {
             Log.d("TAG", "login: 시작2")

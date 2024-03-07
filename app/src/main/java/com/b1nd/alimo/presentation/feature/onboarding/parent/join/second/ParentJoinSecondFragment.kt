@@ -32,6 +32,7 @@ class ParentJoinSecondFragment :
 
 
     override fun initView() {
+        // 학생 이름 가져오는 기능
         viewModel.setStudentCode(args.childeCode)
 
         lifecycleScope.launch {
@@ -53,6 +54,7 @@ class ParentJoinSecondFragment :
                     }
 
                     ON_CLICK_NEXT -> {
+                        // 비번과 비번확인의 Text가 같으면 회원가입 실행 아니면 오류 Message
                         if (comparisonPassword()) {
 //                            findNavController().navigate(R.id.action_parentJoinSecond_to_parentJoinThird)
                             viewModel.singUp(
@@ -179,6 +181,7 @@ class ParentJoinSecondFragment :
         }
     }
 
+    // 비번과 비번확인 Text가 같은지 확인하는 함수
     private fun comparisonPassword(): Boolean {
         val password = mBinding.pwEditText.text.toString()
         val verifyPassword = mBinding.verifyPwEditText.text.toString()

@@ -19,6 +19,7 @@ class OnboardingFirstViewModel @Inject constructor(
     private val _tokenState = MutableStateFlow(TokenModel("", ""))
     val tokenState = _tokenState.asStateFlow()
 
+    // 현재 토큰 Check
     fun tokenCheck(){
         viewModelScope.launch {
             kotlin.runCatching {

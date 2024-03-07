@@ -22,6 +22,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+// 오류 때문에 Repository를 따로 만듬
 @Module
 @InstallIn(SingletonComponent::class)
 interface RepositoryModule {

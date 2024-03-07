@@ -35,7 +35,9 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
         ProfileStudentCodeDialog(this, viewModel.state.value.data?.childCode)
     }
     override fun initView() {
+        // 현재 알림 상태 확인
         viewModel.load()
+        // 알림 상태 설정
         observeState()
         viewModel.tokenCheck()
         collectStateFlow(viewModel.state) {
@@ -102,11 +104,12 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
                 }
             }
         }
-
+        // 알림 설정을 바꾸면 저장
         mBinding.cardAlarm.setSwitchOnClickListener {
             Log.d("TAG", "initView: $it")
             viewModel.setAlarmState(it)
         }
+        // 로그아웃
         collectStateFlow(viewModel.logoutState) {
             if (it) {
                 startActivityWithFinishAll(OnboardingActivity::class.java)
@@ -116,7 +119,7 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
 
 
     private fun observeState() {
-
+        // 현재 알림 확인후 설기
         collectStateFlow(viewModel.settingState) {
             mBinding.cardAlarm.setSwitchChecked(it)
         }

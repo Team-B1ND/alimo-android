@@ -32,6 +32,7 @@ class ParentJoinSecondViewModel @Inject constructor(
     private val _memberName = MutableSharedFlow<MemberNameModel>(replay = 0)
     val memberName: SharedFlow<MemberNameModel> = _memberName.asSharedFlow()
 
+    // 학생 이름 가져오는 기능
     init {
         viewModelScope.launch {
             _studentCode.asFlow().collectLatest { code ->
@@ -61,6 +62,7 @@ class ParentJoinSecondViewModel @Inject constructor(
         _studentCode.value = code
     }
 
+    // 학부모 회원가입
     fun singUp(
         email: String,
         password: String,

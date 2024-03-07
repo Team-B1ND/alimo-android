@@ -16,7 +16,7 @@ class OnboardingActivity:BaseActivity<ActivityOnboardingBinding, OnboardingViewM
 //        TODO("Not yet implemented")
     }
 
-
+    // DAuth 설정
     override fun onStart() {
         super.onStart()
         settingDAuth(

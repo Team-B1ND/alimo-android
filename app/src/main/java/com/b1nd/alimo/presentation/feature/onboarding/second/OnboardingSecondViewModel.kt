@@ -24,6 +24,7 @@ class OnboardingSecondViewModel @Inject constructor(
         }
     }
 
+    // 알림 권한을 허락 여부에 따라 알림 현재 상태 변경
     fun setAlarm(
         state: Boolean
     ){

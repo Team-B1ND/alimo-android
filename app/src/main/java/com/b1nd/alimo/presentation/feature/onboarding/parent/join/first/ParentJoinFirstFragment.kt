@@ -40,8 +40,10 @@ class ParentJoinFirstFragment :
 //        findNavController().popBackStack(R.id.parentLoginFirst, false)
 
         lifecycleScope.launch {
+            // 학생코드가 올바른 지 확인
             viewModel.trueFalse.collect { studentCode ->
                 val d = studentCode.data
+                // 올바르지 않다면 리턴
                 if (d?.memberId == null) {
                     Log.d("TAG", "initView: member id is null")
                     dialog.show(requireActivity().supportFragmentManager, "올바르지 않은 학생코드")
@@ -80,6 +82,7 @@ class ParentJoinFirstFragment :
                     }
 
                     ON_CLICK_STUDENT_CODE -> {
+                        // "학생 코드가 무엇인가요?"를 클릭시 아래의 Url로 이동
                         Log.d("TAG", "studentCode: click")
                         val url = "https://subsequent-grouse.super.site/"
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))

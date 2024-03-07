@@ -22,7 +22,7 @@ class ParentJoinFirstViewModel @Inject constructor(
     private val _trueFalse = MutableSharedFlow<ParentJoinFirstState>(replay = 0)
     val trueFalse: SharedFlow<ParentJoinFirstState> = _trueFalse.asSharedFlow()
 
-
+    // 학생 코드 인증
     fun checkStudentCode(studentCode: String){
         viewModelScope.launch {
             parentJoinRepository.childCode(studentCode).catch {

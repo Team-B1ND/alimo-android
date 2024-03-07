@@ -52,6 +52,7 @@ object RemoteModule {
         tokenRepository: TokenRepository,
         @ApplicationContext context: Context
     ) = HttpClient(CIO) {
+        // 어떻게 받을지 설정
         install(ContentNegotiation) {
             gson {
                 registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeTypeAdapter())
@@ -60,10 +61,12 @@ object RemoteModule {
             }
             json()
         }
+        // 서버 url 설정
         install(DefaultRequest) {
             url(BuildConfig.SERVER_URL)
             header(HttpHeaders.ContentType, ContentType.Application.Json)
         }
+        // 요청 및 응답 로그
         install(Logging) {
             logger = object : Logger {
                 override fun log(message: String) {
@@ -72,18 +75,22 @@ object RemoteModule {
             }
             level = LogLevel.ALL
         }
+        // 응답 Status값 로그
         install(ResponseObserver) {
             onResponse { response ->
                 Log.d("http_status:", "${response.status.value}")
             }
         }
+        // TokenInterceptor
         install(Auth) {
             bearer {
+                // 헤더에 AccessToken
                 loadTokens {
                     val accessToken = tokenRepository.getToken().token ?: ""
                     Log.d("TAG", ": 1엑세스 $accessToken")
                     BearerTokens(accessToken, "")
                 }
+                // AccessToken 만료되면 RefreshToken을 사용해서 다시 가져옴
                 refreshTokens {
                     val refreshToken = tokenRepository.getToken().refreshToken ?: ""
                     Log.d("TAG", ": 리플레쉬$refreshToken")
@@ -92,6 +99,7 @@ object RemoteModule {
                         markAsRefreshTokenRequest()
                         setBody(TokenRequest(refreshToken = refreshToken))
                     }.body<BaseResponse<TokenResponse>>()
+                    // 만약 Status가 401 이면 RefreshToken 만료
                     if (data.status == 401) {
                         // intent to onboarding 현재 context에서
                         // TODO : Delete Access Token and Refresh Token
@@ -131,6 +139,7 @@ object RemoteModule {
 
     private const val TIME_OUT = 60_000L
 
+    // DAuth HttpClient
     @Singleton
     @Provides
     @DAuthHttpClient
@@ -162,6 +171,7 @@ object RemoteModule {
         }
     }
 
+    // 토큰이 필요없으때 사용하는 HttpClient
     @Singleton
     @Provides
     @NoTokenHttpClient

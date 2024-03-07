@@ -24,8 +24,11 @@ class OnboardingFirstFragment:BaseFragment<FragmentOnboardingFirstBinding, Onboa
     override fun initView() {
         viewModel.tokenCheck()
 
+        // Launch Screen Time(2m)
         Handler().postDelayed({
             collectStateFlow(viewModel.tokenState) {
+                // Refresh토큰이 만료됐는지 않됐거나 없는지 확인
+                // 만료됐다면 Text에 "만료"를 넣어서 보냄
                 Log.d("TAG", "initView: $it")
                 if (it.token == "만료" || it.token == null) {
                     val direction =
@@ -33,7 +36,9 @@ class OnboardingFirstFragment:BaseFragment<FragmentOnboardingFirstBinding, Onboa
                             it.token
                         )
                     findNavController().navigate(direction)
-                }else{
+                }
+                // 토큰이 있다면 MainActivity로 이동
+                else{
                     startActivityWithFinishAll(MainActivity::class.java)
 
                 }

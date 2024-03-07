@@ -38,6 +38,7 @@ class FirebaseMessageService : FirebaseMessagingService() {
         Log.d("TAG", "onNewToken: 위에")
         serviceScope.launch {
             Log.d("TAG", "onNewToken: $token")
+            // FirebaseToken을 Database에 저장
             firebaseTokenRepository.insert(
                 token
             )
@@ -54,12 +55,14 @@ class FirebaseMessageService : FirebaseMessagingService() {
             "onMessageReceived Noti: ${message.notification?.title}  and ${message.notification?.body} "
         )
 
+        // 알림 현재 상태
         var status: Boolean
         runBlocking {
             alarmRepository.getAlarmState().let {
                 status = it
             }
         }
+        // 현재 상태가 False면 리턴을 통해 Push Message를 받지않음
         if (status.not()) {
             return
         }
@@ -77,15 +80,18 @@ class FirebaseMessageService : FirebaseMessagingService() {
 //            ))
 //        }
 
+        // 알림 권한 창
         createNotificationChannel()
 
-        val intent = Intent(this, OnboardingActivity::class.java) // 알림을 클릭했을 때 열릴 액티비티 지정
+        // 알림을 클릭했을 때 열릴 액티비티 지정
+        val intent = Intent(this, OnboardingActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
             this, 0, intent,
             PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        // 알림 소리
         val defaultSoundUri =
             RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
@@ -103,7 +109,8 @@ class FirebaseMessageService : FirebaseMessagingService() {
         notificationManager.notify(0, notificationBuilder.build())
     }
 
-    
+
+    // 알림 권한 창
     private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library

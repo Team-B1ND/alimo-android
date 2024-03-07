@@ -36,15 +36,16 @@ class StudentLoginViewModel @Inject constructor(
     private var _loginState = MutableSharedFlow<LoginModel>()
     val loginState: SharedFlow<LoginModel> = _loginState
 
+    // 학생 로그인 기능
     fun login(code: String) {
         Log.d("TAG", "login: 시작")
         viewModelScope.launch(Dispatchers.IO) {
             Log.d("TAG", "login: 시작2")
-            val firebaseToken = firebaseTokenRepository.getToken()
-            val fcmToken = firebaseToken?.fcmToken
+            // FcmToken 저장
+            val fcmToken = firebaseTokenRepository.getToken().fcmToken
             if (fcmToken != null) {
                 Log.d("TAG", "login: 시작3")
-                // fcmToken이 null이 아닐 때만 로그인 로직을 수행합니다.
+                // FcmToken이 Null이 아닐 때만 로그인 로직을 수행
                 studentLoginRepository.login(
                     StudentLoginRequest(
                         code = code,
@@ -55,6 +56,7 @@ class StudentLoginViewModel @Inject constructor(
                 }.collectLatest { resource ->
                     when (resource) {
                         is Resource.Success -> {
+                            // 성공하면 서버에서 받은 AccessToken과 RefreshToken 저장
                             Log.d("TAG", "login: ${resource.data?.data}")
                             val token = resource.data?.data?.accessToken
                             val refreshToken = resource.data?.data?.refreshToken
@@ -92,6 +94,7 @@ class StudentLoginViewModel @Inject constructor(
         }
     }
 
+    // DAuth를 사용해서 Code를 가져오는 기능
     fun getCode(
         id: String,
         pw: String
@@ -117,7 +120,7 @@ class StudentLoginViewModel @Inject constructor(
 
                     is Resource.Success -> {
                         if (resource.data?.data?.location != null) {
-
+                            // 데이터에서 코드만 가져와서 저장
                             val code = resource.data.data.location.split("[=&]".toRegex())[1]
                             _dodamCode.emit(DodamState(code))
                             Log.d("TAG", "성공: ${code}")
@@ -131,6 +134,7 @@ class StudentLoginViewModel @Inject constructor(
         }
     }
 
+    // DAuth를 사용하기 위해 비번을 암호화
     fun sha512(text: String): String {
         val bytes = text.toByteArray()
         val md = MessageDigest.getInstance("SHA-512")

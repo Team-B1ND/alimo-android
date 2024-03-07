@@ -91,12 +91,14 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
+    // 현재 알림 가져오기
     fun load(){
         viewModelScope.launch {
             _settingState.value = alarmRepository.getAlarmState()
         }
     }
 
+    // 서버에게 현재 알림 상태 보내기
     fun setAlarmState(value: Boolean){
         Log.d("TAG", "$value: ")
         viewModelScope.launch {
@@ -120,6 +122,7 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    // 로그아웃
     fun logout(){
         viewModelScope.launch {
             kotlin.runCatching {

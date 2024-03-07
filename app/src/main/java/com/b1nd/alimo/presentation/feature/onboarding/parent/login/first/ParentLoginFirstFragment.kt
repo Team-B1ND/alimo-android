@@ -53,7 +53,7 @@ class ParentLoginFirstFragment:
                         findNavController().navigate(R.id.action_parentLoginFirst_to_parentJoinFirst)
                     }
                     ON_CLICK_FIND_PW -> {
-
+                        // TODO: 비번 찾기 기능
                         snackBar.show()
 //                        findNavController().navigate(R.id.action_parentLoginFirst_to_parentFindPWFirst)
                     }
@@ -62,6 +62,7 @@ class ParentLoginFirstFragment:
         }
 
 
+        // 로그인을 성공하면 MainActivity로 이동
         lifecycleScope.launch {
             viewModel.loginState.collect{
                 startActivityWithFinishAll(MainActivity::class.java)
@@ -69,6 +70,7 @@ class ParentLoginFirstFragment:
             }
         }
 
+        // Text Delete Icon Click Event
         mBinding.idEditTextLayout.setEndIconOnClickListener {
             mBinding.idEditTextLayout.editText?.text = null
         }
@@ -94,6 +96,7 @@ class ParentLoginFirstFragment:
         })
     }
 
+    // InputTextLayout에 글자가 있다면 다음 Fragmnet록 가는 버튼 활성화
     private fun updateButtonColor() {
         val text1 = mBinding.idEditText.text.toString().trim { it <= ' ' }
         val text2 = mBinding.pwEditText.text.toString().trim { it <= ' ' }
