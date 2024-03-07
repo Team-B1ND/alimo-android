@@ -129,6 +129,9 @@ dependencies {
     // okhttp
     implementation ("com.squareup.okhttp3:okhttp:4.9.3")
 
+    // swipe refresh layout
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
 }
 
 kapt {
