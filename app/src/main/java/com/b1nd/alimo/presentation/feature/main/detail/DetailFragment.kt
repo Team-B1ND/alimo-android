@@ -8,6 +8,7 @@ import android.util.Log
 import android.util.Patterns
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.b1nd.alimo.R
@@ -32,6 +33,8 @@ import com.b1nd.alimo.presentation.utiles.getTimeString
 import com.b1nd.alimo.presentation.utiles.loadImage
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.layout.fragment_detail) {
@@ -54,15 +57,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         findNavController().popBackStack()
                     }
                     ON_CLICK_SEND -> {
-                        Log.d("TAG", "initView: send")
-                        with(mBinding) {
-                            val text = editSend.text.toString()
-                            if (text.isNullOrBlank()) {
-                                return@onSuccessEvent
-                            }
-                            editSend.text.clear()
-
-                        }
+                        requestSendText()
                     }
                     ON_CLICK_OKAY -> {
                         clickEmoji(it)
@@ -85,6 +80,25 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                     }
                 }
             }
+        }
+    }
+
+    private fun requestSendText() {
+        Log.d("TAG", "initView: send")
+        with(mBinding) {
+            if (!editSend.isEnabled) {
+                return
+            }
+
+            val text = editSend.text.toString()
+            if (text.isNullOrBlank()) {
+                return
+            }
+            editSend.isEnabled = false
+            viewModel.postSend(
+                notificationId = args.id,
+                text = text
+            )
         }
     }
 
@@ -128,6 +142,15 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 }
                 is DetailSideEffect.FailedChangeBookmark -> {
 
+                }
+                is DetailSideEffect.FailedPostComment -> {
+
+                }
+                is DetailSideEffect.SuccessAddComment -> {
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        mBinding.editSend.text.clear()
+                        mBinding.editSend.isEnabled = true
+                    }
                 }
             }
         }

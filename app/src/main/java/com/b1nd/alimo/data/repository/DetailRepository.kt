@@ -6,6 +6,7 @@ import com.b1nd.alimo.data.model.DetailNotificationModel
 import com.b1nd.alimo.data.model.EmojiModel
 import com.b1nd.alimo.data.remote.mapper.toModel
 import com.b1nd.alimo.data.remote.mapper.toModels
+import com.b1nd.alimo.data.remote.request.detail.DetailCommentRequest
 import com.b1nd.alimo.data.remote.request.detail.DetailEmojiRequest
 import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.response.detail.DetailNotificationResponse
@@ -100,6 +101,25 @@ class DetailRepository @Inject constructor(
                 )
             )
         )
+    }
+
+    override suspend fun postComment(
+        notificationId: Int,
+        text: String,
+        commentId: Int?,
+    ): Flow<Resource<String?>> = safeFlow {
+        httpClient.post("/comment/create/${notificationId}") {
+            headers {
+                header("Authorization", "Bearer $testToken")
+            }
+            setBody(
+                DetailCommentRequest(
+                    content = text,
+                    parentId = commentId
+                )
+            )
+        }.body<BaseResponse<String?>>()
+        emit(Resource.Success(null))
     }
 
 
