@@ -1,11 +1,15 @@
 package com.b1nd.alimo.presentation.feature.main.detail
 
+import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import android.util.Patterns
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -36,6 +40,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+
 @AndroidEntryPoint
 class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.layout.fragment_detail) {
 
@@ -43,12 +48,16 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
     private val args: DetailFragmentArgs by navArgs()
     private var pickEmoji: CustomEmoji? = null
+
+    private var parentId: Int? = null
+
     override fun initView() {
         (requireActivity() as? MainActivity)?.bottomVisible(false)
 //        addFiles(testFiles)
         initSideEffect()
         initNotice()
         initEmoji()
+        initTouch()
 
         bindingViewEvent { event ->
             event.onSuccessEvent {
@@ -80,6 +89,29 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                     }
                 }
             }
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun initTouch() {
+        mBinding.layoutParent.setOnTouchListener { view, motionEvent ->
+            if (motionEvent.action == MotionEvent.ACTION_UP) {
+                mBinding.run {
+                    // 답글 달기 취소
+                    // 고려요소, 현재 댓글이 전송중인지
+                    // 에딧텍스트 포커스 해제
+                    mBinding.editSend.clearFocus()
+                    val manager = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    manager.hideSoftInputFromWindow(
+                        mBinding.editSend.windowToken,
+                        InputMethodManager.HIDE_NOT_ALWAYS
+                    )
+//                    if ()
+                    parentId
+                }
+            }
+
+            return@setOnTouchListener true
         }
     }
 
@@ -217,7 +249,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     }
 
     private fun clickEmoji(
-        emoji: String
+        emoji: String,
     ) {
         with(mBinding) {
             val emojis = mutableListOf(
@@ -303,7 +335,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 //        )`
 
     private fun addFiles(
-        files: List<FileModel>
+        files: List<FileModel>,
     ) {
         mBinding.layoutFiles.run {
             files.forEach {
@@ -322,7 +354,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     }
 
     private fun downloadFile(
-        url: String
+        url: String,
     ) {
         if (!Patterns.WEB_URL.matcher(url).matches()) { // 웹 url인지 유효성 검사
             return
@@ -356,7 +388,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     }
 
     private fun getEmojiIndex(
-        emoji: String
+        emoji: String,
     ): Int? {
         var nowEmoji = emoji
         if (emoji.length < 6) {
