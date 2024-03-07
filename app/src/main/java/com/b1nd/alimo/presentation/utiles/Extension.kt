@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -113,3 +114,6 @@ fun ImageView.setImageResourceAndClearTint(@DrawableRes id: Int) {
 }
 
 fun Int.toConvertBytes(): String = convertBytes(this)
+
+fun Fragment.getResourceString(@StringRes id: Int) =
+    requireContext().getString(id)

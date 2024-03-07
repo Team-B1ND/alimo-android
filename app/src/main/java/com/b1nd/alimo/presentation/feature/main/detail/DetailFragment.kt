@@ -3,7 +3,6 @@ package com.b1nd.alimo.presentation.feature.main.detail
 import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
@@ -34,6 +33,7 @@ import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_SAD
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_SEND
 import com.b1nd.alimo.presentation.utiles.collectFlow
+import com.b1nd.alimo.presentation.utiles.getResourceString
 import com.b1nd.alimo.presentation.utiles.getTimeString
 import com.b1nd.alimo.presentation.utiles.loadImage
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
@@ -97,24 +97,35 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     private fun initTouch() {
         mBinding.layoutParent.setOnTouchListener { view, motionEvent ->
             if (motionEvent.action == MotionEvent.ACTION_UP) {
-                mBinding.run {
-                    // 답글 달기 취소
-                    // 고려요소, 현재 댓글이 전송중인지
-                    // 에딧텍스트 포커스 해제
-                    editSend.clearFocus()
-                    val manager = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                    manager.hideSoftInputFromWindow(
-                        editSend.windowToken,
-                        InputMethodManager.HIDE_NOT_ALWAYS
-                    )
-                    if (editSend.isEnabled) {
-                        parentId = null
-                        textParentCommenter.visibility = View.GONE
-                    }
-                }
+                clearFocus()
             }
 
             return@setOnTouchListener true
+        }
+        mBinding.rvComment.setOnTouchListener { view, motionEvent ->
+            if (motionEvent.action == MotionEvent.ACTION_UP) {
+                clearFocus()
+            }
+
+            return@setOnTouchListener true
+        }
+    }
+
+    private fun clearFocus() {
+        mBinding.run {
+            // 답글 달기 취소
+            // 고려요소, 현재 댓글이 전송중인지
+            // 에딧텍스트 포커스 해제
+            editSend.clearFocus()
+            val manager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            manager.hideSoftInputFromWindow(
+                editSend.windowToken,
+                InputMethodManager.HIDE_NOT_ALWAYS
+            )
+            if (editSend.isEnabled) {
+                parentId = null
+                textParentCommenter.visibility = View.GONE
+            }
         }
     }
 
@@ -241,8 +252,11 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                     }
 
                     val adapter = DetailCommentRv(it.comments) {
+                        // issue: 아래처럼 처리하지 않으면 답글 달기 버튼이 클릭되지 않음.
+                        val commenter = it.commenter + getResourceString(R.string.comment_item_that)
                         parentId = it.commentId
                         textParentCommenter.visibility = View.VISIBLE
+                        textParentCommenter.text = commenter
                     }
                     mBinding.rvComment.adapter = adapter
                 }

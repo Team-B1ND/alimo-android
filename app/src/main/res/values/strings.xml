@@ -51,4 +51,5 @@
     <string name="withdrawal_title">정말 탈퇴하시겠습니까?</string>
     <string name="no">아니요</string>
     <string name="withdrawal">탈퇴</string>
+    <string name="comment_item_that">에게</string>
 </resources>
