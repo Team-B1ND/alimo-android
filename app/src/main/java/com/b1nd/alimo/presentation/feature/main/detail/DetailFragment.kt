@@ -9,6 +9,7 @@ import android.os.Environment
 import android.util.Log
 import android.util.Patterns
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -100,14 +101,16 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                     // 답글 달기 취소
                     // 고려요소, 현재 댓글이 전송중인지
                     // 에딧텍스트 포커스 해제
-                    mBinding.editSend.clearFocus()
+                    editSend.clearFocus()
                     val manager = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                     manager.hideSoftInputFromWindow(
-                        mBinding.editSend.windowToken,
+                        editSend.windowToken,
                         InputMethodManager.HIDE_NOT_ALWAYS
                     )
-//                    if ()
-                    parentId
+                    if (editSend.isEnabled) {
+                        parentId = null
+                        textParentCommenter.visibility = View.GONE
+                    }
                 }
             }
 
@@ -129,7 +132,8 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
             editSend.isEnabled = false
             viewModel.postSend(
                 notificationId = args.id,
-                text = text
+                text = text,
+                commentId = parentId
             )
         }
     }
@@ -193,6 +197,8 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
         collectFlow(viewModel.notificationState) {
             mBinding.run {
+                parentId = null
+                textParentCommenter.visibility = View.GONE
                 it?.let {
                     Log.d("TAG", "initNotice: ${it.emoji}")
                     textTitle.text = it.title
@@ -235,7 +241,8 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                     }
 
                     val adapter = DetailCommentRv(it.comments) {
-                        Log.d("TAG", "initView: $it")
+                        parentId = it.commentId
+                        textParentCommenter.visibility = View.VISIBLE
                     }
                     mBinding.rvComment.adapter = adapter
                 }
