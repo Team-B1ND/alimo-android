@@ -2,6 +2,7 @@ package com.b1nd.alimo.presentation.feature.main.bookmark
 
 import android.os.Parcelable
 import android.util.Log
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -10,6 +11,7 @@ import com.b1nd.alimo.R
 import com.b1nd.alimo.data.model.NotificationModel
 import com.b1nd.alimo.databinding.FragmentBookmarkBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
+import com.b1nd.alimo.presentation.feature.main.detail.DetailFragment
 import com.b1nd.alimo.presentation.feature.main.post.PostRecyclerAdapter
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.shortToast
@@ -96,7 +98,12 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
         adapter = PostRecyclerAdapter(
             requireContext(),
             onClickBookmark = { notificationId ->
+                Log.d("TAG", "initNotification: 북마크 클릭함")
                 viewModel.patchBookmark(notificationId)
+                lifecycleScope.launch(Dispatchers.Main) {
+                    delay(200)
+                    adapter.refresh()
+                }
             },
             onClickEmoji = { notificationId, emoji ->
                 viewModel.setEmoji(
@@ -134,6 +141,16 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
                 else -> {}
             }
 
+        }
+    }
+
+    private fun View.animAlpha(alpha: Float) {
+        if (this.alpha == DetailFragment.emojiAlpha && alpha == DetailFragment.emojiAlpha) {
+            return
+        } else {
+            this.animate()
+                .alpha(alpha)
+                .setDuration(300)
         }
     }
 
