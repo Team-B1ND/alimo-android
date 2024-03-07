@@ -34,6 +34,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
         initNotice()
         initSpeaker()
         initCategory()
+        initRefresh()
 
         bindingViewEvent {
             it.onSuccessEvent {
@@ -47,6 +48,16 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
                     }
                 }
             }
+        }
+    }
+
+    private fun initRefresh() {
+        mBinding.layoutAppbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            mBinding.layoutSwipeRefresh.isEnabled = verticalOffset == 0
+        }
+        mBinding.layoutSwipeRefresh.setOnRefreshListener {
+            adapter.refresh()
+            mBinding.layoutSwipeRefresh.isRefreshing = false
         }
     }
 
