@@ -160,14 +160,6 @@
                 android:layout_marginStart="4dp"
                 android:src="@drawable/ic_add_emoji"
                 app:tint="@color/Gray500" />
-            <ImageView
-                android:id="@+id/image_comment"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="8dp"
-                android:src="@drawable/ic_chat"
-                app:tint="@color/Gray500" />
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="0dp"
                 android:layout_height="0dp"
