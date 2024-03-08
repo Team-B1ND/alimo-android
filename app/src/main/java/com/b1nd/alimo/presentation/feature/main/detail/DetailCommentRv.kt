@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.b1nd.alimo.data.model.CommentModel
 import com.b1nd.alimo.databinding.ItemCommentBinding
 import com.b1nd.alimo.presentation.utiles.loadImage
+import com.b1nd.alimo.presentation.utiles.toDateString
 
 class DetailCommentRv constructor(
     private val items: List<CommentModel>,
@@ -25,7 +26,7 @@ class DetailCommentRv constructor(
                 binding.imageUserProfile.loadImage(it.profileImage)
             }
             binding.textUserComment.text = it.content
-            binding.textUserDatetime.text = it.createdAt.toString()
+            binding.textUserDatetime.text = it.createdAt.toDateString()
 
             if (it.subComments.isNotEmpty()) {
                 binding.imageLine.visibility = View.VISIBLE

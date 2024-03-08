@@ -31,6 +31,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 fun <T> Fragment.collectFlow(
     state: Flow<T>,
@@ -179,3 +181,8 @@ fun Int.toConvertBytes(): String = convertBytes(this)
 
 fun Fragment.getResourceString(@StringRes id: Int) =
     requireContext().getString(id)
+
+fun LocalDateTime.toDateString(): String {
+    val formatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일 a h시 m분")
+    return this.format(formatter).replace("PM", "오후").replace("AM", "오전")
+}

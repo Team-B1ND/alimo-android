@@ -19,7 +19,7 @@ class LocalDateTimeTypeAdapter : JsonDeserializer<LocalDateTime>, JsonSerializer
         if (dateStrings[1].length != 6) {
             dateString = dateStrings[0] + "."+ dateStrings[1] + "0".repeat(6 - dateStrings[1].length)
         }
-        return LocalDateTime.parse(dateString, formatter).plusHours(9)
+        return LocalDateTime.parse(dateString, formatter)
     }
 
     override fun serialize(src: LocalDateTime?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
