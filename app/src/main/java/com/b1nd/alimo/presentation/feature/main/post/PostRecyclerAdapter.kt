@@ -17,6 +17,7 @@ import com.b1nd.alimo.data.model.NotificationModel
 import com.b1nd.alimo.databinding.ItemPostBinding
 import com.b1nd.alimo.presentation.utiles.loadImage
 import com.b1nd.alimo.presentation.utiles.setImageResourceAndClearTint
+import com.b1nd.alimo.presentation.utiles.toDateString
 
 class PostRecyclerAdapter constructor(
     private val context: Context,
@@ -84,7 +85,7 @@ class PostRecyclerAdapter constructor(
                 }
                 textTitle.text = item.title
                 textAuthor.text = item.member
-                textDate.text = item.createdAt.toString()
+                textDate.text = item.createdAt.toDateString()
                 textContent.text = item.content
 
                 imageAddEmoji.setOnClickListener {

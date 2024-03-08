@@ -40,6 +40,7 @@ import com.b1nd.alimo.presentation.utiles.getTimeString
 import com.b1nd.alimo.presentation.utiles.loadImage
 import com.b1nd.alimo.presentation.utiles.loadNotCropImage
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.toDateString
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -218,7 +219,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                     textTitle.text = it.title
                     textAuthor.text = it.member
                     textContent.text = it.content
-                    textDate.text = it.createdAt.toString()
+                    textDate.text = it.createdAt.toDateString()
                     if (it.memberProfile != null) {
                         imageProfile.loadImage(it.memberProfile)
                     }
