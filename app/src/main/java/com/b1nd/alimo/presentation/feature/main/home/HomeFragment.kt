@@ -28,6 +28,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
     override val viewModel: HomeViewModel by viewModels()
     private lateinit var adapter: PostRecyclerAdapter
     private var recyclerViewState: Parcelable? = null
+    private var firstSpeaker: Boolean = true
 
     override fun initView() {
         initError()
@@ -81,10 +82,12 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
     }
 
     private fun initSpeaker() {
-        viewModel.loadSpeaker()
-
         collectFlow(viewModel.speakerData) {
             if (it == null) {
+                Log.d("TAG", "initSpeaker: ")
+                lifecycleScope.launch(Dispatchers.Main) {
+                    mBinding.textSpeaker.text = "등록된 공지가 없습니다."
+                }
                 return@collectFlow
             }
             lifecycleScope.launch(Dispatchers.Main) {
@@ -95,6 +98,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
                 }
             }
         }
+        viewModel.loadSpeaker()
     }
 
     private fun initError() {
