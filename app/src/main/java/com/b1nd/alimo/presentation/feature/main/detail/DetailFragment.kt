@@ -223,6 +223,8 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                     if (it.memberProfile != null) {
                         imageProfile.loadImage(it.memberProfile)
                     }
+                    val scroll = Pair(layoutNestedScroll.scrollX, layoutNestedScroll.scrollY)
+
                     if (it.images.isNotEmpty()) {
                         layoutImageContent.isVisible = true
                         layoutImageContent.removeAllViews()
@@ -239,6 +241,9 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         imageView.loadNotCropImage(file.fileUrl) { ratio ->
                             Log.d("TAG", "initNotice: $ratio")
                             lifecycleScope.launch(Dispatchers.Main) {
+                                layoutNestedScroll.post {
+                                    layoutNestedScroll.scrollTo(scroll.first, scroll.second)
+                                }
                                 val constSet = ConstraintSet()
                                 constSet.clone(layoutParent)
                                 constSet.setDimensionRatio(imageContent.id, "H,${ratio}")
@@ -248,6 +253,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         layoutImageContent.addView(imageView)
 
                     }
+
                     if (it.files.isNotEmpty()) {
                         layoutFiles.isVisible = true
                         layoutFiles.removeAllViews()
