@@ -31,6 +31,7 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
     override fun initView() {
         initNotification()
         initSideEffect()
+        initRefresh()
 //        mBinding.rvPost.visibility = View.GONE
 //        mBinding.layoutNot.visibility = View.VISIBLE
 //        adapter.addLoadStateListener { combinedLoadStates ->
@@ -55,6 +56,13 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
 //                startAnimationWithShow(mBinding.layoutNot, R.anim.enter)
 //            }
 //        }
+    }
+
+    private fun initRefresh() {
+        mBinding.layoutSwipeRefresh.setOnRefreshListener {
+            adapter.refresh()
+            mBinding.layoutSwipeRefresh.isRefreshing = false
+        }
     }
 
     override fun onPause() {
