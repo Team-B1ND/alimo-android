@@ -10,6 +10,8 @@ import android.util.Patterns
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -36,6 +38,7 @@ import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.getResourceString
 import com.b1nd.alimo.presentation.utiles.getTimeString
 import com.b1nd.alimo.presentation.utiles.loadImage
+import com.b1nd.alimo.presentation.utiles.loadNotCropImage
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -220,8 +223,29 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         imageProfile.loadImage(it.memberProfile)
                     }
                     if (it.images.isNotEmpty()) {
-                        imageContent.isVisible = true
-                        imageContent.loadImage(it.images[0].fileUrl)
+                        layoutImageContent.isVisible = true
+                        layoutImageContent.removeAllViews()
+                    }
+                    it.images.forEach { file ->
+                        val imageView = ImageView(requireContext())
+                        imageView.run {
+                            maxWidth = 30
+                            background = requireContext().getDrawable(R.drawable.shape_image_view)
+                            clipToOutline = true
+                            isVisible = true
+                        }
+
+                        imageView.loadNotCropImage(file.fileUrl) { ratio ->
+                            Log.d("TAG", "initNotice: $ratio")
+                            lifecycleScope.launch(Dispatchers.Main) {
+                                val constSet = ConstraintSet()
+                                constSet.clone(layoutParent)
+                                constSet.setDimensionRatio(imageContent.id, "H,${ratio}")
+                                constSet.applyTo(layoutParent)
+                            }
+                        }
+                        layoutImageContent.addView(imageView)
+
                     }
                     if (it.files.isNotEmpty()) {
                         layoutFiles.isVisible = true
