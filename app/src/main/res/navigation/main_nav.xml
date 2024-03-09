@@ -23,6 +23,9 @@
         <argument
             android:name="id"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_detailFragment_to_imageFragment"
+            app:destination="@id/imageFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_item_bookmark"
@@ -40,4 +43,8 @@
         android:id="@+id/nav_item_my"
         android:name="com.b1nd.alimo.presentation.feature.main.profile.ProfileFragment"
         android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/imageFragment"
+        android:name="com.b1nd.alimo.presentation.feature.main.image.ImageFragment"
+        android:label="ImageFragment" />
 </navigation>

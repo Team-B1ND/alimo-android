@@ -56,7 +56,6 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     private var parentId: Int? = null
 
     override fun initView() {
-        (requireActivity() as? MainActivity)?.bottomVisible(false)
 //        addFiles(testFiles)
         initSideEffect()
         initNotice()
@@ -94,6 +93,11 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as? MainActivity)?.bottomVisible(false)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -235,6 +239,9 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                             background = requireContext().getDrawable(R.drawable.shape_image_view)
                             clipToOutline = true
                             isVisible = true
+                            setOnClickListener {
+                                findNavController().navigate(R.id.action_detailFragment_to_imageFragment)
+                            }
                         }
 
                         imageView.loadNotCropImage(file.fileUrl) { ratio ->
