@@ -52,4 +52,7 @@
     <string name="no">아니요</string>
     <string name="withdrawal">탈퇴</string>
     <string name="comment_item_that">에게</string>
+    <string name="image_dummy_date">12월 30일 오전 10:49</string>
+    <string name="image_dummy_author">테스트</string>
+    <string name="image_dummy_title">1 / 2</string>
 </resources>
