@@ -54,46 +54,34 @@ class ImageFragment: BaseFragment<FragmentImageBinding, ImageViewModel>(R.layout
                     ""
                 ),
                 FileModel(
-                    "https://s3-alimo.s3.ap-northeast-2.amazonaws.com/notification_images/e314d7ca-a429-4358-bea0-c6889f14834b_A4_-_1.png",
+                    "https://s3-alimo.s3.ap-northeast-2.amazonaws.com/notification_images/541887d8-1dc3-450e-8414-78e9f5e0932c_%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2024-03-04_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_7.10.07.png",
                     "",
                     0,
                     "",
                     ""
-                )
+                ),
+                FileModel(
+                    "https://dodam.kr.object.ncloudstorage.com/dodam/35b5f7bd-2462-4ab3-b6c5-662e25ca5e9cearth.jpg",
+                    "",
+                    0,
+                    "",
+                    ""
+                ),
             )
-        )
+        ) {
+            visibilityChangeLayout()
+        }
         mBinding.pagerImage.adapter = adapter
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initTouch() {
-        val motionFunction: (MotionEvent) -> Unit = { motionEvent ->
-            if (motionEvent.action == MotionEvent.ACTION_UP) {
-                mBinding.run {
-                    layoutTopBar.visibility = if (layoutTopBar.isVisible) View.INVISIBLE else View.VISIBLE
-                    layoutBottomBar.visibility = if (layoutBottomBar.isVisible) View.INVISIBLE else View.VISIBLE
-                }
-            }
-        }
         mBinding.layoutParent.setOnTouchListener { view, motionEvent ->
-            motionFunction(motionEvent)
-            return@setOnTouchListener true
-        }
-        mBinding.pagerImage.setOnTouchListener { view, motionEvent ->
             if (motionEvent.action == MotionEvent.ACTION_UP) {
-                mBinding.run {
-                    layoutTopBar.visibility =
-                        if (layoutTopBar.isVisible) View.INVISIBLE else View.VISIBLE
-                    layoutBottomBar.visibility =
-                        if (layoutBottomBar.isVisible) View.INVISIBLE else View.VISIBLE
-                }
+                visibilityChangeLayout()
             }
             return@setOnTouchListener true
         }
-//        mBinding.imageContent.setOnTouchListener { view, motionEvent ->
-//            motionFunction(motionEvent)
-//            return@setOnTouchListener false
-//        }
     }
 
     override fun onResume() {
@@ -108,6 +96,13 @@ class ImageFragment: BaseFragment<FragmentImageBinding, ImageViewModel>(R.layout
         (requireActivity() as? MainActivity)?.bottomVisible(true)
 //        activity?.window?.statusBarColor = context?.getColor(R.color.white)?: 0
         systemBarDark(false)
+    }
+
+    private fun visibilityChangeLayout() {
+        mBinding.run {
+            layoutTopBar.visibility = if (layoutTopBar.isVisible) View.INVISIBLE else View.VISIBLE
+            layoutBottomBar.visibility = if (layoutBottomBar.isVisible) View.INVISIBLE else View.VISIBLE
+        }
     }
 
     private fun systemBarDark(isDark: Boolean) {

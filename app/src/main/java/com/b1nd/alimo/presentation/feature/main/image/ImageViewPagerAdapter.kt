@@ -8,7 +8,8 @@ import com.b1nd.alimo.databinding.ItemImageBinding
 import com.b1nd.alimo.presentation.utiles.loadNotCropImage
 
 class ImageViewPagerAdapter(
-   private val imageList: List<FileModel>
+    private val imageList: List<FileModel>,
+    private val onClickImage: () -> Unit
 ): RecyclerView.Adapter<ImageViewPagerAdapter.PagerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerViewHolder =
@@ -21,6 +22,9 @@ class ImageViewPagerAdapter(
         val item = imageList[position]
         holder.binding.run {
             imageContent.loadNotCropImage(item.fileUrl)
+            imageContent.setOnPhotoTapListener { view, x, y ->
+                onClickImage()
+            }
         }
     }
 
