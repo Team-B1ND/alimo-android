@@ -1,9 +1,6 @@
 package com.b1nd.alimo.presentation.feature.onboarding.parent.join.second
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.remote.request.ParentJoinRequest
@@ -13,7 +10,9 @@ import com.b1nd.alimo.presentation.base.BaseViewModel
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.MemberNameModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
@@ -26,8 +25,8 @@ class ParentJoinSecondViewModel @Inject constructor(
     private val firebaseTokenRepository: FirebaseTokenRepository
 ) : BaseViewModel() {
 
-    private val _studentCode = MutableLiveData<String>()
-    val studentCode: LiveData<String> = _studentCode
+    private val _studentCode = MutableStateFlow<String>("")
+    private val studentCode: StateFlow<String> = _studentCode
 
     private val _memberName = MutableSharedFlow<MemberNameModel>(replay = 0)
     val memberName: SharedFlow<MemberNameModel> = _memberName.asSharedFlow()
@@ -35,7 +34,7 @@ class ParentJoinSecondViewModel @Inject constructor(
     // 학생 이름 가져오는 기능
     init {
         viewModelScope.launch {
-            _studentCode.asFlow().collectLatest { code ->
+            studentCode.collectLatest { code ->
                 parentJoinRepository.member(code).catch { exception ->
                     Log.d("TAG", "getMemberName: ${exception.message}")
                 }.collect { resource ->
