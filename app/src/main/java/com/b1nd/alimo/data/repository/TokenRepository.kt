@@ -3,7 +3,7 @@ package com.b1nd.alimo.data.repository
 import com.b1nd.alimo.data.local.dao.TokenDao
 import com.b1nd.alimo.data.local.entity.TokenEntity
 import com.b1nd.alimo.data.model.TokenModel
-import com.b1nd.alimo.data.model.toModel
+import com.b1nd.alimo.data.remote.mapper.toModel
 import com.b1nd.alimo.data.remote.service.TokenService
 import javax.inject.Inject
 

@@ -3,6 +3,7 @@ package com.b1nd.alimo.presentation.feature.onboarding.parent.join.third
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.data.Resource
+import com.b1nd.alimo.data.model.JoinModel
 import com.b1nd.alimo.data.repository.ParentJoinRepository
 import com.b1nd.alimo.data.repository.TokenRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel

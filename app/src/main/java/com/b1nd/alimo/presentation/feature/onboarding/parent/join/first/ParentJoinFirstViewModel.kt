@@ -3,6 +3,7 @@ package com.b1nd.alimo.presentation.feature.onboarding.parent.join.first
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.data.Resource
+import com.b1nd.alimo.data.remote.mapper.toModel
 import com.b1nd.alimo.data.repository.ParentJoinRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
