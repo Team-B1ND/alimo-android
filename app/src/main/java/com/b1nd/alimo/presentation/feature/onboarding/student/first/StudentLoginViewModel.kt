@@ -42,7 +42,22 @@ class StudentLoginViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             Log.d("TAG", "login: 시작2")
             // FcmToken 저장
-            val fcmToken = firebaseTokenRepository.getToken().fcmToken
+            var fcmToken = ""
+            firebaseTokenRepository.getToken().catch {
+                Log.d("TAG", "login: $it dxc")
+            }.collect{
+                when(it){
+                    is Resource.Success ->{
+                        fcmToken = it.data?.fcmToken.toString()
+                    }
+                    is Resource.Error ->{
+                        Log.d("TAG", "login error:  ${it.error}")
+                    }
+                    is Resource.Loading ->{
+                        Log.d("TAG", "login: $it")
+                    }
+                }
+            }
             if (fcmToken != null) {
                 Log.d("TAG", "login: 시작3")
                 // FcmToken이 Null이 아닐 때만 로그인 로직을 수행

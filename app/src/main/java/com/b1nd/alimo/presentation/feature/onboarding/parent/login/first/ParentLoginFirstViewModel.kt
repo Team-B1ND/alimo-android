@@ -28,54 +28,53 @@ class ParentLoginFirstViewModel @Inject constructor(
     private var _loginState = MutableSharedFlow<LoginModel>()
     val loginState: SharedFlow<LoginModel> = _loginState
 
+    private var _fcmToken = MutableSharedFlow<String>(replay = 0)
+    val fcmToken : SharedFlow<String> = _fcmToken
+
     // 학부모 로그인 기능
     fun login(email:String, password:String){
         viewModelScope.launch(Dispatchers.IO) {
             Log.d("TAG", "login: 시작2")
             val firebaseToken = firebaseTokenRepository.getToken()
-            val fcmToken = firebaseToken?.fcmToken
-            if (fcmToken != null) {
-                Log.d("TAG", "login: 시작3")
-                // fcmToken이 null이 아닐 때만 로그인 로직을 수행합니다.
-                parentLoginRepository.login(
-                    ParentLoginRequest(
-                        email = email,
-                        password = password,
-                        fcmToken = fcmToken
-                    )
-                ).catch {
-                    Log.d("TAG", "login: ${it.message}")
-                }.collectLatest { resource ->
-                    when (resource) {
-                        is Resource.Success -> {
-                            Log.d("TAG", "login: ${resource.data?.data}")
-                            val token = resource.data?.data?.accessToken
-                            val refreshToken = resource.data?.data?.refreshToken
-                            if (token != null && refreshToken != null) {
-                                tokenRepository.insert(token, refreshToken)
+            val fcmToken = firebaseToken.fcmToken
+            Log.d("TAG", "login: 시작3")
+            // fcmToken이 null이 아닐 때만 로그인 로직을 수행합니다.
+            parentLoginRepository.login(
+                ParentLoginRequest(
+                    email = email,
+                    password = password,
+                    fcmToken = fcmToken
+                )
+            ).catch {
+                Log.d("TAG", "login: ${it.message}")
+            }.collectLatest { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        Log.d("TAG", "login: ${resource.data?.data}")
+                        val token = resource.data?.data?.accessToken
+                        val refreshToken = resource.data?.data?.refreshToken
+                        if (token != null && refreshToken != null) {
+                            tokenRepository.insert(token, refreshToken)
 
 
-                                _loginState.emit(
-                                    LoginModel(
-                                        accessToken = token,
-                                        refreshToken = refreshToken
-                                    )
+                            _loginState.emit(
+                                LoginModel(
+                                    accessToken = token,
+                                    refreshToken = refreshToken
                                 )
-                            }
+                            )
                         }
-
-                        is Resource.Error -> {
-                            Log.d("TAG", "login: 실패 ${resource.error}")
-                        }
-
-                        is Resource.Loading -> {
-                            Log.d("TAG", "login:로딩 ${resource.error} ${resource.data}")
-                        }
-
                     }
+
+                    is Resource.Error -> {
+                        Log.d("TAG", "login: 실패 ${resource.error}")
+                    }
+
+                    is Resource.Loading -> {
+                        Log.d("TAG", "login:로딩 ${resource.error} ${resource.data}")
+                    }
+
                 }
-            } else {
-                Log.d("TAG", "login: $fcmToken")
             }
         }
     }

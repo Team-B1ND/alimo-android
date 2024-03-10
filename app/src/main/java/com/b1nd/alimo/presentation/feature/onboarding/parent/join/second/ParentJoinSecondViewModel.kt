@@ -38,14 +38,16 @@ class ParentJoinSecondViewModel @Inject constructor(
                 parentJoinRepository.member(code).catch { exception ->
                     Log.d("TAG", "getMemberName: ${exception.message}")
                 }.collect { resource ->
-                    when(resource){
+                    when (resource) {
                         is Resource.Success -> {
                             Log.d("TAG", ":서공  ${resource.data?.data?.name}")
                             _memberName.emit(MemberNameModel(resource.data?.data?.name))
                         }
+
                         is Resource.Error -> {
                             Log.d("TAG", ":실패  ${resource.error}")
                         }
+
                         is Resource.Loading -> {
                             Log.d("TAG", ": 로딩")
                         }
@@ -69,41 +71,70 @@ class ParentJoinSecondViewModel @Inject constructor(
         memberId: Int
     ) {
         viewModelScope.launch {
-            Log.d("TAG", "singUp: ${firebaseTokenRepository.getToken().fcmToken}")
-            firebaseTokenRepository.getToken().let { it ->
-                Log.d("TAG", "$email $password ${it.fcmToken} $childCode $memberId")
-                parentJoinRepository.singUp(
-                    data = ParentJoinRequest(
-                        email = email,
-                        password = password,
-                        fcmToken = it.fcmToken,
-                        childCode = childCode,
-                        memberId = memberId
-                    )
-                ).catch {exception ->
-                    Log.d("TAG", "singUp: ${exception.message}")
-                }.collect{ resource ->
-                 when(resource) {
-                     is Resource.Success ->{
-                         Log.d("TAG", "singUp: 성공 ${resource.data}")
-                         if(resource.data == null){
-                            failure()
-                         }else{
-                             success()
-                         }
-                     }
-                     is Resource.Error -> {
-                         Log.d("TAG", "singUp: 에러 ${resource.error}, ${resource.data}")
-                     }
-                     is Resource.Loading -> {
-                         Log.d("TAG", "singUp: 로딩")
-                     }
+            Log.d("TAG", "singUp: ${firebaseTokenRepository.getToken()}")
+            firebaseTokenRepository.getToken().catch { firebaseException ->
 
-                 }
+            }.collect { firebaseResource ->
+                when (firebaseResource) {
+                    is Resource.Success -> {
+                        val fcmToken = firebaseResource.data?.fcmToken
+                        if (fcmToken != null) {
+
+                            Log.d(
+                                "TAG",
+                                "$email $password ${fcmToken} $childCode $memberId"
+                            )
+                            parentJoinRepository.singUp(
+                                data = ParentJoinRequest(
+                                    email = email,
+                                    password = password,
+                                    fcmToken = fcmToken,
+                                    childCode = childCode,
+                                    memberId = memberId
+                                )
+                            ).catch { exception ->
+                                Log.d("TAG", "singUp: ${exception.message}")
+                            }.collect { resource ->
+                                when (resource) {
+                                    is Resource.Success -> {
+                                        Log.d("TAG", "singUp: 성공 ${resource.data}")
+                                        if (resource.data == null) {
+                                            failure()
+                                        } else {
+                                            success()
+                                        }
+                                    }
+
+                                    is Resource.Error -> {
+                                        Log.d(
+                                            "TAG",
+                                            "singUp: 에러 ${resource.error}, ${resource.data}"
+                                        )
+                                    }
+
+                                    is Resource.Loading -> {
+                                        Log.d("TAG", "singUp: 로딩")
+                                    }
+
+                                }
+                            }
+                        }
+
+                    }
+
+                    is Resource.Error -> {
+                        Log.d("TAG", "singUp: 에서 ${firebaseResource.error}")
+                    }
+
+                    is Resource.Loading -> {
+                        Log.d("TAG", "singUp: $firebaseResource")
+                    }
                 }
             }
 
+
         }
+
     }
 
     fun onClickBack() = viewEvent(ON_CLICK_BACK)
