@@ -104,8 +104,7 @@ class ParentJoinThirdFragment :
             }
         }
 
-        // 없으면 인증 요청, 확인 버튼이 안보임
-        mBinding.checkLayout.bringToFront()
+
 
 
     }

@@ -71,7 +71,7 @@ class ParentFindPWFirstFragment :
             }
         }
 
-        mBinding.checkLayout.bringToFront()
+
 
     }
 }
