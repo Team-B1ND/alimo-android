@@ -24,12 +24,14 @@ class OnboardingSecondFragment:
     override val viewModel: OnboardingSecondViewModel by viewModels()
     private val args: OnboardingSecondFragmentArgs by navArgs()
 
+
     override fun initView() {
         // RefreshToken 만료됐다면 SnackBar Show
         if(args.token == "만료"){
             CustomSnackBar.make(requireView(), "세션이 만료 되었어요").show()
         }
         viewModel.alarmCheck()
+
 
         collectStateFlow(viewModel.alarmState){
             Log.d("TAG", "알림 $it ")
@@ -61,7 +63,6 @@ class OnboardingSecondFragment:
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 30) { // 알림 권한 요청 코드인지 확인
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // 알림 권한이 허용된 경우

@@ -33,7 +33,7 @@ class ParentJoinThirdFragment :
 
 
     override fun initView() {
-        var finish = true
+
 
         lifecycleScope.launch {
             // ParentJoinState상태에 따라 성공 혹은 실패
