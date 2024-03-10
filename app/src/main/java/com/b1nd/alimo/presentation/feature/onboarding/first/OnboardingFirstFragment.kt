@@ -2,12 +2,12 @@ package com.b1nd.alimo.presentation.feature.onboarding.first
 
 
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentOnboardingFirstBinding
@@ -16,6 +16,8 @@ import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.utiles.collectStateFlow
 import com.b1nd.alimo.presentation.utiles.startActivityWithFinishAll
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class OnboardingFirstFragment:BaseFragment<FragmentOnboardingFirstBinding, OnboardingFirstViewModel>(R.layout.fragment_onboarding_first) {
@@ -25,7 +27,8 @@ class OnboardingFirstFragment:BaseFragment<FragmentOnboardingFirstBinding, Onboa
         viewModel.tokenCheck()
 
         // Launch Screen Time(2m)
-        Handler().postDelayed({
+        lifecycleScope.launch {
+            delay(2000)
             collectStateFlow(viewModel.tokenState) {
                 // Refresh토큰이 만료됐는지 않됐거나 없는지 확인
                 // 만료됐다면 Text에 "만료"를 넣어서 보냄
@@ -43,7 +46,8 @@ class OnboardingFirstFragment:BaseFragment<FragmentOnboardingFirstBinding, Onboa
 
                 }
             }
-        }, 2000)
+        }
+
 
 
     }
