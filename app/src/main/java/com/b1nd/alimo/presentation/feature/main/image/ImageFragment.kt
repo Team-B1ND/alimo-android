@@ -1,14 +1,11 @@
 package com.b1nd.alimo.presentation.feature.main.image
 
 import android.annotation.SuppressLint
-import android.os.Build
-import android.os.Build.VERSION_CODES
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.view.WindowInsetsController
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.b1nd.alimo.R
 import com.b1nd.alimo.data.model.FileModel
 import com.b1nd.alimo.databinding.FragmentImageBinding
@@ -17,6 +14,7 @@ import com.b1nd.alimo.presentation.feature.main.MainActivity
 import com.b1nd.alimo.presentation.feature.main.image.ImageViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.main.image.ImageViewModel.Companion.ON_CLICK_DOWNLOAD
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.systemBarDark
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,7 +31,7 @@ class ImageFragment: BaseFragment<FragmentImageBinding, ImageViewModel>(R.layout
             it.onSuccessEvent {
                 when(it) {
                     ON_CLICK_BACK -> {
-                        findNavController().popBackStack()
+                        parentFragmentManager.popBackStack()
                     }
                     ON_CLICK_DOWNLOAD -> {
 
@@ -82,6 +80,16 @@ class ImageFragment: BaseFragment<FragmentImageBinding, ImageViewModel>(R.layout
             }
             return@setOnTouchListener true
         }
+        mBinding.pagerImage.setOnClickListener {
+            visibilityChangeLayout()
+        }
+        mBinding.pagerImage.setOnTouchListener { view, motionEvent ->
+            Log.d("TAG", "initTouch: teest")
+            if (motionEvent.action == MotionEvent.ACTION_UP) {
+                visibilityChangeLayout()
+            }
+            return@setOnTouchListener true
+        }
     }
 
     override fun onResume() {
@@ -93,8 +101,6 @@ class ImageFragment: BaseFragment<FragmentImageBinding, ImageViewModel>(R.layout
 
     override fun onDestroyView() {
         super.onDestroyView()
-        (requireActivity() as? MainActivity)?.bottomVisible(true)
-//        activity?.window?.statusBarColor = context?.getColor(R.color.white)?: 0
         systemBarDark(false)
     }
 
@@ -102,19 +108,6 @@ class ImageFragment: BaseFragment<FragmentImageBinding, ImageViewModel>(R.layout
         mBinding.run {
             layoutTopBar.visibility = if (layoutTopBar.isVisible) View.INVISIBLE else View.VISIBLE
             layoutBottomBar.visibility = if (layoutBottomBar.isVisible) View.INVISIBLE else View.VISIBLE
-        }
-    }
-
-    private fun systemBarDark(isDark: Boolean) {
-        if (Build.VERSION.SDK_INT >= VERSION_CODES.R) {
-            activity?.window?.statusBarColor = if (isDark) requireContext().getColor(R.color.black) else requireContext().getColor(R.color.white)
-            activity?.window?.insetsController?.setSystemBarsAppearance(
-                if (isDark) 0 else WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
-                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-            )
-        } else {
-            @Suppress("DEPRECATION")
-            activity?.window?.decorView?.systemUiVisibility = if(isDark) 0 else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
     }
 
