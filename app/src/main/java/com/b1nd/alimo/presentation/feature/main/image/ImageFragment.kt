@@ -54,7 +54,32 @@ class ImageFragment constructor(
                         parentFragmentManager.popBackStack()
                     }
                     ON_CLICK_DOWNLOAD -> {
-
+                        val model = viewModel.state.value
+                        if (model != null) {
+                            val items = model.images
+                            val dialog = ImageChooseDialogFragment(
+                                onClickSaveAll = {
+                                    Log.d("TAG", "initPager: saveAll")
+                                    items.forEach { item ->
+                                        downloadFile(
+                                            url = item.fileUrl,
+                                            name = item.fileName,
+                                            extension = item.filetype ?: "*"
+                                        )
+                                    }
+                                },
+                                onClickSaveThat = {
+                                    Log.d("TAG", "initPager: savaThat")
+                                    val item = items[mBinding.pagerImage.currentItem]
+                                    downloadFile(
+                                        url = item.fileUrl,
+                                        name = item.fileName,
+                                        extension = item.filetype ?: "*"
+                                    )
+                                }
+                            )
+                            dialog.show(childFragmentManager, "image_choose_dialog")
+                        }
                     }
                 }
             }
@@ -101,7 +126,7 @@ class ImageFragment constructor(
         lifecycleScope.launch(Dispatchers.Main) {
             // delay를 안주면 페이지 설정이 안됨.
             delay(5)
-            mBinding.pagerImage.setCurrentItem(1, false)
+            mBinding.pagerImage.setCurrentItem(itemIndex, false)
         }
         mBinding.pagerImage.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -111,31 +136,6 @@ class ImageFragment constructor(
                 }
             }
         })
-
-        mBinding.imageDownload.setOnClickListener {
-            val dialog = ImageChooseDialogFragment(
-                onClickSaveAll = {
-                    Log.d("TAG", "initPager: saveAll")
-                    items.forEach { item ->
-                        downloadFile(
-                            url = item.fileUrl,
-                            name = item.fileName,
-                            extension = item.filetype?: "*"
-                        )
-                    }
-                },
-                onClickSaveThat = {
-                    Log.d("TAG", "initPager: savaThat")
-                    val item = items[mBinding.pagerImage.currentItem]
-                    downloadFile(
-                        url = item.fileUrl,
-                        name = item.fileName,
-                        extension = item.filetype?: "*"
-                    )
-                }
-            )
-            dialog.show(childFragmentManager, "image_choose_dialog")
-        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
