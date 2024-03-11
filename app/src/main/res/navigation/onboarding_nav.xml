@@ -20,6 +20,12 @@
         android:id="@+id/onboardingSecond"
         android:name="com.b1nd.alimo.presentation.feature.onboarding.second.OnboardingSecondFragment"
         android:label="onboardingSecondFragment" >
+
+        <argument
+            android:name="token"
+            app:nullable="true"
+            app:argType="string"/>
+
         <action
             android:id="@+id/action_onboardingSecond_to_onboardingThird"
             app:destination="@id/onboardingThird"
@@ -86,11 +92,29 @@
             app:exitAnim="@anim/exit"
             app:popEnterAnim="@anim/enter"
             app:popExitAnim="@anim/exit"/>
+
+        <action
+            android:id="@+id/action_parentJoinFirst_to_onboardingThird"
+            app:destination="@+id/onboardingThird"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
     </fragment>
     <fragment
         android:id="@+id/parentJoinSecond"
         android:name="com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondFragment"
         android:label="parentJoinSecondFragment" >
+
+        <argument
+            android:name="childeCode"
+            app:argType="string"/>
+
+        <argument
+            android:name="memberId"
+            app:argType="integer"/>
+
+
         <action
             android:id="@+id/action_parentJoinSecond_to_parentJoinThird"
             app:destination="@id/parentJoinThird"
@@ -105,13 +129,25 @@
             app:exitAnim="@anim/exit"
             app:popEnterAnim="@anim/enter"
             app:popExitAnim="@anim/exit"/>
+        <action
+            android:id="@+id/action_parentJoinSecond_to_onboardingThird"
+            app:destination="@+id/onboardingThird"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
     </fragment>
     <fragment
         android:id="@+id/parentJoinThird"
         android:name="com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdFragment"
         android:label="parentJoinThirdFragment" >
+
+        <argument
+            android:name="email"
+            app:argType="string"/>
+
         <action
-            android:id="@+id/action_parentJoinThirst_to_onboardingThird"
+            android:id="@+id/action_parentJoinThird_to_onboardingThird"
             app:destination="@id/onboardingThird"
             app:enterAnim="@anim/enter"
             app:exitAnim="@anim/exit"
@@ -139,13 +175,21 @@
             app:exitAnim="@anim/exit"
             app:popEnterAnim="@anim/enter"
             app:popExitAnim="@anim/exit"/>
+
+        <action
+            android:id="@+id/action_parentLoginFirst_to_onboardingThird"
+            app:destination="@id/onboardingThird"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit"/>
     </fragment>
 
 
 
     <fragment
         android:id="@+id/parentFindPWFirst"
-        android:name="com.b1nd.alimo.presentation.feature.onboarding.parent.pw.first.ParentFindPWFirstFragment"
+        android:name="com.b1nd.alimo.presentation.feature.onboarding.parent.pw.second.ParentFindPWSecondFragment"
         android:label="parentFindPWFirstFragment">
         <action
             android:id="@+id/action_parentFindPWFirst_to_parentFindPWSecond"

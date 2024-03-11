@@ -14,7 +14,9 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.pw.first.ParentFind
 import com.b1nd.alimo.presentation.feature.onboarding.parent.pw.first.ParentFindPWFirstViewModel.Companion.ON_CLICK_NEXT
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ParentFindPWFirstFragment :
     BaseFragment<FragmentParentFindPwFirstBinding, ParentFindPWFirstViewModel>(
         R.layout.fragment_parent_find_pw_first
@@ -69,7 +71,7 @@ class ParentFindPWFirstFragment :
             }
         }
 
-        mBinding.checkLayout.bringToFront()
+
 
     }
 }

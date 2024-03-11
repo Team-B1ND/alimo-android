@@ -5,10 +5,13 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentParentLoginFirstBinding
+import com.b1nd.alimo.presentation.MainActivity
 import com.b1nd.alimo.presentation.base.BaseFragment
+import com.b1nd.alimo.presentation.custom.CustomSnackBar
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_BACKGROUND
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_FIND_PW
@@ -16,22 +19,29 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentL
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_LOGIN
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.startActivityWithFinishAll
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ParentLoginFirstFragment:
     BaseFragment<FragmentParentLoginFirstBinding, ParentLoginFirstViewModel>(
     R.layout.fragment_parent_login_first
 ) {
     override val viewModel: ParentLoginFirstViewModel by viewModels()
-
     override fun initView() {
+        val snackBar = CustomSnackBar.make(requireView(), "미구현 기능입니다.")
         bindingViewEvent { event ->
             event.onSuccessEvent {
                 when(it){
                     ON_CLICK_BACK -> {
-                        findNavController().popBackStack()
+                        findNavController().navigate(R.id.action_parentLoginFirst_to_onboardingThird)
                     }
                     ON_CLICK_LOGIN -> {
-
+                        viewModel.login(
+                            mBinding.idEditText.text.toString(),
+                            mBinding.pwEditText.text.toString()
+                        )
                     }
                     ON_CLICK_BACKGROUND -> {
                         Log.d("TAG", "initView: background")
@@ -43,11 +53,24 @@ class ParentLoginFirstFragment:
                         findNavController().navigate(R.id.action_parentLoginFirst_to_parentJoinFirst)
                     }
                     ON_CLICK_FIND_PW -> {
-                        findNavController().navigate(R.id.action_parentLoginFirst_to_parentFindPWFirst)
+                        // TODO: 비번 찾기 기능
+                        snackBar.show()
+//                        findNavController().navigate(R.id.action_parentLoginFirst_to_parentFindPWFirst)
                     }
                 }
             }
         }
+
+
+        // 로그인을 성공하면 MainActivity로 이동
+        lifecycleScope.launch {
+            viewModel.loginState.collect{
+                startActivityWithFinishAll(MainActivity::class.java)
+                Log.d("TAG", "${it.accessToken}, ${it.refreshToken} ")
+            }
+        }
+
+        // Text Delete Icon Click Event
         mBinding.idEditTextLayout.setEndIconOnClickListener {
             mBinding.idEditTextLayout.editText?.text = null
         }
@@ -73,6 +96,7 @@ class ParentLoginFirstFragment:
         })
     }
 
+    // InputTextLayout에 글자가 있다면 다음 Fragmnet록 가는 버튼 활성화
     private fun updateButtonColor() {
         val text1 = mBinding.idEditText.text.toString().trim { it <= ' ' }
         val text2 = mBinding.pwEditText.text.toString().trim { it <= ' ' }

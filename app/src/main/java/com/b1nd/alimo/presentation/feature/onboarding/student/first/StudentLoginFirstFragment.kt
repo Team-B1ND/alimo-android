@@ -5,16 +5,23 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentStudentLoginFirstBinding
+import com.b1nd.alimo.presentation.MainActivity
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACKGROUND
+import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_LOGIN_OFF
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_LOGIN_ON
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.startActivityWithFinishAll
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class StudentLoginFirstFragment:
     BaseFragment<FragmentStudentLoginFirstBinding, StudentLoginViewModel>(
     R.layout.fragment_student_login_first
@@ -22,6 +29,32 @@ class StudentLoginFirstFragment:
     override val viewModel: StudentLoginViewModel by viewModels()
 
     override fun initView() {
+        // DAuth를 사용해서 코드를 가져온다면 로그인 실행
+        lifecycleScope.launch {
+            viewModel.dodamCode.collect{
+                val code = it.code
+                Log.d("TAG", "cccccccccc: ")
+                if (code != null){
+                    viewModel.login(code)
+                    Log.d("TAG", "initView: ${code}")
+                }
+                
+            }
+        }
+
+        // 로그인을 실행하고 됐는지 않됐는지 확인
+        lifecycleScope.launch {
+            viewModel.loginState.collect{
+                if(it.accessToken == null && it.refreshToken == null){
+                    Log.d("TAG", "로그인 실패: ${it.accessToken} ${it.refreshToken}")
+                }else{
+                    startActivityWithFinishAll(MainActivity::class.java)
+                    Log.d("TAG", "${it.accessToken}, ${it.refreshToken} ")
+                }
+            }
+        }
+
+
         bindingViewEvent { event ->
             event.onSuccessEvent {
                 when(it){
@@ -29,7 +62,10 @@ class StudentLoginFirstFragment:
                         findNavController().popBackStack()
                     }
                     ON_CLICK_LOGIN_ON -> {
-
+                        val id = mBinding.idEditText.text.toString()
+                        val pw = mBinding.pwEditText.text.toString()
+                        val hashedPw = viewModel.sha512(pw)
+                        viewModel.getCode(id, hashedPw)
                     }
                     ON_CLICK_BACKGROUND -> {
                         Log.d("TAG", "initView: background")
@@ -37,9 +73,13 @@ class StudentLoginFirstFragment:
                         mBinding.pwEditText.clearFocus()
                         view?.hideKeyboard()
                     }
+                    ON_CLICK_LOGIN_OFF -> {
+                        viewModel.tokenCheck()
+                    } 
                 }
             }
         }
+        // Text Delete Icon Click Event
         mBinding.idEditTextLayout.setEndIconOnClickListener {
             mBinding.idEditTextLayout.editText?.text = null
         }
@@ -65,6 +105,8 @@ class StudentLoginFirstFragment:
         })
     }
 
+
+    // InputTextLayout에 글자가 있다면 다음 Fragmnet록 가는 버튼 활성화
     private fun updateButtonColor() {
         val text1 = mBinding.idEditText.text.toString().trim { it <= ' ' }
         val text2 = mBinding.pwEditText.text.toString().trim { it <= ' ' }

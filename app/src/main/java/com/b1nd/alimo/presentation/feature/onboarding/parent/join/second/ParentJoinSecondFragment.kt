@@ -5,42 +5,89 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentParentJoinSecondBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
+import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.FAILURE
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.ON_CLICK_BACKGROUND
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.ON_CLICK_LOGIN
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.ON_CLICK_NEXT
+import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.SUCCESS
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ParentJoinSecondFragment :
     BaseFragment<FragmentParentJoinSecondBinding, ParentJoinSecondViewModel>(
         R.layout.fragment_parent_join_second
     ) {
     override val viewModel: ParentJoinSecondViewModel by viewModels()
+    private val args: ParentJoinSecondFragmentArgs by navArgs()
+
 
     override fun initView() {
+        // 학생 이름 가져오는 기능
+        viewModel.setStudentCode(args.childeCode)
+
+        lifecycleScope.launch {
+            viewModel.memberName.collect{
+                mBinding.parentName.text = it.name
+            }
+        }
+
         bindingViewEvent { event ->
             event.onSuccessEvent {
                 when (it) {
-                    ON_CLICK_BACK ->{
-                        findNavController().popBackStack()
+                    ON_CLICK_BACK -> {
+                        findNavController().popBackStack(R.id.parentJoinSecond, false)
+                        findNavController().navigate(R.id.action_parentJoinSecond_to_onboardingThird)
                     }
+
                     ON_CLICK_LOGIN -> {
                         findNavController().navigate(R.id.action_parentJoinSecond_to_parentLoginFirst)
                     }
+
                     ON_CLICK_NEXT -> {
-                        findNavController().navigate(R.id.action_parentJoinSecond_to_parentJoinThird)
+                        // 비번과 비번확인의 Text가 같으면 회원가입 실행 아니면 오류 Message
+                        if (comparisonPassword()) {
+//                            findNavController().navigate(R.id.action_parentJoinSecond_to_parentJoinThird)
+                            viewModel.singUp(
+                                email = mBinding.idEditText.text.toString(),
+                                password = mBinding.pwEditText.text.toString(),
+                                childCode = args.childeCode,
+                                memberId = args.memberId
+                            )
+                        } else {
+                            mBinding.errorText.visibility = View.VISIBLE
+                        }
                     }
+
                     ON_CLICK_BACKGROUND -> {
                         Log.d("TAG", "initView: background")
                         mBinding.idEditTextLayout.clearFocus()
                         mBinding.pwEditTextLayout.clearFocus()
                         view?.hideKeyboard()
                     }
+
+                    SUCCESS -> {
+                        Log.d("TAG", "initView: 로그인 성공")
+                        val email = mBinding.idEditText.text.toString()
+                        val direction = ParentJoinSecondFragmentDirections.actionParentJoinSecondToParentJoinThird(
+                            email
+                        )
+                        findNavController().navigate(direction)
+                    }
+                    FAILURE ->{
+                        Log.d("TAG", "initView: 로그인 실패")
+
+                    }
+
 
                 }
             }
@@ -51,9 +98,20 @@ class ParentJoinSecondFragment :
 
         // TextWatcher를 이용하여 EditText의 텍스트 변화 감지
         mBinding.idEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            }
 
-            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
                 updateButtonColor()
             }
 
@@ -61,9 +119,20 @@ class ParentJoinSecondFragment :
         })
 
         mBinding.pwEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            }
 
-            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
                 updateButtonColor()
             }
 
@@ -71,9 +140,20 @@ class ParentJoinSecondFragment :
         })
 
         mBinding.verifyPwEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            }
 
-            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
                 updateButtonColor()
             }
 
@@ -84,7 +164,7 @@ class ParentJoinSecondFragment :
     private fun updateButtonColor() {
         val text1 = mBinding.idEditText.text.toString().trim { it <= ' ' }
         val text2 = mBinding.pwEditText.text.toString().trim { it <= ' ' }
-        val text3 = mBinding.verifyPwEditText.text.toString().trim{ it <= ' '}
+        val text3 = mBinding.verifyPwEditText.text.toString().trim { it <= ' ' }
 
         // 버튼의 색상을 변경하는 로직 추가
         if (text1.isNotEmpty() && text2.isNotEmpty() && text3.isNotEmpty()) {
@@ -99,6 +179,14 @@ class ParentJoinSecondFragment :
             mBinding.loginBtnOn.visibility = View.INVISIBLE
 
         }
+    }
+
+    // 비번과 비번확인 Text가 같은지 확인하는 함수
+    private fun comparisonPassword(): Boolean {
+        val password = mBinding.pwEditText.text.toString()
+        val verifyPassword = mBinding.verifyPwEditText.text.toString()
+        Log.d("TAG", "comparisonPassword: ${ password == verifyPassword }")
+        return password == verifyPassword
     }
 
 

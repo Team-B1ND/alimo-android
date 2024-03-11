@@ -13,6 +13,7 @@ import com.b1nd.alimo.databinding.FragmentProfileBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.custom.CustomCategoryCard
 import com.b1nd.alimo.presentation.custom.CustomSnackBar
+import com.b1nd.alimo.presentation.feature.onboarding.OnboardingActivity
 import com.b1nd.alimo.presentation.feature.profile.ProfileViewModel.Companion.ON_CLICK_LOGOUT
 import com.b1nd.alimo.presentation.feature.profile.ProfileViewModel.Companion.ON_CLICK_PRIVATE_POLICY
 import com.b1nd.alimo.presentation.feature.profile.ProfileViewModel.Companion.ON_CLICK_SERVICE_POLICY
@@ -21,6 +22,7 @@ import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.collectStateFlow
 import com.b1nd.alimo.presentation.utiles.loadImage
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.startActivityWithFinishAll
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,10 +35,15 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
         ProfileStudentCodeDialog(this, viewModel.state.value.data?.childCode)
     }
     override fun initView() {
-
+        // 현재 알림 상태 확인
+        viewModel.load()
+        // 알림 상태 설정
+        observeState()
+        viewModel.tokenCheck()
         collectStateFlow(viewModel.state) {
             lifecycleScope.launch(Dispatchers.Main) {
                 it.data?.let { model ->
+                    Log.d("TAG", "$model: ")
                     if (model.image != null) {
                         Log.d("TAG", "initView: 엄 이미지 바ㅏ인딩")
                         mBinding.imageProfile.loadImage(model.image)
@@ -45,6 +52,7 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
                         mBinding.textStudentCode.visibility = View.VISIBLE
                     }
                     mBinding.textUserName.text = model.name
+                    viewModel.setAlarmState(model.isOffAlarm)
                 }
                 if (!it.isAdd) {
                     it.category?.forEach { name ->
@@ -52,6 +60,7 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
                         mBinding.layoutCategory.addView(card)
                     }
                 }
+
             }
 
         }
@@ -90,15 +99,32 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding, ProfileViewModel>(R.
 
                     }
                     ON_CLICK_LOGOUT -> {
-
+                        viewModel.logout()
                     }
                 }
             }
         }
-
+        // 알림 설정을 바꾸면 저장
         mBinding.cardAlarm.setSwitchOnClickListener {
-
+            Log.d("TAG", "initView: $it")
+            viewModel.setAlarmState(it)
         }
+        // 로그아웃
+        collectStateFlow(viewModel.logoutState) {
+            if (it) {
+                startActivityWithFinishAll(OnboardingActivity::class.java)
+            }
+        }
+    }
+
+
+    private fun observeState() {
+        // 현재 알림 확인후 설기
+        collectStateFlow(viewModel.settingState) {
+            mBinding.cardAlarm.setSwitchChecked(it)
+        }
+
+
     }
 
     override fun onCopy() {

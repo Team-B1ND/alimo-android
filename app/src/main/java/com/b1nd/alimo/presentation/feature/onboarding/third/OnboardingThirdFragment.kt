@@ -13,7 +13,9 @@ import com.b1nd.alimo.presentation.feature.onboarding.third.OnboardingThirdViewM
 import com.b1nd.alimo.presentation.feature.onboarding.third.OnboardingThirdViewModel.Companion.ON_CLICK_PARENT
 import com.b1nd.alimo.presentation.feature.onboarding.third.OnboardingThirdViewModel.Companion.ON_CLICK_STUDENT
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OnboardingThirdFragment:
     BaseFragment<FragmentOnboardingThirdBinding, OnboardingThirdViewModel>(
     R.layout.fragment_onboarding_third) {

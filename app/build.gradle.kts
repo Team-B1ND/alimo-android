@@ -6,6 +6,7 @@ plugins {
     id("kotlin-kapt")
     id("androidx.navigation.safeargs")
     id("dagger.hilt.android.plugin")
+    id("com.google.gms.google-services")
 }
 
 val prperties = Properties()
@@ -23,6 +24,15 @@ android {
         versionName = "1.0"
 
         buildConfigField("String", "SERVER_URL", "${prperties["SERVER_URL"]}")
+
+        buildConfigField("String", "CLIENT_SECRET", "${prperties["CLIENT_SECRET"]}")
+
+        buildConfigField("String", "CLIENT_ID", "${prperties["CLIENT_ID"]}")
+
+        buildConfigField("String", "REDIRECT_URL", "${prperties["REDIRECT_URL"]}")
+
+        buildConfigField("String", "DAUTH_SERVER_URL", "${prperties["DAUTH_SERVER_URL"]}")
+
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -75,6 +85,15 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
+    // firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation ("com.google.firebase:firebase-messaging")
+    implementation ("com.google.firebase:firebase-analytics")
+
+    // dodam
+    implementation ("com.github.Team-B1ND:dauth-android:1.0.5")
+
     // circle
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
@@ -99,13 +118,16 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-client-logging:$ktor_version")
-
+    implementation("io.ktor:ktor-client-auth:$ktor_version")
 
     // room
     val room_version = "2.5.0"
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
+
+    // okhttp
+    implementation ("com.squareup.okhttp3:okhttp:4.9.3")
 
 }
 
