@@ -9,6 +9,7 @@ import com.b1nd.alimo.presentation.feature.main.image.choose.ImageChooseDialogVi
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 
 class ImageChooseDialogFragment (
+    private val itemCount: Int,
     private val onClickSaveAll: () -> Unit,
     private val onClickSaveThat: () -> Unit,
 ): BaseDialogFragment<DialogImageChooseBinding, ImageChooseDialogViewModel>(R.layout.dialog_image_choose) {
@@ -16,6 +17,7 @@ class ImageChooseDialogFragment (
     override val viewModel: ImageChooseDialogViewModel by viewModels()
 
     override fun initView() {
+        initText()
 
         bindingViewEvent {
             it.onSuccessEvent {
@@ -31,5 +33,9 @@ class ImageChooseDialogFragment (
                 }
             }
         }
+    }
+
+    private fun initText() {
+        mBinding.textAllSave.text = "${itemCount}장 모두 저장"
     }
 }
