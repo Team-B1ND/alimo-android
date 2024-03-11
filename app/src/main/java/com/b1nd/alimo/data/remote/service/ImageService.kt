@@ -28,14 +28,14 @@ class ImageService @Inject constructor(
                 listOf(
                     FileResponse(
                         "https://i.namu.wiki/i/R0AhIJhNi8fkU2Al72pglkrT8QenAaCJd1as-d_iY6MC8nub1iI5VzIqzJlLa-1uzZm--TkB-KHFiT-P-t7bEg.webp",
-                        "iuImage",
+                        "iuImage.png",
                         0,
                         "",
                         ""
                     ),
                     FileResponse(
                         "https://www.nme.com/wp-content/uploads/2021/02/iu-lilac-photo-edam-entertainment@2000x1270.jpg",
-                        "iuImage",
+                        "iuImage.jpg",
                         0,
                         "",
                         ""

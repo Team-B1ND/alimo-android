@@ -15,8 +15,10 @@ import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.main.MainActivity
 import com.b1nd.alimo.presentation.feature.main.image.ImageViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.main.image.ImageViewModel.Companion.ON_CLICK_DOWNLOAD
+import com.b1nd.alimo.presentation.feature.main.image.choose.ImageChooseDialogFragment
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.collectStateFlow
+import com.b1nd.alimo.presentation.utiles.downloadFile
 import com.b1nd.alimo.presentation.utiles.loadImage
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import com.b1nd.alimo.presentation.utiles.shortToast
@@ -109,6 +111,31 @@ class ImageFragment constructor(
                 }
             }
         })
+
+        mBinding.imageDownload.setOnClickListener {
+            val dialog = ImageChooseDialogFragment(
+                onClickSaveAll = {
+                    Log.d("TAG", "initPager: saveAll")
+                    items.forEach { item ->
+                        downloadFile(
+                            url = item.fileUrl,
+                            name = item.fileName,
+                            extension = item.filetype?: "*"
+                        )
+                    }
+                },
+                onClickSaveThat = {
+                    Log.d("TAG", "initPager: savaThat")
+                    val item = items[mBinding.pagerImage.currentItem]
+                    downloadFile(
+                        url = item.fileUrl,
+                        name = item.fileName,
+                        extension = item.filetype?: "*"
+                    )
+                }
+            )
+            dialog.show(childFragmentManager, "image_choose_dialog")
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")

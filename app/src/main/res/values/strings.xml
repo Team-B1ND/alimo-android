@@ -55,4 +55,5 @@
     <string name="image_dummy_date">12월 30일 오전 10:49</string>
     <string name="image_dummy_author">테스트</string>
     <string name="image_dummy_title">1 / 2</string>
+    <string name="text_image_that_save">이 사진만 저장</string>
 </resources>

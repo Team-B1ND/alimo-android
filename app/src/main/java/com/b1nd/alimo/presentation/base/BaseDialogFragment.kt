@@ -8,14 +8,14 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import com.b1nd.alimo.presentation.utiles.Event
 import com.b1nd.alimo.presentation.utiles.repeatOnStarted
 import kotlinx.coroutines.flow.collectLatest
 
 abstract class BaseDialogFragment<T: ViewDataBinding, VM: BaseViewModel>(
     @LayoutRes val layoutRes: Int
-) : Fragment() {
+) : DialogFragment() {
 
     protected lateinit var mBinding: T
     protected lateinit var mViewModel: VM
