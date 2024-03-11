@@ -39,6 +39,7 @@
                 android:layout_gravity="center_vertical"
                 app:tint="@color/white" />
             <TextView
+                android:id="@+id/text_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/image_dummy_title"

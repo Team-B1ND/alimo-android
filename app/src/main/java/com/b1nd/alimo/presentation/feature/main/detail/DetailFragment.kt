@@ -270,14 +270,14 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         layoutImageContent.isVisible = true
                         layoutImageContent.removeAllViews()
                     }
-                    it.images.forEach { file ->
+                    it.images.forEachIndexed { index, file ->
                         val imageView = ImageView(requireContext())
                         imageView.run {
                             maxWidth = 30
                             background = requireContext().getDrawable(R.drawable.shape_image_view)
                             clipToOutline = true
                             isVisible = true
-                            setOnClickListener {
+                            setOnClickListener { view ->
                                 systemBarDark(true)
                                 changeVisibleAnimationView(true)
 //                                findViewById<View>(R.id.fragment_image).isVisible = true
@@ -290,7 +290,12 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                                             R.anim.enter,
                                             R.anim.exit
                                         )
-                                        replace(R.id.fragment_image, ImageFragment())
+                                        val imageFragment = ImageFragment(
+                                            notificationId = args.id,
+                                            itemCount = it.images.size,
+                                            itemIndex = index
+                                        )
+                                        replace(R.id.fragment_image, imageFragment)
                                         setReorderingAllowed(true)
                                         addToBackStack(null)
                                         commit()
