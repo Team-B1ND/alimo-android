@@ -4,8 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.util.Log
 import android.view.View
+import android.view.WindowInsetsController
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -20,6 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
+import com.b1nd.alimo.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -185,4 +188,18 @@ fun Fragment.getResourceString(@StringRes id: Int) =
 fun LocalDateTime.toDateString(): String {
     val formatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일 a h시 m분")
     return this.format(formatter).replace("PM", "오후").replace("AM", "오전")
+}
+
+fun Fragment.systemBarDark(isDark: Boolean) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        activity?.window?.statusBarColor = if (isDark) requireContext().getColor(R.color.black) else requireContext().getColor(
+            R.color.white)
+        activity?.window?.insetsController?.setSystemBarsAppearance(
+            if (isDark) 0 else WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+        )
+    } else {
+        @Suppress("DEPRECATION")
+        activity?.window?.decorView?.systemUiVisibility = if(isDark) 0 else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+    }
 }
