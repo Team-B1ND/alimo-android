@@ -3,7 +3,7 @@ package com.b1nd.alimo.presentation.feature.onboarding.second
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
-import android.util.Log
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,41 +13,37 @@ import com.b1nd.alimo.databinding.FragmentOnboardingSecondBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.custom.CustomSnackBar
 import com.b1nd.alimo.presentation.feature.onboarding.second.OnboardingSecondViewModel.Companion.ON_CLICK_START
-import com.b1nd.alimo.presentation.utiles.collectStateFlow
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class OnboardingSecondFragment:
+class OnboardingSecondFragment :
     BaseFragment<FragmentOnboardingSecondBinding, OnboardingSecondViewModel>(
-    R.layout.fragment_onboarding_second) {
+        R.layout.fragment_onboarding_second
+    ) {
     override val viewModel: OnboardingSecondViewModel by viewModels()
     private val args: OnboardingSecondFragmentArgs by navArgs()
 
 
     override fun initView() {
         // RefreshToken 만료됐다면 SnackBar Show
-        if(args.token == "만료"){
+        if (args.token == "만료") {
             CustomSnackBar.make(requireView(), "세션이 만료 되었어요").show()
         }
         viewModel.alarmCheck()
 
 
-        collectStateFlow(viewModel.alarmState){
-            Log.d("TAG", "알림 $it ")
-            if(it == false){
-                // 현재 Android 버전이 10보다 크면 알림 권한 창을 뛰움
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // Q는 Android 10을 나타냄
-                    if (ContextCompat.checkSelfPermission(
-                            requireContext(),
-                            Manifest.permission.POST_NOTIFICATIONS
-                        ) != PackageManager.PERMISSION_GRANTED
-                    ) {
-                        requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 30)
-                    }
-                }
+        // 현재 Android 버전이 10보다 크면 알림 권한 창을 뛰움
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // Q는 Android 10을 나타냄
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.POST_NOTIFICATIONS), 30)
             }
         }
+
 
 
         bindingViewEvent { event ->
@@ -62,19 +58,4 @@ class OnboardingSecondFragment:
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == 30) { // 알림 권한 요청 코드인지 확인
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // 알림 권한이 허용된 경우
-                // 권한이 허용되었을 때 실행할 작업을 여기에 추가
-                viewModel.setAlarm(true)
-//                Toast.makeText(requireContext(), "알림 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
-            } else {
-                // 알림 권한이 거부된 경우
-                // 권한이 거부되었을 때 실행할 작업을 여기에 추가
-                viewModel.setAlarm(false)
-//                Toast.makeText(requireContext(), "알림 권한이 거부되었습니다.", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
 }
