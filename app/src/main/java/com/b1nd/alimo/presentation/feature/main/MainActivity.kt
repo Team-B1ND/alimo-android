@@ -1,5 +1,6 @@
 package com.b1nd.alimo.presentation.feature.main
 
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.navigation.fragment.NavHostFragment
@@ -23,6 +24,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
     fun bottomVisible(state: Boolean) {
+        Log.d("TAG", "bottomVisible: $state")
         mBinding.navBottom.visibility = if (state) View.VISIBLE else View.GONE
     }
 }

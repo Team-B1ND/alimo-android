@@ -295,6 +295,18 @@
                     app:tint="@color/Gray600"/>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <FrameLayout
+            android:id="@+id/image_anim"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:alpha="0.6"
+            android:background="@color/black"/>
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

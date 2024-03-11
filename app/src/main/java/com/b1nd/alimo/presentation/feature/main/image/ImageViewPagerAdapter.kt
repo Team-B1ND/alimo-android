@@ -22,7 +22,7 @@ class ImageViewPagerAdapter(
         val item = imageList[position]
         holder.binding.run {
             imageContent.loadNotCropImage(item.fileUrl)
-            imageContent.setOnPhotoTapListener { view, x, y ->
+            imageContent.setOnViewTapListener { view, x, y ->
                 onClickImage()
             }
         }

@@ -1,5 +1,6 @@
 package com.b1nd.alimo.presentation.feature.main.detail
 
+import android.animation.Animator
 import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
@@ -9,6 +10,7 @@ import android.util.Log
 import android.util.Patterns
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintSet
@@ -34,14 +36,17 @@ import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_OKAY
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_SAD
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_SEND
+import com.b1nd.alimo.presentation.feature.main.image.ImageFragment
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.getResourceString
 import com.b1nd.alimo.presentation.utiles.loadImage
 import com.b1nd.alimo.presentation.utiles.loadNotCropImage
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.systemBarDark
 import com.b1nd.alimo.presentation.utiles.toDateString
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -94,10 +99,43 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
             }
         }
     }
-
     override fun onResume() {
         super.onResume()
         (requireActivity() as? MainActivity)?.bottomVisible(false)
+        changeVisibleAnimationView(false)
+    }
+
+    private fun changeVisibleAnimationView(visible: Boolean) {
+        mBinding.imageAnim.isVisible = visible
+        if (visible) {
+            mBinding.imageAnim.run {
+                alpha = 0.6f
+                animate()
+                    .setInterpolator(DecelerateInterpolator())
+                    .alpha(1f)
+                    .setDuration(150)
+                    .setListener(object: Animator.AnimatorListener {
+                        override fun onAnimationStart(p0: Animator) {
+                        }
+
+                        override fun onAnimationEnd(p0: Animator) {
+                            lifecycleScope.launch(Dispatchers.Main) {
+                                delay(50)
+                                alpha = 0.9f
+                                isVisible = false
+                            }
+                        }
+
+                        override fun onAnimationCancel(p0: Animator) {
+                        }
+
+                        override fun onAnimationRepeat(p0: Animator) {
+
+                        }
+                    })
+
+            }
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -240,7 +278,27 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                             clipToOutline = true
                             isVisible = true
                             setOnClickListener {
-                                findNavController().navigate(R.id.action_detailFragment_to_imageFragment)
+                                systemBarDark(true)
+                                changeVisibleAnimationView(true)
+//                                findViewById<View>(R.id.fragment_image).isVisible = true
+                                mBinding.fragmentImage.isVisible = true
+                                fun addMapFragment() {
+                                    childFragmentManager.beginTransaction().apply {
+                                        setCustomAnimations(
+                                            R.anim.image_enter,
+                                            R.anim.exit,
+                                            R.anim.enter,
+                                            R.anim.exit
+                                        )
+                                        replace(R.id.fragment_image, ImageFragment())
+                                        setReorderingAllowed(true)
+                                        addToBackStack(null)
+                                        commit()
+                                    }
+
+                                }
+                                addMapFragment()
+//                                findNavController().navigate(R.id.action_detailFragment_to_imageFragment)
                             }
                         }
 
@@ -418,7 +476,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     private fun downloadFile(
         url: String,
         name: String,
-        extension: String
+        extension: String,
     ) {
         try {
             if (!Patterns.WEB_URL.matcher(url).matches()) { // 웹 url인지 유효성 검사
