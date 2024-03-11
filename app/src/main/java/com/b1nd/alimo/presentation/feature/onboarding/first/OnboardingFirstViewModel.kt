@@ -29,7 +29,8 @@ class OnboardingFirstViewModel @Inject constructor(
             }.collect{
                 when(it){
                     is Resource.Success ->{
-                        _tokenState.value = TokenModel(it.data?.token, it.data?.refreshToken )
+                        Log.d("TAG", "성공: ${it.data?.token} ${it.data?.refreshToken}")
+                        _tokenState.emit(TokenModel(it.data?.token, it.data?.refreshToken))
                     }
                     is Resource.Error ->{
                         Log.d("TAG", "중간 에러: ${it.error}")

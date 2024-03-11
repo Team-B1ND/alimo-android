@@ -1,5 +1,6 @@
 package com.b1nd.alimo.data.repository
 
+import android.util.Log
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.local.dao.TokenDao
 import com.b1nd.alimo.data.local.entity.TokenEntity
@@ -16,7 +17,14 @@ class TokenRepository @Inject constructor(
         emit(Resource.Loading())
         try{
             val token = tokenDao.getToken()
-            emit(Resource.Success(TokenModel(token.token, token.refreshToken)))
+            Log.d("TAG", "getToken: 시도 $token")
+            emit(Resource.Success(TokenModel(token?.token, token?.refreshToken)))
+//            if(token?.token != null){
+//                Log.d("TAG", "getToken: 조건 $token")
+//                emit(Resource.Success(TokenModel(token.token, token.refreshToken)))
+//            }else{
+//
+//            }
         }catch (e: Exception){
             emit(Resource.Error(e))
         }

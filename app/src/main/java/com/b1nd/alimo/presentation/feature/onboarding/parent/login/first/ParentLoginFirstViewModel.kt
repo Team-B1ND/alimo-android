@@ -35,15 +35,29 @@ class ParentLoginFirstViewModel @Inject constructor(
     fun login(email:String, password:String){
         viewModelScope.launch(Dispatchers.IO) {
             Log.d("TAG", "login: 시작2")
-            val firebaseToken = firebaseTokenRepository.getToken()
-            val fcmToken = firebaseToken.fcmToken
+            firebaseTokenRepository.getToken().catch {
+                Log.d("TAG", "login: $it")
+            }.collectLatest {
+                when(it){
+                    is Resource.Success ->{
+                        _fcmToken.emit(it.data?.fcmToken.toString())
+                    }
+                    is Resource.Error -> {
+                        Log.d("TAG", "에러 login: ${it.error}")
+                    }
+                    is Resource.Loading ->{
+                        Log.d("TAG", "로딩 login: $it")
+                    }
+                }
+            }
+
             Log.d("TAG", "login: 시작3")
             // fcmToken이 null이 아닐 때만 로그인 로직을 수행합니다.
             parentLoginRepository.login(
                 ParentLoginRequest(
                     email = email,
                     password = password,
-                    fcmToken = fcmToken
+                    fcmToken = fcmToken.toString()
                 )
             ).catch {
                 Log.d("TAG", "login: ${it.message}")
