@@ -58,6 +58,7 @@ class ImageFragment constructor(
                         if (model != null) {
                             val items = model.images
                             val dialog = ImageChooseDialogFragment(
+                                itemCount = itemCount,
                                 onClickSaveAll = {
                                     Log.d("TAG", "initPager: saveAll")
                                     items.forEach { item ->
