@@ -18,7 +18,11 @@ import com.b1nd.alimo.presentation.utiles.systemBarDark
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ImageFragment: BaseFragment<FragmentImageBinding, ImageViewModel>(R.layout.fragment_image) {
+class ImageFragment constructor(
+    private val notificationId: Int,
+    private val itemCount: Int,
+    private val itemIndex: Int
+): BaseFragment<FragmentImageBinding, ImageViewModel>(R.layout.fragment_image) {
 
     override val viewModel: ImageViewModel by viewModels()
 
@@ -26,6 +30,9 @@ class ImageFragment: BaseFragment<FragmentImageBinding, ImageViewModel>(R.layout
         (requireActivity() as? MainActivity)?.bottomVisible(false)
         initTouch()
         initPager()
+        initBar()
+
+        Log.d("TAG", "initView: $notificationId $itemCount $itemIndex")
 
         bindingViewEvent {
             it.onSuccessEvent {
@@ -39,6 +46,10 @@ class ImageFragment: BaseFragment<FragmentImageBinding, ImageViewModel>(R.layout
                 }
             }
         }
+    }
+
+    private fun initBar() {
+        mBinding.textCount.text = "${itemIndex+1}/${itemCount}"
     }
 
     private fun initPager() {
