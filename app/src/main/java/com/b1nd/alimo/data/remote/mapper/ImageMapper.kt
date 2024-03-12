@@ -5,8 +5,6 @@ import com.b1nd.alimo.data.remote.response.Image.ImageResponse
 
 internal fun ImageResponse.toModel() =
     ImageModel(
-        notificationId = notificationId,
-        memberId = memberId,
         member = name,
         memberProfile = memberProfile,
         createdAt = createdAt,

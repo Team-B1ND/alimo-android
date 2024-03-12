@@ -5,16 +5,12 @@ import com.google.gson.annotations.SerializedName
 import java.time.LocalDateTime
 
 data class ImageResponse(
-    @SerializedName("notificationId")
-    val notificationId: Int,
-    @SerializedName("memberId")
-    val memberId: Int,
-    @SerializedName("name")
+    @SerializedName("memberName")
     val name: String,
-    @SerializedName("profileImage")
+    @SerializedName("profileUrl")
     val memberProfile: String?,
     @SerializedName("createdAt")
     val createdAt: LocalDateTime,
-    @SerializedName("images")
+    @SerializedName("imageList")
     val images: List<FileResponse>,
 )
