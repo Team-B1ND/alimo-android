@@ -1,5 +1,6 @@
 package com.b1nd.alimo.data.repository
 
+import com.b1nd.alimo.data.Env.testToken
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.remote.makeApiGetRequest
 import com.b1nd.alimo.data.remote.makeApiPostRequest

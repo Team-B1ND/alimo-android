@@ -86,8 +86,5 @@ class HomeService @Inject constructor(
 
     suspend fun getSpeaker(): Flow<Resource<BaseResponse<HomeSpeakerResponse>?>> =
         makeApiGetRequest(httpClient, "/notification/speaker") {
-            headers {
-                header("Authorization", "Bearer $testToken")
-            }
         }
 }
