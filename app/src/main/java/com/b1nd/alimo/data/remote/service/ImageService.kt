@@ -1,14 +1,11 @@
 package com.b1nd.alimo.data.remote.service
 
-import com.b1nd.alimo.data.Env.testToken
 import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.response.Image.ImageResponse
 import com.b1nd.alimo.di.AppHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import io.ktor.client.request.header
-import io.ktor.client.request.headers
 import io.ktor.client.request.parameter
 import javax.inject.Inject
 
@@ -19,9 +16,6 @@ class ImageService @Inject constructor(
     suspend fun getNotificationImage(
         notificationId: Int
     ): BaseResponse<ImageResponse> = httpClient.get("/image/get") {
-        headers {
-            header("Authorization", "Bearer $testToken")
-        }
         parameter("notificationId", notificationId)
     }.body()
 

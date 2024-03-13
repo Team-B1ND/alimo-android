@@ -32,9 +32,6 @@ class HomeService @Inject constructor(
     ): Resource<List<NotificationModel>> {
         return try {
             val body = httpClient.get("/notification/load") {
-                headers {
-                    header("Authorization", "Bearer $testToken")
-                }
                 parameter("page", page)
                 parameter("size", size)
                 parameter("category", if (category == "전체") "null" else category)

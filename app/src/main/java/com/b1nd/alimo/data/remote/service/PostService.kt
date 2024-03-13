@@ -24,9 +24,6 @@ class PostService @Inject constructor(
         size: Int
     ): BaseResponse<List<NotificationResponse>> =
         httpClient.get("/bookmark/load") {
-            headers {
-                header("Authorization", "Bearer ${Env.testToken}")
-            }
             parameter("page", page)
             parameter("size", size)
         }.body()

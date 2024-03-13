@@ -39,6 +39,8 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import io.ktor.serialization.gson.gson
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.catch
 import java.time.LocalDateTime
 import javax.inject.Singleton
@@ -109,46 +111,51 @@ object RemoteModule {
                 }
                 // AccessToken 만료되면 RefreshToken을 사용해서 다시 가져옴
                 refreshTokens {
-                    var refreshTokne = ""
-                    tokenRepository.getToken().catch {
-                        Log.d("TAG", "위에: $it")
-                    }.collect{
-                        when(it){
-                            is Resource.Success ->{
-                                refreshTokne = it.data?.refreshToken.toString()
-                            }
-                            is Resource.Error ->{
-                                Log.d("TAG", "중간 에러: ${it.error}")
-                            }
-                            is Resource.Loading ->{
-                                Log.d("TAG", "로딩 아래: $it")
+                    coroutineScope {
+                        var refreshTokne = ""
+                        val task = async {
+                            tokenRepository.getToken().catch {
+                                Log.d("TAG", "위에: $it")
+                            }.collect{
+                                when(it){
+                                    is Resource.Success ->{
+                                        refreshTokne = it.data?.refreshToken.toString()
+                                    }
+                                    is Resource.Error ->{
+                                        Log.d("TAG", "중간 에러: ${it.error}")
+                                    }
+                                    is Resource.Loading ->{
+                                        Log.d("TAG", "로딩 아래: $it")
+                                    }
+                                }
                             }
                         }
-                    }
-                    Log.d("TAG", ": 리플레쉬$refreshTokne")
+                        task.await()
+                        Log.d("TAG", ": 리플레쉬$refreshTokne")
 
-                    val data = client.post("${BuildConfig.SERVER_URL}/refresh") {
-                        markAsRefreshTokenRequest()
-                        setBody(TokenRequest(refreshToken = refreshTokne))
-                    }.body<BaseResponse<TokenResponse>>()
-                    // 만약 Status가 401 이면 RefreshToken 만료
-                    if (data.status == 401) {
-                        // intent to onboarding
-                        // 현재 context에서 OnboardingActivity로 이동
+                        val data = client.post("${BuildConfig.SERVER_URL}/refresh") {
+                            markAsRefreshTokenRequest()
+                            setBody(TokenRequest(refreshToken = refreshTokne))
+                        }.body<BaseResponse<TokenResponse>>()
+                        // 만약 Status가 401 이면 RefreshToken 만료
+                        if (data.status == 401) {
+                            // intent to onboarding
+                            // 현재 context에서 OnboardingActivity로 이동
 
-                        tokenRepository.insert("만료", "")
-                        val intent = Intent(
-                            context,
-                            OnboardingActivity::class.java
-                        ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        intent.putExtra("data", "만료")
-                        context.startActivity(
-                            intent
-                        )
+                            tokenRepository.insert("만료", "")
+                            val intent = Intent(
+                                context,
+                                OnboardingActivity::class.java
+                            ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            intent.putExtra("data", "만료")
+                            context.startActivity(
+                                intent
+                            )
+                        }
+                        val accessToken = data.data.accessToken ?: ""
+                        Log.d("TAG", "ddfs: $data")
+                        BearerTokens(accessToken, "")
                     }
-                    val accessToken = data.data.accessToken ?: ""
-                    Log.d("TAG", "ddfs: $data")
-                    BearerTokens(accessToken, "")
                 }
                 sendWithoutRequest { request ->
                     when (request.url.toString()) {
