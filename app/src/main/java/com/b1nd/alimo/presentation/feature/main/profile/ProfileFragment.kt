@@ -22,11 +22,13 @@ import com.b1nd.alimo.presentation.feature.main.profile.student.ProfileStudentCl
 import com.b1nd.alimo.presentation.feature.main.profile.student.ProfileStudentCodeDialog
 import com.b1nd.alimo.presentation.feature.main.profile.withdrawal.ProfileWithdrawalClickListener
 import com.b1nd.alimo.presentation.feature.main.profile.withdrawal.ProfileWithdrawalDialog
+import com.b1nd.alimo.presentation.feature.onboarding.OnboardingActivity
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.collectStateFlow
 import com.b1nd.alimo.presentation.utiles.loadImage
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import com.b1nd.alimo.presentation.utiles.shortToast
+import com.b1nd.alimo.presentation.utiles.startActivityWithFinishAll
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -47,6 +49,8 @@ class ProfileFragment:
         ProfileWithdrawalDialog(this)
     }
     override fun initView() {
+        observeState()
+        viewModel.tokenCheck()
 
         collectStateFlow(viewModel.state) {
             lifecycleScope.launch(Dispatchers.Main) {
@@ -121,10 +125,25 @@ class ProfileFragment:
                 }
             }
         }
-
+        // 알림 설정을 바꾸면 저장
         mBinding.cardAlarm.setSwitchOnClickListener {
-
+            Log.d("TAG", "initView: $it")
+            viewModel.setAlarmState(it)
         }
+        // 로그아웃
+        collectStateFlow(viewModel.logoutState) {
+            if (it) {
+                startActivityWithFinishAll(OnboardingActivity::class.java)
+            }
+        }
+    }
+    private fun observeState() {
+        // 현재 알림 확인후 설기
+        collectStateFlow(viewModel.settingState) {
+            mBinding.cardAlarm.setSwitchChecked(it)
+        }
+
+
     }
 
     override fun onStart() {
