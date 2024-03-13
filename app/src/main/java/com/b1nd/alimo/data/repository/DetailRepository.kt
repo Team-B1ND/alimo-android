@@ -1,6 +1,5 @@
 package com.b1nd.alimo.data.repository
 
-import com.b1nd.alimo.data.Env.testToken
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.DetailNotificationModel
 import com.b1nd.alimo.data.model.EmojiModel
@@ -17,8 +16,6 @@ import com.b1nd.alimo.di.AppHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import io.ktor.client.request.header
-import io.ktor.client.request.headers
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -37,9 +34,6 @@ class DetailRepository @Inject constructor(
     ): Flow<Resource<BaseResponse<String?>>> = flow {
         try {
             val body = httpClient.patch("/emoji/status/${notificationId}") {
-                headers {
-                    header("Authorization", "Bearer $testToken")
-                }
                 setBody(
                     DetailEmojiRequest(reaction)
                 )
@@ -56,9 +50,7 @@ class DetailRepository @Inject constructor(
     ): Flow<Resource<BaseResponse<DetailNotificationModel>>> = flow {
         try {
             val body = httpClient.get("/notification/read/${notificationId}") {
-                headers {
-                    header("Authorization", "Bearer $testToken")
-                }
+
             }.body<BaseResponse<DetailNotificationResponse>>()
 
             emit(
@@ -77,9 +69,7 @@ class DetailRepository @Inject constructor(
 
     override suspend fun pathBookmark(notificationId: Int): Flow<Resource<BaseResponse<String?>>> = safeFlow {
         val response = httpClient.post("/bookmark/patch/${notificationId}") {
-            headers {
-                header("Authorization", "Bearer $testToken")
-            }
+
         }.body<BaseResponse<String?>>()
         emit(
             Resource.Success(response)
@@ -88,9 +78,7 @@ class DetailRepository @Inject constructor(
 
     override suspend fun loadEmoji(notificationId: Int): Flow<Resource<BaseResponse<List<EmojiModel>>>> = safeFlow {
         val response = httpClient.get("/emoji/load/${notificationId}") {
-            headers {
-                header("Authorization", "Bearer $testToken")
-            }
+
         }.body<BaseResponse<List<EmojiResponse>>>()
 
         emit(
@@ -110,9 +98,7 @@ class DetailRepository @Inject constructor(
         commentId: Int?,
     ): Flow<Resource<String?>> = safeFlow {
         httpClient.post("/comment/create/${notificationId}") {
-            headers {
-                header("Authorization", "Bearer $testToken")
-            }
+
             setBody(
                 DetailCommentRequest(
                     content = text,

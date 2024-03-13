@@ -1,6 +1,5 @@
 package com.b1nd.alimo.data.remote.service
 
-import com.b1nd.alimo.data.Env
 import com.b1nd.alimo.data.remote.request.detail.DetailEmojiRequest
 import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.response.notification.NotificationResponse
@@ -8,8 +7,6 @@ import com.b1nd.alimo.di.AppHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import io.ktor.client.request.header
-import io.ktor.client.request.headers
 import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
@@ -33,9 +30,6 @@ class PostService @Inject constructor(
         emoji: String
     ): BaseResponse<String?> =
         httpClient.patch("/emoji/status/${notificationId}") {
-            headers {
-                header("Authorization", "Bearer ${Env.testToken}")
-            }
             setBody(
                 DetailEmojiRequest(emoji)
             )
@@ -43,8 +37,6 @@ class PostService @Inject constructor(
 
     suspend fun pathBookmark(notificationId: Int): BaseResponse<String?> =
         httpClient.post("/bookmark/patch/${notificationId}") {
-            headers {
-                header("Authorization", "Bearer ${Env.testToken}")
-            }
+
         }.body<BaseResponse<String?>>()
 }
