@@ -11,6 +11,7 @@ import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.response.home.HomeCategoryResponse
 import com.b1nd.alimo.data.remote.response.home.HomeSpeakerResponse
 import com.b1nd.alimo.data.remote.response.notification.NotificationResponse
+import com.b1nd.alimo.di.AppHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -21,7 +22,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class HomeService @Inject constructor(
-    private val httpClient: HttpClient
+    @AppHttpClient private val httpClient: HttpClient
 ) {
 
     suspend fun getPost(

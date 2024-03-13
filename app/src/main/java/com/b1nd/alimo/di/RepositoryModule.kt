@@ -8,7 +8,6 @@ import com.b1nd.alimo.data.remote.service.ParentLoginService
 import com.b1nd.alimo.data.remote.service.ProfileService
 import com.b1nd.alimo.data.remote.service.StudentLoginService
 import com.b1nd.alimo.data.remote.service.TokenService
-import com.b1nd.alimo.data.repository.HomeRepository
 import com.b1nd.alimo.data.repository.DodamRepository
 import com.b1nd.alimo.data.repository.ExampleRepository
 import com.b1nd.alimo.data.repository.FirebaseTokenRepository
@@ -61,8 +60,5 @@ interface RepositoryModule {
     @Singleton
     @Binds
     fun provideParentLoginRepository(repository: ParentLoginRepository): ParentLoginService
-}
-    @Singleton
-    @Binds
-    fun provideHomeRepository(homeRepository: HomeRepository): HomeService
+
 }

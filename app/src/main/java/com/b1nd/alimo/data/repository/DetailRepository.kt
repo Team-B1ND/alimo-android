@@ -13,6 +13,7 @@ import com.b1nd.alimo.data.remote.response.detail.DetailNotificationResponse
 import com.b1nd.alimo.data.remote.response.detail.EmojiResponse
 import com.b1nd.alimo.data.remote.safeFlow
 import com.b1nd.alimo.data.remote.service.DetailService
+import com.b1nd.alimo.di.AppHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -27,7 +28,7 @@ import javax.inject.Inject
 
 
 class DetailRepository @Inject constructor(
-    private val httpClient: HttpClient
+    @AppHttpClient private val httpClient: HttpClient
 ): DetailService {
 
     override suspend fun patchEmojiEdit(
