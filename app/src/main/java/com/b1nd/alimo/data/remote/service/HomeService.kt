@@ -3,7 +3,6 @@ package com.b1nd.alimo.data.remote.service
 import android.util.Log
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.NotificationModel
-import com.b1nd.alimo.data.remote.makeApiGetRequest
 import com.b1nd.alimo.data.remote.mapper.toModels
 import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.response.home.HomeCategoryResponse
@@ -14,7 +13,6 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class HomeService @Inject constructor(
@@ -47,10 +45,9 @@ class HomeService @Inject constructor(
 
     suspend fun getCategory(
 
-    ): Flow<Resource<BaseResponse<HomeCategoryResponse>>> =
-        makeApiGetRequest(httpClient, "/member/category-list") {
+    ) = httpClient.get("/member/category-list") {
 
-        }
+        }.body<BaseResponse<HomeCategoryResponse>>()
 
 //    private suspend fun dummyNotice(
 //        page: Int,
@@ -78,7 +75,8 @@ class HomeService @Inject constructor(
 //        return BaseResponse(status = 200, message = "success", data = data)
 //    }
 
-    suspend fun getSpeaker(): Flow<Resource<BaseResponse<HomeSpeakerResponse>?>> =
-        makeApiGetRequest(httpClient, "/notification/speaker") {
-        }
+    suspend fun getSpeaker(): BaseResponse<HomeSpeakerResponse> =
+        httpClient.get("/notification/speaker") {
+
+        }.body()
 }

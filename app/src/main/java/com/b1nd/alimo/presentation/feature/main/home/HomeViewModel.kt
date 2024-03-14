@@ -69,12 +69,12 @@ class HomeViewModel @Inject constructor(
                     }
                     is Resource.Loading -> {}
                     is Resource.Success -> {
-                        if (it.data?.data == null) {
+                        if (it.data == null) {
                             _sideEffect.send(HomeSideEffect.NotFound(HomeFound.Category))
                             return@collectLatest
                         }
                         _errorCount.value = 0
-                        _categoryData.value = it.data.data.roles.map { category ->
+                        _categoryData.value = it.data.roles.map { category ->
                             HomeCategoryRvItem(category, false)
                         }
                     }

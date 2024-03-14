@@ -4,7 +4,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.b1nd.alimo.data.Resource
+import com.b1nd.alimo.data.model.CategoryModel
 import com.b1nd.alimo.data.model.NotificationModel
+import com.b1nd.alimo.data.model.SpeakerModel
+import com.b1nd.alimo.data.remote.mapper.toModel
 import com.b1nd.alimo.data.remote.pagesource.HomePagingSource
 import com.b1nd.alimo.data.remote.safeFlow
 import com.b1nd.alimo.data.remote.service.HomeService
@@ -28,12 +31,26 @@ class HomeRepository @Inject constructor(
 
     suspend fun getCategory(
 
-    ) = homeService.getCategory()
+    ) = safeFlow<CategoryModel> {
+        val response = homeService.getCategory()
+        emit(
+            Resource.Success(
+                response.data.toModel()
+            )
+        )
+    }
 
 
     suspend fun getSpeaker(
 
-    ) = homeService.getSpeaker()
+    ) = safeFlow<SpeakerModel> {
+        val response = homeService.getSpeaker()
+        emit(
+            Resource.Success(
+                response.data.toModel()
+            )
+        )
+    }
 
     suspend fun patchEmoji(
         notificationId: Int,
