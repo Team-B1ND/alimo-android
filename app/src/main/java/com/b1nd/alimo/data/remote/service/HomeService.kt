@@ -5,7 +5,6 @@ import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.NotificationModel
 import com.b1nd.alimo.data.remote.mapper.toModels
 import com.b1nd.alimo.data.remote.response.BaseResponse
-import com.b1nd.alimo.data.remote.response.home.HomeCategoryResponse
 import com.b1nd.alimo.data.remote.response.home.HomeSpeakerResponse
 import com.b1nd.alimo.data.remote.response.notification.NotificationResponse
 import com.b1nd.alimo.di.AppHttpClient
@@ -42,12 +41,6 @@ class HomeService @Inject constructor(
 //        Log.d("TAG", "getNotice: $page")
 //        return Resource.Success(dummyNotice(page, category))
 //    }
-
-    suspend fun getCategory(
-
-    ) = httpClient.get("/member/category-list") {
-
-        }.body<BaseResponse<HomeCategoryResponse>>()
 
 //    private suspend fun dummyNotice(
 //        page: Int,

@@ -22,7 +22,7 @@ class ProfileService @Inject constructor(
         }.body()
 
     suspend fun getCategory(): BaseResponse<ProfileCategoryResponse> =
-        httpClient.get("/member/category-list") {
+        httpClient.get("/category/list/member") {
 
         }.body()
 

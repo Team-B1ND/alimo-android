@@ -12,12 +12,14 @@ import com.b1nd.alimo.data.remote.pagesource.HomePagingSource
 import com.b1nd.alimo.data.remote.safeFlow
 import com.b1nd.alimo.data.remote.service.HomeService
 import com.b1nd.alimo.data.remote.service.PostService
+import com.b1nd.alimo.data.remote.service.ProfileService
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
     private val homeService: HomeService,
-    private val postService: PostService
+    private val postService: PostService,
+    private val profileService: ProfileService
 ) {
 
     fun getPost(
@@ -32,7 +34,7 @@ class HomeRepository @Inject constructor(
     suspend fun getCategory(
 
     ) = safeFlow<CategoryModel> {
-        val response = homeService.getCategory()
+        val response = profileService.getCategory()
         emit(
             Resource.Success(
                 response.data.toModel()
