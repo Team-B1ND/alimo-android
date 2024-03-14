@@ -45,11 +45,11 @@ class HomeRepository @Inject constructor(
 
     suspend fun getSpeaker(
 
-    ) = safeFlow<SpeakerModel> {
+    ) = safeFlow<SpeakerModel?> {
         val response = homeService.getSpeaker()
         emit(
             Resource.Success(
-                response.data.toModel()
+                response.data?.toModel()
             )
         )
     }

@@ -68,7 +68,7 @@ class HomeService @Inject constructor(
 //        return BaseResponse(status = 200, message = "success", data = data)
 //    }
 
-    suspend fun getSpeaker(): BaseResponse<HomeSpeakerResponse> =
+    suspend fun getSpeaker(): BaseResponse<HomeSpeakerResponse?> =
         httpClient.get("/notification/speaker") {
 
         }.body()
