@@ -49,6 +49,7 @@ class ProfileFragment:
         ProfileWithdrawalDialog(this)
     }
     override fun initView() {
+        viewModel.load()
         observeState()
         viewModel.tokenCheck()
 

@@ -86,7 +86,7 @@ class HomeViewModel @Inject constructor(
         repository.getSpeaker().collectLatest {
             when(it) {
                 is Resource.Success -> {
-                    _speakerData.value =  it.data?.data?.toModel()
+                    _speakerData.value =  it.data
                 }
                 is Resource.Loading -> {}
 

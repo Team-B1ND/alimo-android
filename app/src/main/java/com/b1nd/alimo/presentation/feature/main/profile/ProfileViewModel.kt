@@ -54,7 +54,7 @@ class ProfileViewModel @Inject constructor(
                 }
                 Log.d("TAG", ": $it")
                 _state.value = _state.value.copy(
-                    data = it.data?.data?.toModel(),
+                    data = it.data,
                     isAdd = false
                 )
                 Log.d("TAG", ": ${_state.value}")
@@ -72,7 +72,7 @@ class ProfileViewModel @Inject constructor(
                     Log.d("TAG", ": ${it.data}")
                 }
                 _state.value = _state.value.copy(
-                    category = it.data?.data?.roles
+                    category = it.data?.roles ?: emptyList()
                 )
                 Log.d("TAG", ": ${_state.value}")
             }
