@@ -1,5 +1,0 @@
-package com.b1nd.alimo.data
-
-object Env {
-    const val testToken = "eyJKV1QiOiJBQ0NFU1MiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiQXV0aG9yaXphdGlvbiI6IlRFQUNIRVIiLCJpYXQiOjE3MTAxNjAxNzMsImV4cCI6MTcxMDE2MTk3M30.QGP_0CSBGmvVqToVEbtsBO3-RFqOljrx3EbJERdAT2wbxnGquw6VEm_8Stuen5MALGdDKbzTEdOp0rsfQKyXgg"
-}
