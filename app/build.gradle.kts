@@ -14,12 +14,12 @@ prperties.load(project.rootProject.file("local.properties").inputStream())
 
 android {
     namespace = "com.b1nd.alimo"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.b1nd.alimo"
         minSdk = 28
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -104,8 +104,8 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
     // hilt
-    implementation("com.google.dagger:hilt-android:2.44.2")
-    kapt("com.google.dagger:hilt-android-compiler:2.44.2")
+    implementation("com.google.dagger:hilt-android:2.50")
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
 
     // ktor
     val ktor_version = "2.3.7"
@@ -121,7 +121,7 @@ dependencies {
     implementation("io.ktor:ktor-client-auth:$ktor_version")
 
     // room
-    val room_version = "2.5.0"
+    val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
