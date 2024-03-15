@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.CustomFileDownloadBinding
+import com.b1nd.alimo.presentation.utiles.toConvertBytes
 
 class CustomFileDownload(
     context: Context,
@@ -69,6 +70,12 @@ class CustomFileDownload(
         size: String
     ) {
         binding.textFileSize.text = size
+    }
+
+    fun setFileSize(
+        size: Int
+    ) {
+        binding.textFileSize.text = size.toConvertBytes()
     }
 
     fun setFileLink(

@@ -18,7 +18,7 @@
                 android:id="@+id/image_logo"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:src="@drawable/ic_round_logo"
+                android:src="@drawable/ic_clip_download"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
             <ImageView

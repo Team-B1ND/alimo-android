@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentParentLoginFirstBinding
-import com.b1nd.alimo.presentation.MainActivity
+import com.b1nd.alimo.presentation.feature.main.MainActivity
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.custom.CustomSnackBar
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_BACK
