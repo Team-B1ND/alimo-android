@@ -33,12 +33,13 @@ class HomeViewModel @Inject constructor(
 ): BaseViewModel() {
 
     // 현재 선택된 카테고리에 대한 정보
-    private val _category = MutableStateFlow("전체")
+    private val _chooseCategory = MutableStateFlow(Pair("전체", 0))
+    val chooseCategory = _chooseCategory.asStateFlow()
 
-    val pagingData = _category.flatMapLatest {
+    val pagingData = _chooseCategory.flatMapLatest {
         flow {
             try {
-                emitAll(repository.getPost(it).cachedIn(viewModelScope))
+                emitAll(repository.getPost(it.first).cachedIn(viewModelScope))
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.d("TAG", ": ${e.message}")
@@ -106,10 +107,11 @@ class HomeViewModel @Inject constructor(
     }
 
     fun setCategory(
-        category: String
+        category: String,
+        position: Int
     ) {
         Log.d("TAG", "setCategory: $category")
-        _category.value = category
+        _chooseCategory.value = Pair(category, position)
     }
 
     fun addErrorCount() {
