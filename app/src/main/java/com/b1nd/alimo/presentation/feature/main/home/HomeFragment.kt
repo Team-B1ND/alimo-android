@@ -186,6 +186,15 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
                         adapter.retry()
                     }
                 }
+                is LoadState.NotLoading -> {
+                    // 초기 로드 또는 리프레시가 완료되었을 때 원하는 작업 수행
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        if (mBinding.rvPost.computeVerticalScrollOffset() > 0) {
+                            mBinding.layoutAppbar.setExpanded(false, true)
+                        }
+                    }
+                }
+
                 else -> {}
             }
 
