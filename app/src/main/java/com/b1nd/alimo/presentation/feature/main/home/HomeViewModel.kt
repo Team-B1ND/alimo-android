@@ -31,6 +31,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val repository: HomeRepository
 ): BaseViewModel() {
+
+    // 현재 선택된 카테고리에 대한 정보
     private val _category = MutableStateFlow("전체")
 
     val pagingData = _category.flatMapLatest {
@@ -48,12 +50,15 @@ class HomeViewModel @Inject constructor(
     private val _sideEffect = Channel<HomeSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
 
+    // 상단 공지에 대한 정보
     private val _speakerData: MutableStateFlow<SpeakerModel?> = MutableStateFlow(null)
     val speakerData = _speakerData.asStateFlow()
 
+    // 상단 카테고리들에 대한 정보
     private val _categoryData: MutableStateFlow<List<HomeCategoryRvItem>> = MutableStateFlow(emptyList())
     val categoryData = _categoryData.asStateFlow()
 
+    // 중복 에러 방출을 방지하기 위한 카운트
     private val _errorCount = MutableStateFlow(0)
     val errorCount = _errorCount.asStateFlow()
 
