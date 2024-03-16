@@ -28,7 +28,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
     override val viewModel: HomeViewModel by viewModels()
     private lateinit var adapter: PostRecyclerAdapter
     private var recyclerViewState: Parcelable? = null
-    private var firstSpeaker: Boolean = true
 
     override fun initView() {
         initError()
@@ -183,8 +182,8 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
                     Log.d("TAG", "initNotice: ${errorState.error.message}")
                     viewModel.addErrorCount()
                     lifecycleScope.launch(Dispatchers.Main) {
-                        delay(500)
-//                        adapter.retry()
+                        delay(1000)
+                        adapter.retry()
                     }
                 }
                 else -> {}
