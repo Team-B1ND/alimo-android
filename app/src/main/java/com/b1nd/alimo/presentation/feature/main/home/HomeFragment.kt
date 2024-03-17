@@ -2,6 +2,7 @@ package com.b1nd.alimo.presentation.feature.main.home
 
 import android.os.Parcelable
 import android.util.Log
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -27,8 +28,8 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
 
     override val viewModel: HomeViewModel by viewModels()
     private lateinit var adapter: PostRecyclerAdapter
+    private lateinit var categoryAdapter: HomeCategoryRv
     private var recyclerViewState: Parcelable? = null
-    private var firstSpeaker: Boolean = true
 
     override fun initView() {
         initError()
@@ -52,16 +53,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
         }
     }
 
-    private fun initRefresh() {
-        mBinding.layoutAppbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            mBinding.layoutSwipeRefresh.isEnabled = verticalOffset == 0
-        }
-        mBinding.layoutSwipeRefresh.setOnRefreshListener {
-            adapter.refresh()
-            mBinding.layoutSwipeRefresh.isRefreshing = false
-        }
-    }
-
     override fun onStart() {
         super.onStart()
         viewModel.loadMyCategory()
@@ -78,6 +69,41 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
         // 스크롤 상태 복원
         recyclerViewState?.let { state ->
             mBinding.rvPost.layoutManager?.onRestoreInstanceState(state)
+        }
+
+        initNowCategory()
+    }
+
+    private fun initNowCategory() {
+        // 현재 선택된 카테고리 뷰 상태에 반영
+        lifecycleScope.launch(Dispatchers.Main) {
+            // 실제 rv 반영 속도에 따른 딜레이
+            delay(50)
+            val targetCategoryViewHolder = (mBinding.rvCategory.findViewHolderForAdapterPosition(viewModel.chooseCategory.value.second)
+                    as? HomeCategoryRv.ViewHolder)
+            val categoryFirstViewHolder = (mBinding.rvCategory.findViewHolderForAdapterPosition(0)
+                    as? HomeCategoryRv.ViewHolder)
+            Log.d("TAG", "onResume: $categoryFirstViewHolder")
+            targetCategoryViewHolder?.binding?.run {
+                categoryFirstViewHolder?.binding?.layoutCategory?.setBackgroundResource(R.drawable.ripple_gray100_12)
+                categoryFirstViewHolder?.binding?.text?.setTextColor(requireContext().getColor(R.color.Gray500))
+                categoryAdapter.setNowChooseItem(targetCategoryViewHolder)
+
+                layoutCategory.setBackgroundResource(R.drawable.ripple_main500_12)
+                text.setTextColor(requireContext().getColor(R.color.Main900))
+                imageBadge.visibility = View.GONE
+
+            }
+        }
+    }
+
+    private fun initRefresh() {
+        mBinding.layoutAppbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            mBinding.layoutSwipeRefresh.isEnabled = verticalOffset == 0
+        }
+        mBinding.layoutSwipeRefresh.setOnRefreshListener {
+            adapter.refresh()
+            mBinding.layoutSwipeRefresh.isRefreshing = false
         }
     }
 
@@ -183,10 +209,19 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
                     Log.d("TAG", "initNotice: ${errorState.error.message}")
                     viewModel.addErrorCount()
                     lifecycleScope.launch(Dispatchers.Main) {
-                        delay(500)
-//                        adapter.retry()
+                        delay(1000)
+                        adapter.retry()
                     }
                 }
+                is LoadState.NotLoading -> {
+                    // 초기 로드 또는 리프레시가 완료되었을 때 원하는 작업 수행
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        if (mBinding.rvPost.computeVerticalScrollOffset() > 0) {
+                            mBinding.layoutAppbar.setExpanded(false, true)
+                        }
+                    }
+                }
+
                 else -> {}
             }
 
@@ -199,19 +234,22 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
             this.add(HomeCategoryRvItem("전체", false))
             this.add(HomeCategoryRvItem("...", false))
         }
-        mBinding.rvCategory.adapter = HomeCategoryRv(testCategoryItem, requireContext()) {
-            viewModel.setCategory(it.category)
+        categoryAdapter = HomeCategoryRv(testCategoryItem, requireContext()) { item, positon ->
+            viewModel.setCategory(item.category, positon)
         }
+        mBinding.rvCategory.adapter = categoryAdapter
         mBinding.rvCategory.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         collectFlow(viewModel.categoryData) {
             val category = it.toMutableList()
             category.add(0, HomeCategoryRvItem("전체", false))
-            mBinding.rvCategory.adapter = HomeCategoryRv(category, requireContext()) {
+            categoryAdapter = HomeCategoryRv(category, requireContext()) { item, positon ->
                 // TODO(현재 게시글 초기화 -> 재로딩)
                 mBinding.rvPost.scrollToPosition(0);
                 adapter.submitData(lifecycle, PagingData.empty())
-                viewModel.setCategory(it.category)
+                viewModel.setCategory(item.category, positon)
             }
+
+            mBinding.rvCategory.adapter = categoryAdapter
         }
     }
 

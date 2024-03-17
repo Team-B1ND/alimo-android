@@ -11,7 +11,7 @@ import com.b1nd.alimo.databinding.ItemCategoryBinding
 class HomeCategoryRv constructor(
     private val items: List<HomeCategoryRvItem>,
     private val context: Context,
-    private val onClick: (HomeCategoryRvItem) -> Unit
+    private val onClick: (HomeCategoryRvItem, Int) -> Unit
 ): RecyclerView.Adapter<HomeCategoryRv.ViewHolder>() {
     private var nowChooseItem: ViewHolder? = null
     inner class ViewHolder(binding: ItemCategoryBinding): RecyclerView.ViewHolder(binding.root) {
@@ -25,27 +25,33 @@ class HomeCategoryRv constructor(
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (position != 0) {
-            holder.binding.layoutCategory.setBackgroundResource(R.drawable.ripple_gray100_12)
-            holder.binding.text.setTextColor(context.getColor(R.color.Gray500))
-        } else {
-            holder.binding.imageBadge.visibility = View.GONE
-            nowChooseItem = holder
-        }
-        holder.binding.text.text = items[position].category
-        holder.binding.imageBadge.visibility = if (items[position].new) View.VISIBLE else View.GONE
-        holder.binding.layoutCategory.setOnClickListener {
-            if (holder == nowChooseItem) {
-                return@setOnClickListener
+        holder.binding.run {
+            if (position != 0) {
+                layoutCategory.setBackgroundResource(R.drawable.ripple_gray100_12)
+                text.setTextColor(context.getColor(R.color.Gray500))
+            } else {
+                imageBadge.visibility = View.GONE
+                nowChooseItem = holder
             }
-            holder.binding.layoutCategory.setBackgroundResource(R.drawable.ripple_main500_12)
-            holder.binding.text.setTextColor(context.getColor(R.color.Main900))
-            holder.binding.imageBadge.visibility = View.GONE
-            nowChooseItem?.binding?.layoutCategory?.setBackgroundResource(R.drawable.ripple_gray100_12)
-            nowChooseItem?.binding?.text?.setTextColor(context.getColor(R.color.Gray500))
-            nowChooseItem = holder
-            onClick(items[position])
+            text.text = items[position].category
+            imageBadge.visibility = if (items[position].new) View.VISIBLE else View.GONE
+            layoutCategory.setOnClickListener {
+                if (holder == nowChooseItem) {
+                    return@setOnClickListener
+                }
+                layoutCategory.setBackgroundResource(R.drawable.ripple_main500_12)
+                text.setTextColor(context.getColor(R.color.Main900))
+                imageBadge.visibility = View.GONE
+                nowChooseItem?.binding?.layoutCategory?.setBackgroundResource(R.drawable.ripple_gray100_12)
+                nowChooseItem?.binding?.text?.setTextColor(context.getColor(R.color.Gray500))
+                nowChooseItem = holder
+                onClick(items[position], position)
+            }
         }
+    }
+
+    fun setNowChooseItem(viewHolder: ViewHolder) {
+        nowChooseItem = viewHolder
     }
 }
 
