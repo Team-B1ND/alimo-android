@@ -108,7 +108,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     // 현재 알림 가져오기
-    fun load(){
+    fun loadAlarm(){
         viewModelScope.launch {
             _settingState.value = alarmRepository.getAlarmState()
         }
@@ -144,15 +144,8 @@ class ProfileViewModel @Inject constructor(
             kotlin.runCatching {
                 tokenRepository.deleteToken()
             }.onSuccess {
-                tokenCheck()
                 _logoutState.value = true
             }
-        }
-    }
-
-    fun tokenCheck(){
-        viewModelScope.launch {
-            Log.d("TAG", "tokenCheck: ${tokenRepository.getToken()} ")
         }
     }
     fun onClickStudentCode() = viewEvent(ON_CLICK_STUDENT_CODE)

@@ -49,10 +49,43 @@ class ProfileFragment:
         ProfileWithdrawalDialog(this)
     }
     override fun initView() {
-        viewModel.load()
         observeState()
-        viewModel.tokenCheck()
+        initProfile()
+        initSideEffect()
+        initProfileText()
+        initAlarm()
+        initLogout()
 
+        bindingViewEvent {  event ->
+            event.onSuccessEvent {
+                when(it) {
+                    ON_CLICK_STUDENT_CODE -> {
+                        dialog.show(super.getChildFragmentManager(), "dialog")
+                    }
+                    ON_CLICK_PRIVATE_POLICY -> {
+
+                    }
+                    ON_CLICK_SERVICE_POLICY -> {
+
+                    }
+                    ON_CLICK_LOGOUT -> {
+                        viewModel.logout()
+                    }
+                    ON_CLICK_WITHDRAWAL -> {
+                        withdrawalDialog.show(super.getChildFragmentManager(), "withdrawalDialog")
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.loadProfile()
+    }
+
+    private fun initProfile() {
         collectStateFlow(viewModel.state) {
             lifecycleScope.launch(Dispatchers.Main) {
                 it.data?.let { model ->
@@ -77,7 +110,9 @@ class ProfileFragment:
             }
 
         }
+    }
 
+    private fun initSideEffect() {
         collectFlow(viewModel.sideEffect) {
             when(it) {
                 is ProfileSideEffect.Success -> {
@@ -94,50 +129,32 @@ class ProfileFragment:
                 }
             }
         }
+    }
 
+    private fun initProfileText() {
         mBinding.cardVersion.setDescriptionText(BuildConfig.VERSION_NAME)
         mBinding.textStudentCode.paintFlags = Paint.UNDERLINE_TEXT_FLAG
-//        val charset = ('0'..'9') + ('a'..'z') + ('A'..'Z')
-//        for (i in 1..20) {
-//            val randomName = List(Random.nextInt(1, 7)) { charset.random() }.joinToString().replace(", ", "")
-//            val card = CustomCategoryCard(requireContext(), null, randomName)
-//            card.setPadding(0, 8, 8, 0)
-//            mBinding.layoutCategory.addView(card)
-//        }
+    }
 
-        bindingViewEvent {  event ->
-            event.onSuccessEvent {
-                when(it) {
-                    ON_CLICK_STUDENT_CODE -> {
-                        dialog.show(super.getChildFragmentManager(), "dialog")
-                    }
-                    ON_CLICK_PRIVATE_POLICY -> {
-
-                    }
-                    ON_CLICK_SERVICE_POLICY -> {
-
-                    }
-                    ON_CLICK_LOGOUT -> {
-
-                    }
-                    ON_CLICK_WITHDRAWAL -> {
-                        withdrawalDialog.show(super.getChildFragmentManager(), "withdrawalDialog")
-                    }
-                }
-            }
-        }
+    private fun initAlarm() {
+        // 알람 상태 불러오기
+        viewModel.loadAlarm()
         // 알림 설정을 바꾸면 저장
         mBinding.cardAlarm.setSwitchOnClickListener {
             Log.d("TAG", "initView: $it")
             viewModel.setAlarmState(it)
         }
-        // 로그아웃
+    }
+
+    private fun initLogout() {
+        // 로그아웃 상태 추적
         collectStateFlow(viewModel.logoutState) {
             if (it) {
                 startActivityWithFinishAll(OnboardingActivity::class.java)
             }
         }
     }
+
     private fun observeState() {
         // 현재 알림 확인후 설기
         collectStateFlow(viewModel.settingState) {
@@ -145,12 +162,6 @@ class ProfileFragment:
         }
 
 
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        viewModel.loadProfile()
     }
 
     override fun onCopy() {
