@@ -2,6 +2,11 @@
 <layout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="vm"
+            type="com.b1nd.alimo.presentation.feature.main.profile.withdrawal.ProfileWithdrawalViewModel" />
+    </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -38,7 +43,8 @@
                     android:gravity="center"
                     android:background="@drawable/ripple_gray100_12"
                     android:clickable="true"
-                    android:focusable="true">
+                    android:focusable="true"
+                    android:onClick="@{() -> vm.onClickClose()}">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -57,7 +63,8 @@
                     android:gravity="center"
                     android:background="@drawable/ripple_red200_12"
                     android:clickable="true"
-                    android:focusable="true">
+                    android:focusable="true"
+                    android:onClick="@{() -> vm.onClickWithdrawal()}">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -8,14 +8,12 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.WindowInsetsController
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -132,14 +130,6 @@ private fun createLogListener(onLoad: (String) -> (Unit) = {}): RequestListener<
             if (resource is BitmapDrawable) {
                 val bitmap = resource.bitmap
                 onLoad("${bitmap.width}:${bitmap.height}")
-                Log.d(
-                    "Glide", String.format(
-                        "bitmap %,d btyes, size: %d x %d",
-                        bitmap.byteCount,		// 리사이징된 이미지 바이트
-                        bitmap.width,			// 이미지 넓이
-                        bitmap.height			// 이미지 높이
-                    )
-                )
             }
             return false
         }
@@ -218,7 +208,6 @@ fun Fragment.downloadFile(
             return
         }
 //        val extension = url.split(".").last()
-        Log.d("TAG", "downloadFile: $extension")
 //        val fileName = "${getString(R.string.app_name)}/${getTimeString(extension)}"
 //        val fileName = "${getString(R.string.app_name)}/${name}" // "${getString(R.string.app_name)}/${name}"
 
@@ -229,7 +218,7 @@ fun Fragment.downloadFile(
             "webm", "mp4", "ogg", "avi", "mkv", "flv", "m4p", "m4v" -> "video/*"
             else -> "application/${extension}"
         }
-        Log.d("TAG", "downloadFile: $mimeType")
+
 
 
         val downloadManager = DownloadManager.Request(Uri.parse(url))

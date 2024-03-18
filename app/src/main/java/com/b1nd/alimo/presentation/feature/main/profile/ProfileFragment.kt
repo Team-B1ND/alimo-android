@@ -2,9 +2,7 @@ package com.b1nd.alimo.presentation.feature.main.profile
 
 import android.graphics.Paint
 import android.os.Build
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.b1nd.alimo.BuildConfig
@@ -49,67 +47,19 @@ class ProfileFragment:
         ProfileWithdrawalDialog(this)
     }
     override fun initView() {
-        viewModel.load()
-        observeState()
-        viewModel.tokenCheck()
-
-        collectStateFlow(viewModel.state) {
-            lifecycleScope.launch(Dispatchers.Main) {
-                it.data?.let { model ->
-                    if (model.image != null) {
-                        Log.d("TAG", "initView: 엄 이미지 바ㅏ인딩")
-                        mBinding.imageProfile.loadImage(model.image)
-                    }
-                    if (model.childCode != null) {
-                        mBinding.textStudentCode.visibility = View.VISIBLE
-                    }
-                    mBinding.textUserName.text = model.name
-                }
-                if (!it.isAdd) {
-                    viewModel.addCategory()
-                    mBinding.layoutCategory.removeAllViews()
-                    it.category?.forEach { name ->
-                        Log.d("TAG", "initView: testss")
-                        val card = CustomCategoryCard(requireContext(), null, name)
-                        mBinding.layoutCategory.addView(card)
-                    }
-                }
-            }
-
-        }
-
-        collectFlow(viewModel.sideEffect) {
-            when(it) {
-                is ProfileSideEffect.Success -> {
-
-                }
-                is ProfileSideEffect.FailedLoad -> {
-                    Toast.makeText(requireContext(), "로딩에 실패하였습니다.", Toast.LENGTH_SHORT).show()
-                }
-                is ProfileSideEffect.FailedWithdrawal -> {
-                    requireContext().shortToast("회원탈퇴에 실패하였습니다.")
-                }
-                is ProfileSideEffect.SuccessWithdrawal -> {
-                    requireContext().shortToast("회원탈퇴에 성공하였습니다.")
-                }
-            }
-        }
-
-        mBinding.cardVersion.setDescriptionText(BuildConfig.VERSION_NAME)
-        mBinding.textStudentCode.paintFlags = Paint.UNDERLINE_TEXT_FLAG
-//        val charset = ('0'..'9') + ('a'..'z') + ('A'..'Z')
-//        for (i in 1..20) {
-//            val randomName = List(Random.nextInt(1, 7)) { charset.random() }.joinToString().replace(", ", "")
-//            val card = CustomCategoryCard(requireContext(), null, randomName)
-//            card.setPadding(0, 8, 8, 0)
-//            mBinding.layoutCategory.addView(card)
-//        }
+        initProfile()
+        initSideEffect()
+        initProfileText()
+        initAlarm()
 
         bindingViewEvent {  event ->
             event.onSuccessEvent {
                 when(it) {
                     ON_CLICK_STUDENT_CODE -> {
-                        dialog.show(super.getChildFragmentManager(), "dialog")
+                        if (dialog.isAdded) {
+                            return@onSuccessEvent
+                        }
+                        dialog.show(super.getChildFragmentManager(), "student_dialog")
                     }
                     ON_CLICK_PRIVATE_POLICY -> {
 
@@ -118,39 +68,97 @@ class ProfileFragment:
 
                     }
                     ON_CLICK_LOGOUT -> {
-
+                        viewModel.logout()
                     }
                     ON_CLICK_WITHDRAWAL -> {
+                        if (withdrawalDialog.isAdded) {
+                            return@onSuccessEvent
+                        }
                         withdrawalDialog.show(super.getChildFragmentManager(), "withdrawalDialog")
                     }
                 }
             }
         }
-        // 알림 설정을 바꾸면 저장
-        mBinding.cardAlarm.setSwitchOnClickListener {
-            Log.d("TAG", "initView: $it")
-            viewModel.setAlarmState(it)
-        }
-        // 로그아웃
-        collectStateFlow(viewModel.logoutState) {
-            if (it) {
-                startActivityWithFinishAll(OnboardingActivity::class.java)
-            }
-        }
-    }
-    private fun observeState() {
-        // 현재 알림 확인후 설기
-        collectStateFlow(viewModel.settingState) {
-            mBinding.cardAlarm.setSwitchChecked(it)
-        }
-
-
     }
 
     override fun onStart() {
         super.onStart()
 
         viewModel.loadProfile()
+    }
+
+    private fun initProfile() {
+        collectStateFlow(viewModel.state) {
+            lifecycleScope.launch(Dispatchers.Main) {
+                it.data?.let { model ->
+                    if (model.image != null) {
+                        mBinding.imageProfile.loadImage(model.image)
+                    }
+                    if (model.childCode != null) {
+                        mBinding.textStudentCode.visibility = View.VISIBLE
+                    }
+                    mBinding.textUserName.text = model.name
+                }
+                // 중복 카테고리 추가 방지
+                if (!it.isAdd) {
+                    viewModel.addCategory()
+                    mBinding.layoutCategory.removeAllViews()
+                    it.category.forEach { name ->
+                        val card = CustomCategoryCard(requireContext(), null, name)
+                        mBinding.layoutCategory.addView(card)
+                    }
+                }
+            }
+
+        }
+    }
+
+    private fun initSideEffect() {
+        collectFlow(viewModel.sideEffect) {
+            when(it) {
+                is ProfileSideEffect.Success -> {
+
+                }
+                is ProfileSideEffect.FailedLoad -> {
+                    requireContext().shortToast("로딩에 실패하였습니다.")
+                }
+                is ProfileSideEffect.FailedWithdrawal -> {
+                    requireContext().shortToast("회원탈퇴에 실패하였습니다.")
+                }
+                is ProfileSideEffect.SuccessWithdrawal -> {
+                    requireContext().shortToast("회원탈퇴에 성공하였습니다.")
+                    startActivityWithFinishAll(OnboardingActivity::class.java)
+                }
+                is ProfileSideEffect.FailedLoadCategory -> {
+                    requireContext().shortToast("카테고리를 불러오는데 실패하였습니다.")
+                }
+                is ProfileSideEffect.FailedLoadInfo -> {
+                    requireContext().shortToast("정보를 불러오는데 실패하였습니다.")
+                }
+                is ProfileSideEffect.SuccessLogout -> {
+                    startActivityWithFinishAll(OnboardingActivity::class.java)
+                }
+            }
+        }
+    }
+
+    private fun initProfileText() {
+        mBinding.cardVersion.setDescriptionText(BuildConfig.VERSION_NAME)
+        mBinding.textStudentCode.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+    }
+
+    private fun initAlarm() {
+        // 알람 상태 불러오기
+        viewModel.loadAlarm()
+
+        // 알람 상태에 따라 반영
+        collectStateFlow(viewModel.alarmState) {
+            mBinding.cardAlarm.setSwitchChecked(it)
+        }
+        // 알림 설정을 바꾸면 저장
+        mBinding.cardAlarm.setSwitchOnClickListener {
+            viewModel.setAlarmState(it)
+        }
     }
 
     override fun onCopy() {
