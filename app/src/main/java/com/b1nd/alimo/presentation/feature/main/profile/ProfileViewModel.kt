@@ -1,6 +1,5 @@
 package com.b1nd.alimo.presentation.feature.main.profile
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.repository.AlarmRepository
@@ -15,6 +14,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -27,8 +27,9 @@ class ProfileViewModel @Inject constructor(
     private val tokenRepository: TokenRepository
 ): BaseViewModel() {
 
-    private val _settingState =  MutableStateFlow(false)
-    val settingState = _settingState.asStateFlow()
+    // 현재 알람 상태
+    private val _alarmState =  MutableStateFlow(false)
+    val alarmState = _alarmState.asStateFlow()
 
     private val _sideEffect = Channel<ProfileSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
@@ -37,16 +38,15 @@ class ProfileViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
 
+    // 유저 정보 불러오기
     fun loadProfile() = viewModelScope.launch(Dispatchers.IO) {
         val job1 = async {
             repository.getInfo().catch {
-//                    Log.d("TAG", ": ${it.message}")
                 _sideEffect.send(ProfileSideEffect.FailedLoad(it))
             }.collectLatest {
                 if (it is Resource.Error) {
                     _sideEffect.send(ProfileSideEffect.FailedLoadInfo(it.error?: Throwable()))
                 }
-                Log.d("TAG", ": $it")
                 _state.value = _state.value.copy(
                     data = it.data,
                     isAdd = false
@@ -76,6 +76,7 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
+    // 카테고리가 추가되었음을 알리는 함수
     fun addCategory() {
         _state.value = _state.value.copy(
             isAdd = true
@@ -100,28 +101,14 @@ class ProfileViewModel @Inject constructor(
     // 현재 알림 가져오기
     fun loadAlarm(){
         viewModelScope.launch(Dispatchers.IO) {
-            _settingState.value = alarmRepository.getAlarmState()
+            _alarmState.value = alarmRepository.getAlarmState()
         }
     }
 
     // 서버에게 현재 알림 상태 보내기
     fun setAlarmState(value: Boolean){
-        Log.d("TAG", "$value: ")
         viewModelScope.launch(Dispatchers.IO) {
-            repository.setAlarmState(value).catch {
-                Log.d("TAG", "setAlarmState: $it")
-            }.collect{ resource->
-                when(resource){
-                    is Resource.Error ->{
-                        Log.d("TAG", "에러: ${resource.error}")
-                    }
-                    is Resource.Success -> {
-                        Log.d("TAG", "성공: ${resource.data}")
-                    }
-                    is Resource.Loading -> {}
-                }
-            }
-            Log.d("TAG", "알람 $value: ")
+            repository.setAlarmState(value).collect()
             alarmRepository.setAlarmState(value)
         }
     }

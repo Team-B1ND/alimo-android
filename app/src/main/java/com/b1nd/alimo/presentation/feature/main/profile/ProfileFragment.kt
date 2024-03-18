@@ -2,7 +2,6 @@ package com.b1nd.alimo.presentation.feature.main.profile
 
 import android.graphics.Paint
 import android.os.Build
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -48,7 +47,6 @@ class ProfileFragment:
         ProfileWithdrawalDialog(this)
     }
     override fun initView() {
-        observeState()
         initProfile()
         initSideEffect()
         initProfileText()
@@ -88,7 +86,6 @@ class ProfileFragment:
             lifecycleScope.launch(Dispatchers.Main) {
                 it.data?.let { model ->
                     if (model.image != null) {
-                        Log.d("TAG", "initView: 엄 이미지 바ㅏ인딩")
                         mBinding.imageProfile.loadImage(model.image)
                     }
                     if (model.childCode != null) {
@@ -96,11 +93,11 @@ class ProfileFragment:
                     }
                     mBinding.textUserName.text = model.name
                 }
+                // 중복 카테고리 추가 방지
                 if (!it.isAdd) {
                     viewModel.addCategory()
                     mBinding.layoutCategory.removeAllViews()
                     it.category.forEach { name ->
-                        Log.d("TAG", "initView: testss")
                         val card = CustomCategoryCard(requireContext(), null, name)
                         mBinding.layoutCategory.addView(card)
                     }
@@ -147,20 +144,15 @@ class ProfileFragment:
     private fun initAlarm() {
         // 알람 상태 불러오기
         viewModel.loadAlarm()
-        // 알림 설정을 바꾸면 저장
-        mBinding.cardAlarm.setSwitchOnClickListener {
-            Log.d("TAG", "initView: $it")
-            viewModel.setAlarmState(it)
-        }
-    }
 
-    private fun observeState() {
-        // 현재 알림 확인후 설기
-        collectStateFlow(viewModel.settingState) {
+        // 알람 상태에 따라 반영
+        collectStateFlow(viewModel.alarmState) {
             mBinding.cardAlarm.setSwitchChecked(it)
         }
-
-
+        // 알림 설정을 바꾸면 저장
+        mBinding.cardAlarm.setSwitchOnClickListener {
+            viewModel.setAlarmState(it)
+        }
     }
 
     override fun onCopy() {
