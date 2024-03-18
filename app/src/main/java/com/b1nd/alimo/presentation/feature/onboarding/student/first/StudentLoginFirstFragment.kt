@@ -9,8 +9,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentStudentLoginFirstBinding
-import com.b1nd.alimo.presentation.feature.main.MainActivity
 import com.b1nd.alimo.presentation.base.BaseFragment
+import com.b1nd.alimo.presentation.feature.main.MainActivity
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACKGROUND
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_LOGIN_OFF
@@ -35,7 +35,8 @@ class StudentLoginFirstFragment:
                 val code = it.code
                 Log.d("TAG", "cccccccccc: ")
                 if (code != null){
-                    viewModel.login(code)
+                    viewModel.
+                    login(code)
                     Log.d("TAG", "initView: ${code}")
                 }
                 
