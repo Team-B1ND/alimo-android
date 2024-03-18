@@ -43,39 +43,87 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/topBar" />
 
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/studentImage"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/studentButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/btn_shape_rounded_on_2"
-            android:onClick="@{() -> vm.onClickStudent()}"
-            android:src="@drawable/img_student_on"
             app:layout_constraintTop_toBottomOf="@id/question"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/parentImage"
+            app:layout_constraintEnd_toStartOf="@id/parentButton"
             app:layout_constraintBottom_toTopOf="@id/title"
             android:layout_marginTop="12dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="4dp"
-            />
+            android:layout_marginEnd="4dp">
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/studentImage"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/btn_shape_rounded_on_2"
+                android:onClick="@{() -> vm.onClickStudent()}"
+                android:src="@drawable/img_student_on"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/studentText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="8dp"
+                android:text="@string/student"
+                android:textFontWeight="700"
+                android:textColor="@color/Main900"/>
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/parentImage"
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/parentButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/btn_shape_rounded_off"
-            android:onClick="@{() -> vm.onClickParent()}"
-            android:src="@drawable/img_parent_off"
             app:layout_constraintBottom_toTopOf="@id/title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/question"
-            app:layout_constraintStart_toEndOf="@id/studentImage"
+            app:layout_constraintStart_toEndOf="@id/studentButton"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp"
-            android:layout_marginStart="4dp"/>
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="4dp">
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/parentImage"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/btn_shape_rounded_off"
+                android:onClick="@{() -> vm.onClickParent()}"
+                android:src="@drawable/img_parent_off"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/parentText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="8dp"
+                android:text="@string/parent"
+                android:textFontWeight="700"
+                android:textColor="@color/Gray500"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
         <androidx.appcompat.widget.AppCompatTextView

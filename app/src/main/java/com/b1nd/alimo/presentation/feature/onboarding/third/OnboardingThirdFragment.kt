@@ -33,6 +33,9 @@ class OnboardingThirdFragment:
                         mBinding.loginBtn.visibility = View.VISIBLE
                         mBinding.loginText.visibility = View.GONE
                         mBinding.joinBtn.visibility = View.GONE
+                        mBinding.studentText.setTextColor(requireContext().getColor(R.color.Main900))
+                        mBinding.parentText.setTextColor(requireContext().getColor(R.color.Gray500))
+
                     }
                     ON_CLICK_PARENT -> {
                         mBinding.studentImage.setImageResource(R.drawable.img_student_off)
@@ -42,6 +45,9 @@ class OnboardingThirdFragment:
                         mBinding.loginBtn.visibility = View.GONE
                         mBinding.loginText.visibility = View.VISIBLE
                         mBinding.joinBtn.visibility = View.VISIBLE
+                        mBinding.parentText.setTextColor(requireContext().getColor(R.color.Main900))
+                        mBinding.studentText.setTextColor(requireContext().getColor(R.color.Gray500))
+
                     }
                     ON_CLICK_LOGIN -> {
                         findNavController().navigate(R.id.action_onboardingThird_to_parentLoginFirst)
