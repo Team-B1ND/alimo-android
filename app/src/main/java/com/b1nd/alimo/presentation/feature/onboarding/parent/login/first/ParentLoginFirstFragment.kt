@@ -9,9 +9,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentParentLoginFirstBinding
-import com.b1nd.alimo.presentation.feature.main.MainActivity
 import com.b1nd.alimo.presentation.base.BaseFragment
-import com.b1nd.alimo.presentation.custom.CustomSnackBar
+import com.b1nd.alimo.presentation.feature.main.MainActivity
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_BACKGROUND
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_FIND_PW
@@ -19,6 +18,7 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentL
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_LOGIN
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.shortToast
 import com.b1nd.alimo.presentation.utiles.startActivityWithFinishAll
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -30,7 +30,6 @@ class ParentLoginFirstFragment:
 ) {
     override val viewModel: ParentLoginFirstViewModel by viewModels()
     override fun initView() {
-        val snackBar = CustomSnackBar.make(requireView(), "미구현 기능입니다.")
         bindingViewEvent { event ->
             event.onSuccessEvent {
                 when(it){
@@ -54,7 +53,7 @@ class ParentLoginFirstFragment:
                     }
                     ON_CLICK_FIND_PW -> {
                         // TODO: 비번 찾기 기능
-                        snackBar.show()
+                        requireContext().shortToast("추후 업데이트 될 예정입니다")
 //                        findNavController().navigate(R.id.action_parentLoginFirst_to_parentFindPWFirst)
                     }
                 }

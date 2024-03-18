@@ -11,9 +11,9 @@ import androidx.navigation.fragment.navArgs
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentOnboardingSecondBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
-import com.b1nd.alimo.presentation.custom.CustomSnackBar
 import com.b1nd.alimo.presentation.feature.onboarding.second.OnboardingSecondViewModel.Companion.ON_CLICK_START
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.shortToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,9 +28,9 @@ class OnboardingSecondFragment :
     override fun initView() {
         // RefreshToken 만료됐다면 SnackBar Show
         if (args.token == "만료") {
-            CustomSnackBar.make(requireView(), "세션이 만료 되었어요").show()
+            requireContext().shortToast("세션이 만료되었습니다")
+            viewModel.tokenReset()
         }
-        viewModel.alarmCheck()
 
 
         // 현재 Android 버전이 10보다 크면 알림 권한 창을 뛰움
