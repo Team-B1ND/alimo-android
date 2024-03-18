@@ -2,6 +2,11 @@
 <layout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="vm"
+            type="com.b1nd.alimo.presentation.feature.main.profile.student.ProfileStudentCodeViewModel" />
+    </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -18,6 +23,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{() -> vm.onClickCopy()}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -58,6 +66,7 @@
                 android:background="@drawable/ripple_gray100_12"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="@{() -> vm.onClickClose()}"
                 app:layout_constraintTop_toBottomOf="@id/text_share"
                 app:layout_constraintEnd_toEndOf="parent">
                 <TextView
