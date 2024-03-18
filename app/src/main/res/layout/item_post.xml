@@ -49,6 +49,7 @@
             android:clickable="true"
             android:focusable="true"
             android:background="@drawable/ripple_white"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/text_author"
             app:tint="@color/Gray500" />
