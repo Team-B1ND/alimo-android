@@ -9,6 +9,7 @@ import com.b1nd.alimo.data.repository.TokenRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
 import com.b1nd.alimo.presentation.utiles.launchIO
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,9 +30,6 @@ class ProfileViewModel @Inject constructor(
     private val _settingState =  MutableStateFlow(false)
     val settingState = _settingState.asStateFlow()
 
-    private val _logoutState =  MutableStateFlow(false)
-    val logoutState = _logoutState.asStateFlow()
-
     private val _sideEffect = Channel<ProfileSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
 
@@ -39,27 +37,21 @@ class ProfileViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
 
-    fun loadProfile() = viewModelScope.launch {
-        Log.d("TAG", ": start")
+    fun loadProfile() = viewModelScope.launch(Dispatchers.IO) {
         val job1 = async {
-            Log.d("TAG", ": hehe")
             repository.getInfo().catch {
 //                    Log.d("TAG", ": ${it.message}")
                 _sideEffect.send(ProfileSideEffect.FailedLoad(it))
             }.collectLatest {
                 if (it is Resource.Error) {
-                    Log.d("TAG", "${it.error?.message}: ")
-                } else if (it is Resource.Success) {
-                    Log.d("TAG", ": ${it.data}")
+                    _sideEffect.send(ProfileSideEffect.FailedLoadInfo(it.error?: Throwable()))
                 }
                 Log.d("TAG", ": $it")
                 _state.value = _state.value.copy(
                     data = it.data,
                     isAdd = false
                 )
-                Log.d("TAG", ": ${_state.value}")
             }
-            Log.d("TAG", ": heheww")
         }
 
         val job2 = async {
@@ -67,14 +59,12 @@ class ProfileViewModel @Inject constructor(
                 _sideEffect.send(ProfileSideEffect.FailedLoad(it))
             }.collectLatest {
                 if (it is Resource.Error) {
-                    Log.d("TAG", "${it.error?.message}: ")
-                } else if (it is Resource.Success) {
-                    Log.d("TAG", ": ${it.data}")
+                    _sideEffect.send(ProfileSideEffect.FailedLoadCategory(it.error?: Throwable()))
                 }
+
                 _state.value = _state.value.copy(
                     category = it.data?.roles ?: emptyList()
                 )
-                Log.d("TAG", ": ${_state.value}")
             }
         }
         job1.start()
@@ -84,7 +74,6 @@ class ProfileViewModel @Inject constructor(
         _state.value = _state.value.copy(
             loading = false
         )
-        Log.d("TAG", ": End")
     }
 
     fun addCategory() {
@@ -93,6 +82,7 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
+    // 회원탈퇴
     fun withdrawal() = launchIO {
         repository.deleteWithdrawal().collectLatest {
             when(it) {
@@ -109,7 +99,7 @@ class ProfileViewModel @Inject constructor(
 
     // 현재 알림 가져오기
     fun loadAlarm(){
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _settingState.value = alarmRepository.getAlarmState()
         }
     }
@@ -117,10 +107,10 @@ class ProfileViewModel @Inject constructor(
     // 서버에게 현재 알림 상태 보내기
     fun setAlarmState(value: Boolean){
         Log.d("TAG", "$value: ")
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.setAlarmState(value).catch {
                 Log.d("TAG", "setAlarmState: $it")
-            }.collect{resource->
+            }.collect{ resource->
                 when(resource){
                     is Resource.Error ->{
                         Log.d("TAG", "에러: ${resource.error}")
@@ -128,9 +118,7 @@ class ProfileViewModel @Inject constructor(
                     is Resource.Success -> {
                         Log.d("TAG", "성공: ${resource.data}")
                     }
-                    else ->{
-
-                    }
+                    is Resource.Loading -> {}
                 }
             }
             Log.d("TAG", "알람 $value: ")
@@ -140,11 +128,11 @@ class ProfileViewModel @Inject constructor(
 
     // 로그아웃
     fun logout(){
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             kotlin.runCatching {
                 tokenRepository.deleteToken()
             }.onSuccess {
-                _logoutState.value = true
+                _sideEffect.send(ProfileSideEffect.SuccessLogout)
             }
         }
     }

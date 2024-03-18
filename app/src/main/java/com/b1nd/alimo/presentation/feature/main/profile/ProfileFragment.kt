@@ -4,7 +4,6 @@ import android.graphics.Paint
 import android.os.Build
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.b1nd.alimo.BuildConfig
@@ -54,7 +53,6 @@ class ProfileFragment:
         initSideEffect()
         initProfileText()
         initAlarm()
-        initLogout()
 
         bindingViewEvent {  event ->
             event.onSuccessEvent {
@@ -101,7 +99,7 @@ class ProfileFragment:
                 if (!it.isAdd) {
                     viewModel.addCategory()
                     mBinding.layoutCategory.removeAllViews()
-                    it.category?.forEach { name ->
+                    it.category.forEach { name ->
                         Log.d("TAG", "initView: testss")
                         val card = CustomCategoryCard(requireContext(), null, name)
                         mBinding.layoutCategory.addView(card)
@@ -119,13 +117,23 @@ class ProfileFragment:
 
                 }
                 is ProfileSideEffect.FailedLoad -> {
-                    Toast.makeText(requireContext(), "로딩에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                    requireContext().shortToast("로딩에 실패하였습니다.")
                 }
                 is ProfileSideEffect.FailedWithdrawal -> {
                     requireContext().shortToast("회원탈퇴에 실패하였습니다.")
                 }
                 is ProfileSideEffect.SuccessWithdrawal -> {
                     requireContext().shortToast("회원탈퇴에 성공하였습니다.")
+                    startActivityWithFinishAll(OnboardingActivity::class.java)
+                }
+                is ProfileSideEffect.FailedLoadCategory -> {
+                    requireContext().shortToast("카테고리를 불러오는데 실패하였습니다.")
+                }
+                is ProfileSideEffect.FailedLoadInfo -> {
+                    requireContext().shortToast("정보를 불러오는데 실패하였습니다.")
+                }
+                is ProfileSideEffect.SuccessLogout -> {
+                    startActivityWithFinishAll(OnboardingActivity::class.java)
                 }
             }
         }
@@ -143,15 +151,6 @@ class ProfileFragment:
         mBinding.cardAlarm.setSwitchOnClickListener {
             Log.d("TAG", "initView: $it")
             viewModel.setAlarmState(it)
-        }
-    }
-
-    private fun initLogout() {
-        // 로그아웃 상태 추적
-        collectStateFlow(viewModel.logoutState) {
-            if (it) {
-                startActivityWithFinishAll(OnboardingActivity::class.java)
-            }
         }
     }
 
