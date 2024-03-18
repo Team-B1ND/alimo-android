@@ -34,7 +34,7 @@ abstract class BaseDialogFragment<T: ViewDataBinding, VM: BaseViewModel>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mViewModel = if (::mViewModel.isInitialized) mViewModel else viewModel
         mBinding.setVariable(BR.vm, mViewModel)
-        mBinding.lifecycleOwner = this@BaseDialogFragment
+        mBinding.lifecycleOwner = viewLifecycleOwner
         initView()
         super.onViewCreated(view, savedInstanceState)
     }

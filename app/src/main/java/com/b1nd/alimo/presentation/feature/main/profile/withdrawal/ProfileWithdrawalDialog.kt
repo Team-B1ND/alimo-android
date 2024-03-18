@@ -19,7 +19,7 @@ class ProfileWithdrawalDialog(
     private val onClickListener: ProfileWithdrawalClickListener
 ): BaseDialogFragment<DialogWithdrawalBinding, ProfileWithdrawalViewModel>(R.layout.dialog_withdrawal) {
 
-    override val viewModel: ProfileWithdrawalViewModel by viewModels()
+    override val viewModel: ProfileWithdrawalViewModel by viewModels({ requireParentFragment() })
 
     override fun initView() {
         dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)

@@ -56,7 +56,10 @@ class ProfileFragment:
             event.onSuccessEvent {
                 when(it) {
                     ON_CLICK_STUDENT_CODE -> {
-                        dialog.show(super.getChildFragmentManager(), "dialog")
+                        if (dialog.isAdded) {
+                            return@onSuccessEvent
+                        }
+                        dialog.show(super.getChildFragmentManager(), "student_dialog")
                     }
                     ON_CLICK_PRIVATE_POLICY -> {
 
@@ -68,6 +71,9 @@ class ProfileFragment:
                         viewModel.logout()
                     }
                     ON_CLICK_WITHDRAWAL -> {
+                        if (withdrawalDialog.isAdded) {
+                            return@onSuccessEvent
+                        }
                         withdrawalDialog.show(super.getChildFragmentManager(), "withdrawalDialog")
                     }
                 }

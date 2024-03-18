@@ -23,7 +23,7 @@ class ProfileStudentCodeDialog constructor(
 ): BaseDialogFragment<DialogStudentCodeBinding, ProfileStudentCodeViewModel>(R.layout.dialog_student_code) {
 
 
-    override val viewModel: ProfileStudentCodeViewModel by viewModels()
+    override val viewModel: ProfileStudentCodeViewModel by viewModels({ requireParentFragment() })
 
     override fun onStart() {
         super.onStart()
@@ -35,7 +35,6 @@ class ProfileStudentCodeDialog constructor(
 
     override fun initView() {
         mBinding.textStudentCode.text = studentCode
-
         bindingViewEvent { event ->
             event.onSuccessEvent {
                 when(it) {
