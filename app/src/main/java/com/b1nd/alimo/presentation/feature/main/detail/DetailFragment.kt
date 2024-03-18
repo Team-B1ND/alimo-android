@@ -58,7 +58,6 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     private var parentId: Int? = null
 
     override fun initView() {
-//        addFiles(testFiles)
         initSideEffect()
         initNotice()
         initEmoji()
@@ -277,7 +276,6 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                             setOnClickListener { view ->
                                 systemBarDark(true)
                                 changeVisibleAnimationView(true)
-//                                findViewById<View>(R.id.fragment_image).isVisible = true
                                 mBinding.fragmentImage.isVisible = true
                                 fun addMapFragment() {
                                     childFragmentManager.beginTransaction().apply {
@@ -300,7 +298,6 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
                                 }
                                 addMapFragment()
-//                                findNavController().navigate(R.id.action_detailFragment_to_imageFragment)
                             }
                         }
 
@@ -396,7 +393,6 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 val allAlpha = emojis.sumOf {
                     (it.alpha*10).toInt()
                 }
-                Log.d("TAG", "clickEmoji: $allAlpha")
                 val item = emojis.removeAt(emojiIndex)
                 if (pickEmoji != null) {
                     pickEmoji!!.setCount(
@@ -437,20 +433,6 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 .setDuration(200)
         }
     }
-//`
-//    private fun testData(id: Int, comments: Boolean = false) =
-//        DetailCommentItem(
-//            id = id,
-//            "test",
-//            "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
-//            LocalDateTime.now(),
-//            "testcontent\n알빠노\n라고할뻔",
-//            if (comments) listOf(
-//                testItem,
-//                testItem,
-//                testItem
-//            ) else null
-//        )`
 
     private fun addFiles(
         files: List<FileModel>,
@@ -482,7 +464,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
         if (emoji.length < 6) {
             nowEmoji = "ON_CLICK_${emoji}"
         }
-        Log.d("TAG", "getEmojiIndex: $nowEmoji")
+
         val emojiIndex = when (nowEmoji) {
             ON_CLICK_OKAY -> 0
             ON_CLICK_ANGRY -> 1
@@ -496,18 +478,6 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
     companion object {
         const val emojiAlpha = 0.3f
-        val testFiles = listOf<Triple<String, String, String>>(
-            Triple("테스트 파일", "3 KB", "https://i.pinimg.com/originals/71/03/b9/7103b9cb185aa84b96e7c3ad4e613080.jpg"),
-            Triple("테스트 파일", "3 KB", "https://i.pinimg.com/originals/71/03/b9/7103b9cb185aa84b96e7c3ad4e613080.jpg"),
-            Triple("테스트 파일", "3 KB", "https://i.pinimg.com/originals/71/03/b9/7103b9cb185aa84b96e7c3ad4e613080.jpg")
-        )
-//        val testItem = DetailCommentItem(
-//            id = 3,
-//            "test",
-//            "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
-//            LocalDateTime.now(),
-//            "testcontent\n알빠노\n라고할뻔",
-//            null)
     }
 
 }
