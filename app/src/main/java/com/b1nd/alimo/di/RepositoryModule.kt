@@ -3,12 +3,10 @@ package com.b1nd.alimo.di
 import com.b1nd.alimo.data.remote.service.ExampleService
 import com.b1nd.alimo.data.remote.service.FirebaseTokenService
 import com.b1nd.alimo.data.remote.service.ParentJoinService
-import com.b1nd.alimo.data.remote.service.ParentLoginService
 import com.b1nd.alimo.data.remote.service.TokenService
 import com.b1nd.alimo.data.repository.ExampleRepository
 import com.b1nd.alimo.data.repository.FirebaseTokenRepository
 import com.b1nd.alimo.data.repository.ParentJoinRepository
-import com.b1nd.alimo.data.repository.ParentLoginRepository
 import com.b1nd.alimo.data.repository.TokenRepository
 import dagger.Binds
 import dagger.Module
@@ -39,8 +37,5 @@ interface RepositoryModule {
 
 
 
-    @Singleton
-    @Binds
-    fun provideParentLoginRepository(repository: ParentLoginRepository): ParentLoginService
 
 }
