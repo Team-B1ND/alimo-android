@@ -10,6 +10,7 @@ import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import io.ktor.client.request.post
 import javax.inject.Inject
 
 class ProfileService @Inject constructor(
@@ -27,8 +28,8 @@ class ProfileService @Inject constructor(
         }.body()
 
     suspend fun setAlarmState(value: Boolean): Response =
-        httpClient.delete("/member/alarm-on-off") {
-            parameter("is_off_alarm", value)
+        httpClient.post("/member/alarm") {
+            parameter("status", value)
         }.body()
 
     suspend fun deleteWithdrawal(): BaseResponse<String?> =
