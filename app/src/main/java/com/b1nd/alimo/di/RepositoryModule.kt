@@ -1,13 +1,11 @@
 package com.b1nd.alimo.di
 
-import com.b1nd.alimo.data.remote.service.DodamService
 import com.b1nd.alimo.data.remote.service.ExampleService
 import com.b1nd.alimo.data.remote.service.FirebaseTokenService
 import com.b1nd.alimo.data.remote.service.ParentJoinService
 import com.b1nd.alimo.data.remote.service.ParentLoginService
 import com.b1nd.alimo.data.remote.service.StudentLoginService
 import com.b1nd.alimo.data.remote.service.TokenService
-import com.b1nd.alimo.data.repository.DodamRepository
 import com.b1nd.alimo.data.repository.ExampleRepository
 import com.b1nd.alimo.data.repository.FirebaseTokenRepository
 import com.b1nd.alimo.data.repository.ParentJoinRepository
@@ -45,9 +43,7 @@ interface RepositoryModule {
     @Binds
     fun provideStudentLoginRepository(repository: StudentLoinRepository): StudentLoginService
 
-    @Singleton
-    @Binds
-    fun provideDodamRepository(repository: DodamRepository): DodamService
+
 
     @Singleton
     @Binds
