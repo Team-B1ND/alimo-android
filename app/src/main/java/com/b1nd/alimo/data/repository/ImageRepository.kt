@@ -15,6 +15,7 @@ class ImageRepository @Inject constructor(
         notificationId: Int
     ) = safeFlow<ImageModel> {
         val response = imageService.getNotificationImage(notificationId)
+            .errorCheck()
         emit(Resource.Success(response.data.toModel()))
     }
 }
