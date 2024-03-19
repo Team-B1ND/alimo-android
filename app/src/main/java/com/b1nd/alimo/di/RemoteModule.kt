@@ -11,6 +11,7 @@ import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.response.token.TokenResponse
 import com.b1nd.alimo.data.repository.TokenRepository
 import com.b1nd.alimo.presentation.feature.onboarding.OnboardingActivity
+import com.b1nd.alimo.presentation.utiles.AlimoApplication
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -148,6 +149,10 @@ object RemoteModule {
                                 OnboardingActivity::class.java
                             ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             intent.putExtra("data", "만료")
+                            val nowActivity = (context as AlimoApplication).nowActivity
+                            if (nowActivity.second == "MainActivity") {
+                                nowActivity.first?.finish()
+                            }
                             context.startActivity(
                                 intent
                             )
