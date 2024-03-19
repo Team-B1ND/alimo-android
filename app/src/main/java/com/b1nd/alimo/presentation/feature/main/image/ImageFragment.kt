@@ -45,8 +45,6 @@ class ImageFragment constructor(
         initSideEffect()
         initNotification()
 
-        Log.d("TAG", "initView: $notificationId $itemCount $itemIndex")
-
         bindingViewEvent {
             it.onSuccessEvent {
                 when(it) {
@@ -60,7 +58,6 @@ class ImageFragment constructor(
                             val dialog = ImageChooseDialogFragment(
                                 itemCount = itemCount,
                                 onClickSaveAll = {
-                                    Log.d("TAG", "initPager: saveAll")
                                     items.forEach { item ->
                                         downloadFile(
                                             url = item.fileUrl,
@@ -70,7 +67,6 @@ class ImageFragment constructor(
                                     }
                                 },
                                 onClickSaveThat = {
-                                    Log.d("TAG", "initPager: savaThat")
                                     val item = items[mBinding.pagerImage.currentItem]
                                     downloadFile(
                                         url = item.fileUrl,
@@ -151,7 +147,6 @@ class ImageFragment constructor(
             visibilityChangeLayout()
         }
         mBinding.pagerImage.setOnTouchListener { view, motionEvent ->
-            Log.d("TAG", "initTouch: teest")
             if (motionEvent.action == MotionEvent.ACTION_UP) {
                 visibilityChangeLayout()
             }
