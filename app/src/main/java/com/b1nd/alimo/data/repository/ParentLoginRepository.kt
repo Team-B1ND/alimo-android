@@ -11,7 +11,7 @@ import javax.inject.Inject
 class ParentLoginRepository @Inject constructor(
     private val parentLoginService: ParentLoginService
 ) {
-    fun login(data: ParentLoginRequest) =
+    suspend fun login(data: ParentLoginRequest) =
         safeFlow<ParentLoginModel> {
             val response = parentLoginService.login(data).errorCheck()
             emit(Resource.Success(response.data.toModel()))

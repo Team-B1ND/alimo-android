@@ -11,7 +11,7 @@ import javax.inject.Inject
 class StudentLoinRepository @Inject constructor(
     private val studentLoginService: StudentLoginService
 ) {
-   fun login(data: StudentLoginRequest) =
+   suspend fun login(data: StudentLoginRequest) =
        safeFlow<StudentLoginModel> {
            val response = studentLoginService.login(data).errorCheck()
            emit(

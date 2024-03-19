@@ -12,7 +12,7 @@ import javax.inject.Inject
 class DodamRepository @Inject constructor(
     private val dodamService: DodamService
 ) {
-    fun login(data: DodamRequest) =
+    suspend fun login(data: DodamRequest) =
         safeFlow<DodamModel> {
             val response = dodamService.login(data).errorCheck()
             emit(
