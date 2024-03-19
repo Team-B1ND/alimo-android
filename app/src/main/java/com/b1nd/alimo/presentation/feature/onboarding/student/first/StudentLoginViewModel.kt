@@ -72,9 +72,9 @@ class StudentLoginViewModel @Inject constructor(
                     when (resource) {
                         is Resource.Success -> {
                             // 성공하면 서버에서 받은 AccessToken과 RefreshToken 저장
-                            Log.d("TAG", "login: ${resource.data?.data}")
-                            val token = resource.data?.data?.accessToken
-                            val refreshToken = resource.data?.data?.refreshToken
+                            Log.d("TAG", "login: ${resource.data}")
+                            val token = resource.data?.accessToken
+                            val refreshToken = resource.data?.refreshToken
                             if (token != null && refreshToken != null) {
                                 tokenRepository.insert(token, refreshToken)
                                 _loginState.emit(
@@ -134,9 +134,9 @@ class StudentLoginViewModel @Inject constructor(
                     }
 
                     is Resource.Success -> {
-                        if (resource.data?.data?.location != null) {
+                        if (resource.data?.location != null) {
                             // 데이터에서 코드만 가져와서 저장
-                            val code = resource.data.data.location.split("[=&]".toRegex())[1]
+                            val code = resource.data.location.split("[=&]".toRegex())[1]
                             _dodamCode.emit(DodamState(code))
                             Log.d("TAG", "성공: ${code}")
                         }

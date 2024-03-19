@@ -1,26 +1,21 @@
 package com.b1nd.alimo.data.repository
 
 import com.b1nd.alimo.data.Resource
-import com.b1nd.alimo.data.remote.makeApiPostRequest
+import com.b1nd.alimo.data.model.ParentLoginModel
+import com.b1nd.alimo.data.remote.mapper.toModel
 import com.b1nd.alimo.data.remote.request.ParentLoginRequest
-import com.b1nd.alimo.data.remote.response.BaseResponse
-import com.b1nd.alimo.data.remote.response.onbaording.parent.ParentLoginResponse
+import com.b1nd.alimo.data.remote.safeFlow
 import com.b1nd.alimo.data.remote.service.ParentLoginService
-import com.b1nd.alimo.di.NoTokenHttpClient
-import io.ktor.client.HttpClient
-import io.ktor.client.request.setBody
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ParentLoginRepository @Inject constructor(
-    @NoTokenHttpClient private val httpClient: HttpClient,
-):ParentLoginService {
-    override suspend fun login(data: ParentLoginRequest): Flow<Resource<BaseResponse<ParentLoginResponse>>> =
-        makeApiPostRequest(
-            httpClient = httpClient,
-            endpoint = "/sign-in"
-        ){
-            setBody(data)
+    private val parentLoginService: ParentLoginService
+) {
+    suspend fun login(data: ParentLoginRequest) =
+        safeFlow<ParentLoginModel> {
+            val response = parentLoginService.login(data).errorCheck()
+            emit(Resource.Success(response.data.toModel()))
+
         }
 
 

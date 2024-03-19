@@ -102,6 +102,7 @@ class FirebaseMessageService : FirebaseMessagingService() {
             .setAutoCancel(true) // 알림을 클릭하면 자동으로 닫힘
             .setSound(defaultSoundUri) // 알림 소리
             .setContentIntent(pendingIntent) // 알림 클릭 시 실행될 Intent
+            .setColor(applicationContext.getColor(R.color.Main500))
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

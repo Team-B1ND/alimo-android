@@ -1,23 +1,51 @@
 package com.b1nd.alimo.data.remote.service
 
-import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.remote.request.ParentJoinRequest
 import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.response.Response
 import com.b1nd.alimo.data.remote.response.onbaording.parent.ChildCodeResponse
 import com.b1nd.alimo.data.remote.response.onbaording.parent.MemberNameResponse
 import com.b1nd.alimo.data.remote.response.onbaording.parent.ParentLoginResponse
-import kotlinx.coroutines.flow.Flow
+import com.b1nd.alimo.di.NoTokenHttpClient
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import javax.inject.Inject
 
-interface ParentJoinService {
-    suspend fun singUp(data: ParentJoinRequest): Flow<Resource<Response>>
-
-    suspend fun emailCheck(email: String, code: String): Flow<Resource<BaseResponse<ParentLoginResponse>>>
 
 
-    suspend fun childCode(query: String): Flow<Resource<BaseResponse<ChildCodeResponse>>>
+class ParentJoinService @Inject constructor(
+    @NoTokenHttpClient private val httpClient: HttpClient
+){
+    suspend fun singUp(data: ParentJoinRequest): BaseResponse<Response> =
+        httpClient.post("/sign-up"){
+            setBody(data)
+        }.body()
 
-    suspend fun member(query: String): Flow<Resource<BaseResponse<MemberNameResponse>>>
+    suspend fun emailCheck(email: String, code: String): BaseResponse<ParentLoginResponse> =
+        httpClient.get("/member/emails/verifications"){
+            parameter("email", email)
+            parameter("code", code)
+        }.body()
 
-    suspend fun postEmailsVerification(query: String): Flow<Resource<Response>>
+    suspend fun childCode(query: String): BaseResponse<ChildCodeResponse> =
+        httpClient.post("/verify-childCode"){
+            parameter("child-code", query)
+        }.body()
+
+    suspend fun member(query: String): BaseResponse<MemberNameResponse> =
+        httpClient.get("/member"){
+            parameter("childCode", query)
+        }.body()
+
+    suspend fun postEmailsVerification(query: String): BaseResponse<Response> =
+        httpClient.post("/member/emails/verification-requests"){
+            parameter("email", query)
+        }.body()
+
+
+
 }

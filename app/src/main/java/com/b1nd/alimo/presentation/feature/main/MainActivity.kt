@@ -8,6 +8,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.ActivityMainBinding
 import com.b1nd.alimo.presentation.base.BaseActivity
+import com.b1nd.alimo.presentation.utiles.AlimoApplication
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,5 +27,15 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     fun bottomVisible(state: Boolean) {
         Log.d("TAG", "bottomVisible: $state")
         mBinding.navBottom.visibility = if (state) View.VISIBLE else View.GONE
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        (application as AlimoApplication).setActivity(this, "MainActivity")
+    }
+
+    override fun onStop() {
+        super.onStop()
     }
 }
