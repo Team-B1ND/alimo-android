@@ -3,7 +3,6 @@ package com.b1nd.alimo.presentation.feature.main.detail
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.data.Resource
-import com.b1nd.alimo.data.model.CommentModel
 import com.b1nd.alimo.data.model.DetailNotificationModel
 import com.b1nd.alimo.data.model.EmojiModel
 import com.b1nd.alimo.data.repository.DetailRepository
@@ -13,13 +12,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,7 +41,7 @@ class DetailViewModel @Inject constructor(
         ).collectLatest {
             when(it) {
                 is Resource.Success -> {
-                    _notificationState.value = it.data?.data
+                    _notificationState.value = it.data
                 }
                 is Resource.Loading -> {
 
@@ -64,10 +61,6 @@ class DetailViewModel @Inject constructor(
         ).collectLatest {
             when(it) {
                 is Resource.Success -> {
-                    if ((it.data?.status ?: 500) == 500) {
-                        _sideEffect.send(DetailSideEffect.FailedChangeBookmark(it.error?: Throwable()))
-                        return@collectLatest
-                    }
                     _sideEffect.send(DetailSideEffect.SuccessChangeBookmark)
                 }
                 is Resource.Loading -> {}
@@ -86,7 +79,7 @@ class DetailViewModel @Inject constructor(
         ).collectLatest {
             when(it) {
                 is Resource.Success -> {
-                    _emojiState.value = it.data?.data?: emptyList()
+                    _emojiState.value = it.data ?: emptyList()
                 }
                 is Resource.Loading -> {}
                 is Resource.Error -> {
@@ -116,17 +109,6 @@ class DetailViewModel @Inject constructor(
                 }
             }
         }
-    }
-    fun test() = launchIO {
-        delay(3000)
-        val testComment = _notificationState.value?.comments?: emptyList()
-        val e = testComment.toMutableList().apply {
-            add(CommentModel(0, "", "", LocalDateTime.now(), "", emptyList()))
-        }
-        _notificationState.value = _notificationState.value?.copy(
-            comments = e
-        )
-
     }
 
     fun postSend(
