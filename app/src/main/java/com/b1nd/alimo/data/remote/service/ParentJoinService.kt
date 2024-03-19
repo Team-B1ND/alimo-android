@@ -15,23 +15,12 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import javax.inject.Inject
 
-//interface ParentJoinService {
-//    suspend fun singUp(data: ParentJoinRequest): Flow<Resource<Response>>
-//
-//    suspend fun emailCheck(email: String, code: String): Flow<Resource<BaseResponse<ParentLoginResponse>>>
-//
-//
-//    suspend fun childCode(query: String): Flow<Resource<BaseResponse<ChildCodeResponse>>>
-//
-//    suspend fun member(query: String): Flow<Resource<BaseResponse<MemberNameResponse>>>
-//
-//    suspend fun postEmailsVerification(query: String): Flow<Resource<Response>>
-//}
+
 
 class ParentJoinService @Inject constructor(
     @NoTokenHttpClient private val httpClient: HttpClient
 ){
-    suspend fun singUp(data: ParentJoinRequest): Response =
+    suspend fun singUp(data: ParentJoinRequest): BaseResponse<Response> =
         httpClient.post("/sign-up"){
             setBody(data)
         }.body()
@@ -52,7 +41,7 @@ class ParentJoinService @Inject constructor(
             parameter("childCode", query)
         }.body()
 
-    suspend fun postEmailsVerification(query: String): Response =
+    suspend fun postEmailsVerification(query: String): BaseResponse<Response> =
         httpClient.post("/member/emails/verification-requests"){
             parameter("email", query)
         }.body()

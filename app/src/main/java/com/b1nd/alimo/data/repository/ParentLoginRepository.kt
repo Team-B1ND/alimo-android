@@ -13,7 +13,7 @@ class ParentLoginRepository @Inject constructor(
 ) {
     fun login(data: ParentLoginRequest) =
         safeFlow<ParentLoginModel> {
-            val response = parentLoginService.login(data)
+            val response = parentLoginService.login(data).errorCheck()
             emit(Resource.Success(response.data.toModel()))
 
         }

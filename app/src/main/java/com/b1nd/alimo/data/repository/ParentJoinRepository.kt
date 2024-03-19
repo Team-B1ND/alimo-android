@@ -18,14 +18,14 @@ class ParentJoinRepository @Inject constructor(
         safeFlow<ResponseModel> {
             val response = parentJoinService.singUp(data)
             emit(
-                Resource.Success(response.toModel())
+                Resource.Success(response.data.toModel())
             )
         }
 
 
     fun emailCheck(email: String, code: String)=
         safeFlow<ParentLoginModel> {
-            val response = parentJoinService.emailCheck(email, code)
+            val response = parentJoinService.emailCheck(email, code).errorCheck()
             emit(
                 Resource.Success(response.data.toModel())
             )
@@ -33,14 +33,14 @@ class ParentJoinRepository @Inject constructor(
 
     fun childCode(query: String) =
         safeFlow<ParentJoinFirstModel> {
-            val response = parentJoinService.childCode(query)
+            val response = parentJoinService.childCode(query).errorCheck()
             emit(
                 Resource.Success(response.data.toModel())
             )
         }
     fun member(query: String) =
         safeFlow<MemberNameModel> {
-            val response = parentJoinService.member(query)
+            val response = parentJoinService.member(query).errorCheck()
             emit(
                 Resource.Success(response.data.toModel())
             )
@@ -49,9 +49,10 @@ class ParentJoinRepository @Inject constructor(
         safeFlow<ResponseModel> {
             val response = parentJoinService.postEmailsVerification(query)
             emit(
-                Resource.Success(response.toModel())
+                Resource.Success(response.data.toModel())
             )
         }
+
 
 
 }
