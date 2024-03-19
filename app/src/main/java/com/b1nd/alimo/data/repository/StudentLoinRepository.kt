@@ -1,6 +1,5 @@
 package com.b1nd.alimo.data.repository
 
-import android.util.Log
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.StudentLoginModel
 import com.b1nd.alimo.data.remote.mapper.toModel
@@ -14,8 +13,7 @@ class StudentLoinRepository @Inject constructor(
 ) {
    fun login(data: StudentLoginRequest) =
        safeFlow<StudentLoginModel> {
-           val response = studentLoginService.login(data)
-           Log.d("TAG", "login: ${response.data}")
+           val response = studentLoginService.login(data).errorCheck()
            emit(
                Resource.Success(
                    response.data.toModel()

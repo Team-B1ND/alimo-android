@@ -14,7 +14,7 @@ class DodamRepository @Inject constructor(
 ) {
     fun login(data: DodamRequest) =
         safeFlow<DodamModel> {
-            val response = dodamService.login(data)
+            val response = dodamService.login(data).errorCheck()
             emit(
                 Resource.Success(
                     response.data.toModel()
