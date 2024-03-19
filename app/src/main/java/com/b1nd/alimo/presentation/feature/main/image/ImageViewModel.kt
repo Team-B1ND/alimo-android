@@ -56,9 +56,5 @@ class ImageViewModel @Inject constructor(
     companion object {
         const val ON_CLICK_BACK = "ON_CLICK_BACK"
         const val ON_CLICK_DOWNLOAD = "ON_CLICK_DOWNLOAD"
-
-
-        const val NOT_BOOKMARK = "NOT_BOOKMARK"
-        const val BOOKMARK = "BOOKMARK"
     }
 }

@@ -18,7 +18,6 @@ class ImageViewPagerAdapter(
     override fun getItemCount(): Int = imageList.size
 
     override fun onBindViewHolder(holder: PagerViewHolder, position: Int) {
-//        holder.idol.setImageResource(item[position])
         val item = imageList[position]
         holder.binding.run {
             imageContent.loadNotCropImage(item.fileUrl)
