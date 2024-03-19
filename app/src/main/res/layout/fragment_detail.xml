@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
+        <import type="android.view.View"/>
         <variable
             name="vm"
             type="com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel"/>
@@ -59,6 +60,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="12dp"
                     android:layout_marginTop="19dp"
+                    android:visibility="@{vm.state.loading ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@id/image_profile"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -70,6 +72,7 @@
                     android:layout_height="wrap_content"
                     android:text="테스트"
                     android:textColor="@color/Gray600"
+                    android:visibility="@{vm.state.loading ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintTop_toBottomOf="@id/text_title"
                     app:layout_constraintStart_toStartOf="@id/text_title"
                     style="@style/text_caption" />
@@ -86,6 +89,7 @@
                     android:textColor="@color/Main900"
                     android:autoLink="web"
                     android:linksClickable="true"
+                    android:visibility="@{vm.state.loading ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintTop_toBottomOf="@id/text_author"
                     app:layout_constraintStart_toStartOf="@id/text_author"
                     app:layout_constraintEnd_toEndOf="@id/text_title"
@@ -135,6 +139,7 @@
                     android:layout_marginTop="12dp"
                     android:text="2023년 1월 33일 오후 25:3"
                     android:textColor="@color/Gray500"
+                    android:visibility="@{vm.state.loading ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintStart_toStartOf="@id/text_title"
                     app:layout_constraintTop_toBottomOf="@id/layout_files"
                     style="@style/text_cute"/>
@@ -149,6 +154,7 @@
                     android:background="@drawable/ripple_white"
                     android:tag="@{vm.NOT_BOOKMARK}"
                     android:src="@drawable/ic_not_bookmark"
+                    android:visibility="@{vm.state.loading ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintTop_toBottomOf="@id/text_date"
                     app:layout_constraintEnd_toEndOf="@id/text_title"/>
                 <com.google.android.material.divider.MaterialDivider
@@ -164,6 +170,7 @@
                     android:layout_marginTop="12dp"
                     android:layout_marginHorizontal="8dp"
                     android:background="@drawable/shape_gray100_4"
+                    android:visibility="@{vm.state.loading ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintTop_toBottomOf="@id/divider_emoji"
                     app:layout_constraintStart_toStartOf="@id/image_profile"
                     app:layout_constraintEnd_toEndOf="@id/text_title">

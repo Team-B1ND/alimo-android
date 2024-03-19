@@ -3,7 +3,6 @@ package com.b1nd.alimo.presentation.feature.main.detail
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.data.Resource
-import com.b1nd.alimo.data.model.DetailNotificationModel
 import com.b1nd.alimo.data.model.EmojiModel
 import com.b1nd.alimo.data.repository.DetailRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
@@ -24,8 +23,8 @@ class DetailViewModel @Inject constructor(
    private val detailRepository: DetailRepository
 ): BaseViewModel() {
 
-    private val _notificationState = MutableStateFlow<DetailNotificationModel?>(null)
-    val notificationState = _notificationState.asStateFlow()
+    private val _state = MutableStateFlow(DetailState())
+    val state = _state.asStateFlow()
 
     private val _emojiState = MutableStateFlow<List<EmojiModel>>(emptyList())
     val emojiState = _emojiState.asStateFlow()
@@ -41,7 +40,10 @@ class DetailViewModel @Inject constructor(
         ).collectLatest {
             when(it) {
                 is Resource.Success -> {
-                    _notificationState.value = it.data
+                    _state.value = _state.value.copy(
+                        isLoading = false,
+                        notificationState = it.data
+                    )
                 }
                 is Resource.Loading -> {
 
@@ -79,7 +81,7 @@ class DetailViewModel @Inject constructor(
         ).collectLatest {
             when(it) {
                 is Resource.Success -> {
-                    _emojiState.value = it.data ?: emptyList()
+                    _emojiState.value =  it.data ?: emptyList()
                 }
                 is Resource.Loading -> {}
                 is Resource.Error -> {

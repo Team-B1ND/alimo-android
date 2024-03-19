@@ -1,5 +1,14 @@
 package com.b1nd.alimo.presentation.feature.main.detail
 
+import com.b1nd.alimo.data.model.DetailNotificationModel
+import com.b1nd.alimo.data.model.EmojiModel
+
+data class DetailState(
+    val isLoading: Boolean = true,
+    val notificationState: DetailNotificationModel? = null,
+    val emojiState: List<EmojiModel> = emptyList()
+)
+
 sealed class DetailSideEffect {
     data object SuccessChangeBookmark: DetailSideEffect()
     data object SuccessAddComment: DetailSideEffect()

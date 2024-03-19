@@ -34,6 +34,7 @@ import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_SEND
 import com.b1nd.alimo.presentation.feature.main.image.ImageFragment
 import com.b1nd.alimo.presentation.utiles.collectFlow
+import com.b1nd.alimo.presentation.utiles.collectStateFlow
 import com.b1nd.alimo.presentation.utiles.downloadFile
 import com.b1nd.alimo.presentation.utiles.getResourceString
 import com.b1nd.alimo.presentation.utiles.loadImage
@@ -59,9 +60,9 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
     override fun initView() {
         initSideEffect()
-        initNotice()
-        initEmoji()
         initTouch()
+        initEmoji()
+        initNotice()
 
         bindingViewEvent { event ->
             event.onSuccessEvent {
@@ -192,7 +193,8 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
     private fun initEmoji() {
         viewModel.loadEmoji(args.id)
-        collectFlow(viewModel.emojiState) {
+
+        collectStateFlow(viewModel.emojiState) {
             mBinding.run {
                 val emojis = mutableListOf(
                     imageOkay,
@@ -247,11 +249,11 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     private fun initNotice() {
         viewModel.loadNotification(args.id)
 
-        collectFlow(viewModel.notificationState) {
+        collectStateFlow(viewModel.state) { state ->
             mBinding.run {
                 parentId = null
                 textParentCommenter.visibility = View.GONE
-                it?.let {
+                state.notificationState?.let {
                     Log.d("TAG", "initNotice: ${it.emoji}")
                     textTitle.text = it.title
                     textAuthor.text = it.member
