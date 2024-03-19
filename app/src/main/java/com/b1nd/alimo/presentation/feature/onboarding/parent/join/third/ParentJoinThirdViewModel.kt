@@ -40,8 +40,8 @@ class ParentJoinThirdViewModel @Inject constructor(
                 when(resource){
                     is Resource.Success ->{
                         Log.d("TAG", "성공: ${resource.data}")
-                        val token = resource.data?.data?.accessToken
-                        val refreshToken = resource.data?.data?.refreshToken
+                        val token = resource.data?.accessToken
+                        val refreshToken = resource.data?.refreshToken
                         // 성공시 토큰 저장
                         if (token != null && refreshToken != null) {
                             tokenRepository.insert(token, refreshToken)

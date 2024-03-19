@@ -3,6 +3,7 @@ package com.b1nd.alimo.presentation.feature.onboarding.second
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -27,9 +28,10 @@ class OnboardingSecondFragment :
 
     override fun initView() {
         // RefreshToken 만료됐다면 SnackBar Show
+        Log.d("TAG", "initView: ${args.token}")
         if (args.token == "만료") {
             requireContext().shortToast("세션이 만료되었습니다")
-            viewModel.tokenReset()
+//            viewModel.tokenReset()
         }
 
 
