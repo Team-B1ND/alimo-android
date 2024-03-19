@@ -34,6 +34,7 @@ import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_SEND
 import com.b1nd.alimo.presentation.feature.main.image.ImageFragment
 import com.b1nd.alimo.presentation.utiles.collectFlow
+import com.b1nd.alimo.presentation.utiles.collectStateFlow
 import com.b1nd.alimo.presentation.utiles.downloadFile
 import com.b1nd.alimo.presentation.utiles.getResourceString
 import com.b1nd.alimo.presentation.utiles.loadImage
@@ -58,11 +59,10 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     private var parentId: Int? = null
 
     override fun initView() {
-//        addFiles(testFiles)
         initSideEffect()
-        initNotice()
-        initEmoji()
         initTouch()
+        initEmoji()
+        initNotice()
 
         bindingViewEvent { event ->
             event.onSuccessEvent {
@@ -193,7 +193,8 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
     private fun initEmoji() {
         viewModel.loadEmoji(args.id)
-        collectFlow(viewModel.emojiState) {
+
+        collectStateFlow(viewModel.emojiState) {
             mBinding.run {
                 val emojis = mutableListOf(
                     imageOkay,
@@ -248,11 +249,11 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     private fun initNotice() {
         viewModel.loadNotification(args.id)
 
-        collectFlow(viewModel.notificationState) {
+        collectStateFlow(viewModel.state) { state ->
             mBinding.run {
                 parentId = null
                 textParentCommenter.visibility = View.GONE
-                it?.let {
+                state.notificationState?.let {
                     Log.d("TAG", "initNotice: ${it.emoji}")
                     textTitle.text = it.title
                     textAuthor.text = it.member
@@ -277,7 +278,6 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                             setOnClickListener { view ->
                                 systemBarDark(true)
                                 changeVisibleAnimationView(true)
-//                                findViewById<View>(R.id.fragment_image).isVisible = true
                                 mBinding.fragmentImage.isVisible = true
                                 fun addMapFragment() {
                                     childFragmentManager.beginTransaction().apply {
@@ -300,7 +300,6 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
                                 }
                                 addMapFragment()
-//                                findNavController().navigate(R.id.action_detailFragment_to_imageFragment)
                             }
                         }
 
@@ -396,7 +395,6 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 val allAlpha = emojis.sumOf {
                     (it.alpha*10).toInt()
                 }
-                Log.d("TAG", "clickEmoji: $allAlpha")
                 val item = emojis.removeAt(emojiIndex)
                 if (pickEmoji != null) {
                     pickEmoji!!.setCount(
@@ -437,20 +435,6 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 .setDuration(200)
         }
     }
-//`
-//    private fun testData(id: Int, comments: Boolean = false) =
-//        DetailCommentItem(
-//            id = id,
-//            "test",
-//            "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
-//            LocalDateTime.now(),
-//            "testcontent\n알빠노\n라고할뻔",
-//            if (comments) listOf(
-//                testItem,
-//                testItem,
-//                testItem
-//            ) else null
-//        )`
 
     private fun addFiles(
         files: List<FileModel>,
@@ -482,7 +466,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
         if (emoji.length < 6) {
             nowEmoji = "ON_CLICK_${emoji}"
         }
-        Log.d("TAG", "getEmojiIndex: $nowEmoji")
+
         val emojiIndex = when (nowEmoji) {
             ON_CLICK_OKAY -> 0
             ON_CLICK_ANGRY -> 1
@@ -496,18 +480,6 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
     companion object {
         const val emojiAlpha = 0.3f
-        val testFiles = listOf<Triple<String, String, String>>(
-            Triple("테스트 파일", "3 KB", "https://i.pinimg.com/originals/71/03/b9/7103b9cb185aa84b96e7c3ad4e613080.jpg"),
-            Triple("테스트 파일", "3 KB", "https://i.pinimg.com/originals/71/03/b9/7103b9cb185aa84b96e7c3ad4e613080.jpg"),
-            Triple("테스트 파일", "3 KB", "https://i.pinimg.com/originals/71/03/b9/7103b9cb185aa84b96e7c3ad4e613080.jpg")
-        )
-//        val testItem = DetailCommentItem(
-//            id = 3,
-//            "test",
-//            "https://static.wikia.nocookie.net/iandyou/images/c/cc/IU_profile.jpeg/revision/latest?cb=20210730145437",
-//            LocalDateTime.now(),
-//            "testcontent\n알빠노\n라고할뻔",
-//            null)
     }
 
 }
