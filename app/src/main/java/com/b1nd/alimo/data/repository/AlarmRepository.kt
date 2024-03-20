@@ -1,16 +1,17 @@
 package com.b1nd.alimo.data.repository
 
-import com.b1nd.alimo.data.remote.service.AlarmService
+import android.content.SharedPreferences
 import javax.inject.Inject
 
 
 class AlarmRepository @Inject constructor(
-    private val alarmService: AlarmService
+    private val sharedPreferences: SharedPreferences
 ){
-    suspend fun getAlarmState() =
-        alarmService.getAlarmState()
+    fun getAlarmState(): Boolean =
+        sharedPreferences.getBoolean("alarm", false) ?: true
 
 
-    suspend fun setAlarmState(value: Boolean) =
-        alarmService.setAlarmState(value)
+    fun setAlarmState(value: Boolean) =
+        sharedPreferences.edit().putBoolean("alarm", value).apply()
+
 }
