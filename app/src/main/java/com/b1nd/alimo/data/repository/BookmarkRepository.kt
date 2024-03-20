@@ -29,18 +29,16 @@ class BookmarkRepository @Inject constructor(
         postService.patchEmoji(
             notificationId = notificationId,
             emoji = emoji
-        ).apply {
-            errorCheck()
-        }
+        ).errorCheck()
         emit(Resource.Success(null))
     }
 
     suspend fun patchBookmark(
         notificationId: Int
     ) = safeFlow<String?> {
-        postService.pathBookmark(notificationId).apply {
-            errorCheck()
-        }
+        postService.pathBookmark(
+            notificationId = notificationId
+        ).errorCheck()
         emit(Resource.Success(null))
     }
 }
