@@ -10,6 +10,7 @@ import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentBookmarkBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.main.post.PostRecyclerAdapter
+import com.b1nd.alimo.presentation.utiles.Env
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.shortToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,7 +58,7 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
             when(it) {
                 is BookmarkSideEffect.NetworkError -> {
                     lifecycleScope.launch(Dispatchers.Main) {
-                        requireContext().shortToast("네트워크가 연결되지 않았습니다.")
+                        requireContext().shortToast(Env.NETWORK_ERROR_MESSAGE)
                     }
                 }
                 is BookmarkSideEffect.FailedChangeBookmark -> {
