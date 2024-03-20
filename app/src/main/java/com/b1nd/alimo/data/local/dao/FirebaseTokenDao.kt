@@ -11,7 +11,7 @@ import com.b1nd.alimo.presentation.utiles.Env
 interface FirebaseTokenDao: BaseDao<FirebaseTokenEntity> {
 
     @Query("SELECT * FROM ${Env.FirebaseTokenTable} WHERE idx = 0")
-    suspend fun getToken(): FirebaseTokenEntity
+    suspend fun getToken(): FirebaseTokenEntity?
 
     @Query("DELETE FROM ${Env.FirebaseTokenTable}")
     suspend fun deleteToken()
