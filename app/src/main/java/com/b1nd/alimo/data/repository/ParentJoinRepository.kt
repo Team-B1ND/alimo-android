@@ -14,7 +14,7 @@ import javax.inject.Inject
 class ParentJoinRepository @Inject constructor(
     private val parentJoinService: ParentJoinService
 ){
-    fun singUp(data: ParentJoinRequest) =
+    suspend fun singUp(data: ParentJoinRequest) =
         safeFlow<ResponseModel> {
             val response = parentJoinService.singUp(data)
             emit(
@@ -23,7 +23,7 @@ class ParentJoinRepository @Inject constructor(
         }
 
 
-    fun emailCheck(email: String, code: String)=
+    suspend fun emailCheck(email: String, code: String)=
         safeFlow<ParentLoginModel> {
             val response = parentJoinService.emailCheck(email, code).errorCheck()
             emit(
@@ -31,21 +31,21 @@ class ParentJoinRepository @Inject constructor(
             )
         }
 
-    fun childCode(query: String) =
+    suspend fun childCode(query: String) =
         safeFlow<ParentJoinFirstModel> {
             val response = parentJoinService.childCode(query).errorCheck()
             emit(
                 Resource.Success(response.data.toModel())
             )
         }
-    fun member(query: String) =
+    suspend fun member(query: String) =
         safeFlow<MemberNameModel> {
             val response = parentJoinService.member(query).errorCheck()
             emit(
                 Resource.Success(response.data.toModel())
             )
         }
-    fun postEmailsVerification(query: String) =
+    suspend fun postEmailsVerification(query: String) =
         safeFlow<ResponseModel> {
             val response = parentJoinService.postEmailsVerification(query)
             emit(
