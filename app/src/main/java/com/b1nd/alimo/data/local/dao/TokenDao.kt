@@ -10,7 +10,7 @@ import com.b1nd.alimo.presentation.utiles.Env
 interface TokenDao: BaseDao<TokenEntity> {
 
     @Query("SELECT * FROM ${Env.TokenTable} WHERE idx = 0")
-    suspend fun getToken(): TokenEntity
+    suspend fun getToken(): TokenEntity?
 
     @Query("DELETE FROM ${Env.TokenTable}")
     suspend fun deleteToken()
