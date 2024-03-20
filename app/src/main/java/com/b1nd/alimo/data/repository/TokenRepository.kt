@@ -1,26 +1,31 @@
 package com.b1nd.alimo.data.repository
 
+import com.b1nd.alimo.data.Resource
+import com.b1nd.alimo.data.local.dao.TokenDao
+import com.b1nd.alimo.data.local.entity.TokenEntity
 import com.b1nd.alimo.data.model.TokenModel
+import com.b1nd.alimo.data.remote.mapper.toModel
 import com.b1nd.alimo.data.remote.safeFlow
-import com.b1nd.alimo.data.remote.service.TokenService
 import javax.inject.Inject
 
 class TokenRepository @Inject constructor(
-    private val tokenService: TokenService
+    private val tokenDao: TokenDao
 ){
     suspend fun getToken() =
         safeFlow<TokenModel> {
-            val token = tokenService.getToken()
+            val token = Resource.Success(tokenDao.getToken().toModel())
+
             emit(token)
-    }
+        }
 
 
     suspend fun insert(token: String, refreshToken: String) {
-        tokenService.insert(token = token, refreshToken = refreshToken)
+        val token = TokenEntity(token = token, refreshToken = refreshToken)
+        tokenDao.insert(token)
     }
 
     suspend fun deleteToken() {
-        tokenService.deleteToken()
+        tokenDao.deleteToken()
     }
 
 
