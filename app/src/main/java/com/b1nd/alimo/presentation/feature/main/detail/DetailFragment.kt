@@ -10,6 +10,7 @@ import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.allViews
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -42,6 +43,7 @@ import com.b1nd.alimo.presentation.utiles.loadNotCropImage
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import com.b1nd.alimo.presentation.utiles.systemBarDark
 import com.b1nd.alimo.presentation.utiles.toDateString
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -100,6 +102,13 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
         super.onResume()
         (requireActivity() as? MainActivity)?.bottomVisible(false)
         changeVisibleAnimationView(false)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        for (i in mBinding.layoutImageContent.allViews) {
+            Glide.with(requireContext()).clear(i)
+        }
     }
 
     private fun changeVisibleAnimationView(visible: Boolean) {
