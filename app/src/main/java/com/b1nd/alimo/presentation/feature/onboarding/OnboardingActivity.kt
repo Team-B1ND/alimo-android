@@ -2,13 +2,11 @@ package com.b1nd.alimo.presentation.feature.onboarding
 
 import android.content.pm.PackageManager
 import androidx.activity.viewModels
-import com.b1nd.alimo.BuildConfig
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.ActivityOnboardingBinding
 import com.b1nd.alimo.presentation.base.BaseActivity
 import com.b1nd.alimo.presentation.utiles.AlimoApplication
 import dagger.hilt.android.AndroidEntryPoint
-import kr.hs.dgsw.smartschool.dodamdodam.dauth.DAuth.settingDAuth
 
 @AndroidEntryPoint
 class OnboardingActivity:BaseActivity<ActivityOnboardingBinding, OnboardingViewModel>(R.layout.activity_onboarding) {
@@ -17,23 +15,16 @@ class OnboardingActivity:BaseActivity<ActivityOnboardingBinding, OnboardingViewM
     override fun initView() {
 //        TODO("Not yet implemented")
     }
-
-    // DAuth 설정
+    
+    // 토큰 에러 설정
     override fun onStart() {
         super.onStart()
-//        super.onStart()
-
         (application as AlimoApplication).setActivity(this, "OnboardingActivity")
-//        (application as AlimoApplication).nowActivity.first?.finish()
-        settingDAuth(
-            BuildConfig.CLIENT_ID,
-            BuildConfig.CLIENT_SECRET,
-            BuildConfig.REDIRECT_URL)
+
     }
 
     override fun onStop() {
         super.onStop()
-//        viewModel.finishActivity("OnboardingActivity")
     }
 
     override fun onRequestPermissionsResult(

@@ -98,9 +98,6 @@ dependencies {
     implementation ("com.google.firebase:firebase-messaging")
     implementation ("com.google.firebase:firebase-analytics")
 
-    // dodam
-    implementation ("com.github.Team-B1ND:dauth-android:1.0.5")
-
     // circle
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
