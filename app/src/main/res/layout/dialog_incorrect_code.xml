@@ -2,6 +2,11 @@
 <layout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="vm"
+            type="com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.IncorrectCodeViewModel" />
+    </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -53,6 +58,7 @@
                 android:background="@drawable/ripple_gray100_12"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="@{() -> vm.onClickClose()}"
                 app:layout_constraintTop_toBottomOf="@id/text_share"
                 app:layout_constraintEnd_toEndOf="parent">
                 <TextView

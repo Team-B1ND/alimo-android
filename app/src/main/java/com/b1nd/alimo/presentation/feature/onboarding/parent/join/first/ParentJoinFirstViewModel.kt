@@ -30,7 +30,8 @@ class ParentJoinFirstViewModel @Inject constructor(
             }.collectLatest {resource ->
                 when(resource){
                     is Resource.Error ->{
-                        Log.d("TAG", "실패: ")
+                        val newEffect = ParentJoinFirstState(null)
+                        _trueFalse.emit(newEffect)
                     }
                     is Resource.Success ->{
                         val newEffect = ParentJoinFirstState(resource.data)

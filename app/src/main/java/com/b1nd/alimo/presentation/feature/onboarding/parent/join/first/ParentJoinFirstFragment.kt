@@ -32,13 +32,14 @@ class ParentJoinFirstFragment :
         R.layout.fragment_parent_join_first
     ) {
     override val viewModel: ParentJoinFirstViewModel by viewModels()
-    private val dialog: IncorrectCodeDialog = IncorrectCodeDialog()
+    private val dialog: IncorrectCodeDialog by lazy {
+        IncorrectCodeDialog()
+    }
     private val editTextList = mutableListOf<EditText>()
 
 
     override fun initView() {
 //        findNavController().popBackStack(R.id.parentLoginFirst, false)
-
         lifecycleScope.launch {
             // 학생코드가 올바른 지 확인
             viewModel.trueFalse.collect { studentCode ->
@@ -46,7 +47,7 @@ class ParentJoinFirstFragment :
                 // 올바르지 않다면 리턴
                 if (d?.memberId == null) {
                     Log.d("TAG", "initView: member id is null")
-                    dialog.show(requireActivity().supportFragmentManager, "올바르지 않은 학생코드")
+                    dialog.show(childFragmentManager, "올바르지 않은 학생코드")
                     return@collect
                 }
                 Log.d("TAG", "initView: ${getChildCode()} ${d.memberId} ")
