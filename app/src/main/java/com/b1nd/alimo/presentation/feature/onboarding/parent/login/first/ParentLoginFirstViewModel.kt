@@ -11,10 +11,12 @@ import com.b1nd.alimo.presentation.base.BaseViewModel
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.LoginModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,21 +30,25 @@ class ParentLoginFirstViewModel @Inject constructor(
     private var _loginState = MutableSharedFlow<LoginModel>()
     val loginState: SharedFlow<LoginModel> = _loginState
 
-    private var _fcmToken = MutableSharedFlow<String>(replay = 0)
+    private var _fcmToken = MutableSharedFlow<String>()
     val fcmToken : SharedFlow<String> = _fcmToken
+
+    private var _parentLoginSideEffect = Channel<ParentLoginSideEffect>()
+    val parentLoginSideEffect = _parentLoginSideEffect.receiveAsFlow()
 
     // 학부모 로그인 기능
     fun login(email:String, password:String){
         viewModelScope.launch(Dispatchers.IO) {
             Log.d("TAG", "login: 시작2")
             firebaseTokenRepository.getToken().catch {
-                Log.d("TAG", "login: $it")
+                _parentLoginSideEffect.send(ParentLoginSideEffect.FailedLoad(it))
             }.collectLatest {
                 when(it){
                     is Resource.Success ->{
                         _fcmToken.emit(it.data?.fcmToken.toString())
                     }
                     is Resource.Error -> {
+                        _parentLoginSideEffect.send(ParentLoginSideEffect.FailedLoadFcmToken(it.error ?:Throwable()))
                         Log.d("TAG", "에러 login: ${it.error}")
                     }
                     is Resource.Loading ->{
@@ -60,6 +66,7 @@ class ParentLoginFirstViewModel @Inject constructor(
                     fcmToken = fcmToken.toString()
                 )
             ).catch {
+                _parentLoginSideEffect.send(ParentLoginSideEffect.FailedLoad(it))
                 Log.d("TAG", "login: ${it.message}")
             }.collectLatest { resource ->
                 when (resource) {
@@ -81,6 +88,7 @@ class ParentLoginFirstViewModel @Inject constructor(
                     }
 
                     is Resource.Error -> {
+                        _parentLoginSideEffect.send(ParentLoginSideEffect.FailedLogin(resource.error ?:Throwable()))
                         Log.d("TAG", "login: 실패 ${resource.error}")
                     }
 
