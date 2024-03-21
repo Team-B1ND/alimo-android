@@ -13,11 +13,13 @@ import com.b1nd.alimo.data.repository.TokenRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
 import javax.inject.Inject
@@ -36,6 +38,10 @@ class StudentLoginViewModel @Inject constructor(
     private var _loginState = MutableSharedFlow<LoginModel>()
     val loginState: SharedFlow<LoginModel> = _loginState
 
+
+    private var _studentLoginSideEffect = Channel<StudentLoginSideEffect>()
+    val studentLoginSideEffect = _studentLoginSideEffect.receiveAsFlow()
+
     // 학생 로그인 기능
     fun login(code: String) {
         Log.d("TAG", "login: 시작")
@@ -44,6 +50,7 @@ class StudentLoginViewModel @Inject constructor(
             // FcmToken 저장
             var fcmToken = ""
             firebaseTokenRepository.getToken().catch {
+                _studentLoginSideEffect.send(StudentLoginSideEffect.FailedLoad(it))
                 Log.d("TAG", "login: $it dxc")
             }.collect{
                 when(it){
@@ -51,6 +58,7 @@ class StudentLoginViewModel @Inject constructor(
                         fcmToken = it.data?.fcmToken.toString()
                     }
                     is Resource.Error ->{
+                        _studentLoginSideEffect.send(StudentLoginSideEffect.FailedLogin(it.error ?: Throwable()))
                         Log.d("TAG", "login error:  ${it.error}")
                     }
                     is Resource.Loading ->{
@@ -123,10 +131,12 @@ class StudentLoginViewModel @Inject constructor(
                     redirectUrl = BuildConfig.REDIRECT_URL
                 )
             ).catch {
+                _studentLoginSideEffect.send(StudentLoginSideEffect.FailedLoad(it))
                 Log.d("TAG", "checkStudentCode: ${it.message}")
             }.collectLatest { resource ->
                 when (resource) {
                     is Resource.Error -> {
+                        _studentLoginSideEffect.send(StudentLoginSideEffect.FailedDAuth(resource.error ?: Throwable()))
                         Log.d("TAG", "실패: ${resource.error}")
                         _dodamCode.emit(DodamState(
                             error = "${resource.error}"
