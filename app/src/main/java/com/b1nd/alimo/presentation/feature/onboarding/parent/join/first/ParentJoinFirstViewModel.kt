@@ -25,7 +25,7 @@ class ParentJoinFirstViewModel @Inject constructor(
     val trueFalse: SharedFlow<ParentJoinFirstModel> = _trueFalse.asSharedFlow()
 
     private val _parentJoinSideEffect = Channel<ParentJoinFirstSideEffect>()
-    val parentJoinSideEffect = _parentJoinSideEffect.receiveAsFlow()
+    val parentJoinFirstSideEffect = _parentJoinSideEffect.receiveAsFlow()
 
     // 학생 코드 인증
     fun checkStudentCode(studentCode: String){

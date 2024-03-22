@@ -240,7 +240,7 @@ class ParentJoinFirstFragment :
     }
 
     private fun initSideEffect() {
-        collectFlow(viewModel.parentJoinSideEffect) {
+        collectFlow(viewModel.parentJoinFirstSideEffect) {
             when(it) {
                 is ParentJoinFirstSideEffect.FailedLoad ->{
 
