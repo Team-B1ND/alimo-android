@@ -51,7 +51,7 @@ class ParentJoinRepository @Inject constructor(
         safeFlow<ResponseModel> {
             val response = parentJoinService.postEmailsVerification(query)
             emit(
-                Resource.Success(response.data.toModel())
+                Resource.Success(ResponseModel(response.status, response.message))
             )
         }
 

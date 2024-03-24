@@ -9,15 +9,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentParentJoinThirdBinding
-import com.b1nd.alimo.presentation.feature.main.MainActivity
 import com.b1nd.alimo.presentation.base.BaseFragment
+import com.b1nd.alimo.presentation.feature.main.MainActivity
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_BACKGROUND
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_CERTIFICATION
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_CHECK
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_JOIN
+import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.shortToast
 import com.b1nd.alimo.presentation.utiles.startActivityWithFinishAll
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -33,6 +35,7 @@ class ParentJoinThirdFragment :
 
 
     override fun initView() {
+        initSideEffect()
 
 
         lifecycleScope.launch {
@@ -84,7 +87,7 @@ class ParentJoinThirdFragment :
 
                             override fun onFinish() {
                                 mBinding.time.text = "0:00"
-//                                findNavController().navigate(R.id.action_parentJoinThird_to_onboardingThird)
+                                findNavController().navigate(R.id.action_parentJoinThird_to_onboardingThird)
                             }
 
                         }.start()
@@ -107,6 +110,27 @@ class ParentJoinThirdFragment :
 
 
 
+    }
+
+    private fun initSideEffect(){
+        collectFlow(viewModel.parentJoinThirdSideEffect){
+            when(it){
+                is ParentJoinThirdSideEffect.FailedLoad ->{
+                    Log.d("TAG", "initSideEffect: 오류${it.throwable}")
+                }
+                is ParentJoinThirdSideEffect.FailedEmailCheck ->{
+                    requireContext().shortToast("이메일 인증에 실패하였습니다.")
+                    Log.d("TAG", "initSideEffect: 이메일 인증 실패${it.throwable}")
+                }
+                is ParentJoinThirdSideEffect.FailedPostEmail ->{
+                    Log.d("TAG", "initSideEffect: ${it.throwable}")
+                }
+                ParentJoinThirdSideEffect.Success ->{
+                    requireContext().shortToast("이메일 인증에 성공하였습니다.")
+                    Log.d("TAG", "initSideEffect: 성공")
+                }
+            }
+        }
     }
 
 
