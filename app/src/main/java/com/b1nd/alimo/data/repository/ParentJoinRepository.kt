@@ -17,7 +17,7 @@ class ParentJoinRepository @Inject constructor(
 ){
     suspend fun singUp(data: ParentJoinRequest) =
         safeFlow<ResponseModel> {
-            val response = parentJoinService.singUp(data)
+            val response = parentJoinService.singUp(data).errorCheck()
             Log.d("TAG", "singUp: ${response}")
             emit(
                 Resource.Success(ResponseModel(response.status, response.message))
@@ -49,7 +49,7 @@ class ParentJoinRepository @Inject constructor(
         }
     suspend fun postEmailsVerification(query: String) =
         safeFlow<ResponseModel> {
-            val response = parentJoinService.postEmailsVerification(query)
+            val response = parentJoinService.postEmailsVerification(query).errorCheck()
             emit(
                 Resource.Success(ResponseModel(response.status, response.message))
             )

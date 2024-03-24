@@ -15,14 +15,14 @@ class ProfileRepository @Inject constructor(
 ) {
 
     suspend fun getInfo() = safeFlow<ProfileInfoModel> {
-        val response = service.getInfo()
+        val response = service.getInfo().errorCheck()
         emit(
             Resource.Success(response.data.toModel())
         )
     }
 
     suspend fun getCategory() = safeFlow<CategoryModel> {
-        val response = service.getCategory()
+        val response = service.getCategory().errorCheck()
         emit(
             Resource.Success(response.data.toModel())
         )
