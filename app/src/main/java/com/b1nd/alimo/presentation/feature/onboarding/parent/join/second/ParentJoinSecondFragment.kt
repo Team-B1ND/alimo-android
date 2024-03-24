@@ -11,12 +11,11 @@ import androidx.navigation.fragment.navArgs
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentParentJoinSecondBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
-import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.FAILURE
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.ON_CLICK_BACKGROUND
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.ON_CLICK_LOGIN
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.ON_CLICK_NEXT
-import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.SUCCESS
+import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,6 +33,7 @@ class ParentJoinSecondFragment :
     override fun initView() {
         // 학생 이름 가져오는 기능
         viewModel.setStudentCode(args.childeCode)
+        initSideEffect()
 
         lifecycleScope.launch {
             viewModel.memberName.collect{
@@ -75,18 +75,6 @@ class ParentJoinSecondFragment :
                         view?.hideKeyboard()
                     }
 
-                    SUCCESS -> {
-                        Log.d("TAG", "initView: 로그인 성공")
-                        val email = mBinding.idEditText.text.toString()
-                        val direction = ParentJoinSecondFragmentDirections.actionParentJoinSecondToParentJoinThird(
-                            email
-                        )
-                        findNavController().navigate(direction)
-                    }
-                    FAILURE ->{
-                        Log.d("TAG", "initView: 로그인 실패")
-
-                    }
 
 
                 }
@@ -189,5 +177,28 @@ class ParentJoinSecondFragment :
         return password == verifyPassword
     }
 
+    private fun initSideEffect(){
+        collectFlow(viewModel.parentJoinSecondSideEffect){
+            when(it){
+                is ParentJoinSecondSideEffect.FailedSignup ->{
+                    Log.d("TAG", "initSideEffect: 로그인 실패")
+                }
+                is ParentJoinSecondSideEffect.FailedLoad ->{
+                    Log.d("TAG", "initSideEffect: 예외")
+                }
+                is ParentJoinSecondSideEffect.FailedMemberName ->{
+                    Log.d("TAG", "initSideEffect: 이름 가져오기 실패")
+                }
+                ParentJoinSecondSideEffect.SuccessSignup ->{
+                    val email = mBinding.idEditText.text.toString()
+                    val direction =
+                        ParentJoinSecondFragmentDirections.actionParentJoinSecondToParentJoinThird(
+                            email
+                        )
+                    findNavController().navigate(direction)
+                }
+            }
+        }
+    }
 
 }

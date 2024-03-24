@@ -37,8 +37,8 @@ class ParentJoinService @Inject constructor(
         }.body()
 
     suspend fun member(query: String): BaseResponse<MemberNameResponse> =
-        httpClient.get("/member"){
-            parameter("childCode", query)
+        httpClient.get("/member/student-search"){
+            parameter("child-code", query)
         }.body()
 
     suspend fun postEmailsVerification(query: String): BaseResponse<Response> =
