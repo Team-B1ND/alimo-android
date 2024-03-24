@@ -3,7 +3,10 @@ package com.b1nd.alimo.presentation.feature.onboarding.second
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Bundle
 import android.util.Log
+import android.view.View
+import androidx.activity.addCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -62,6 +65,16 @@ class OnboardingSecondFragment :
                     }
                 }
             }
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Fragment에 대한 백 스택 엔트리 콜백을 설정합니다.
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
+            Log.d("TAG", "뒤로가기: ")
+            requireActivity().finish()
         }
     }
 
