@@ -45,6 +45,7 @@ class ParentJoinThirdViewModel @Inject constructor(
             }.collectLatest {resource ->
                 when(resource){
                     is Resource.Success ->{
+                        _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.Success)
                         Log.d("TAG", "성공: ${resource.data}")
                         val token = resource.data?.accessToken
                         val refreshToken = resource.data?.refreshToken
@@ -68,7 +69,7 @@ class ParentJoinThirdViewModel @Inject constructor(
                         }
                     }
                     is Resource.Error ->{
-                        _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.FailedPostEmail(resource.error ?: Throwable()))
+                        _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.FailedEmailCheck(resource.error ?: Throwable()))
                         Log.d("TAG", "실패: ${resource.error}")
                     }
                     is Resource.Loading ->{
@@ -90,11 +91,10 @@ class ParentJoinThirdViewModel @Inject constructor(
             }.collectLatest {resource->
                 when (resource){
                     is Resource.Success -> {
-                        _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.Success)
                         Log.d("TAG", "postEmail:성공 ${resource.data?.message}")
                     }
                     is Resource.Error -> {
-                        _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.FailedEmailCheck(resource.error ?: Throwable()))
+                        _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.FailedPostEmail(resource.error ?: Throwable()))
                         Log.d("TAG", "postEmail:실패 ${resource.error}")
                     }
                     is Resource.Loading -> {
