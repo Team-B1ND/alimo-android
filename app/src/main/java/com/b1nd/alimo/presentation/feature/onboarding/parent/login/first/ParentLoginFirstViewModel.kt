@@ -63,7 +63,7 @@ class ParentLoginFirstViewModel @Inject constructor(
                 ParentLoginRequest(
                     email = email,
                     password = password,
-                    fcmToken = fcmToken.toString()
+                    fcmToken = fcmToken.value
                 )
             ).catch {
                 _parentLoginSideEffect.send(ParentLoginSideEffect.FailedLoad(it))

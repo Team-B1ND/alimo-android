@@ -29,6 +29,10 @@ class ParentJoinSecondViewModel @Inject constructor(
     private val _memberName = MutableStateFlow(MemberNameModel())
     val memberName = _memberName.asStateFlow()
 
+    private var _fcmToken = MutableStateFlow("")
+    val fcmToken = _fcmToken.asStateFlow()
+
+
     private val _parentJoinSideEffect = Channel<ParentJoinSecondSideEffect>()
     val parentJoinSecondSideEffect = _parentJoinSideEffect.receiveAsFlow()
 
@@ -80,8 +84,7 @@ class ParentJoinSecondViewModel @Inject constructor(
             }.collect { firebaseResource ->
                 when (firebaseResource) {
                     is Resource.Success -> {
-                        val fcmToken = firebaseResource.data?.fcmToken
-                        if (fcmToken != null) {
+                        _fcmToken.value = firebaseResource.data?.fcmToken.toString()
 
                             Log.d(
                                 "TAG",
@@ -91,7 +94,7 @@ class ParentJoinSecondViewModel @Inject constructor(
                                 data = ParentJoinRequest(
                                     email = email,
                                     password = password,
-                                    fcmToken = fcmToken,
+                                    fcmToken = fcmToken.value,
                                     childCode = childCode,
                                     memberId = memberId
                                 )
@@ -123,7 +126,7 @@ class ParentJoinSecondViewModel @Inject constructor(
 
                                 }
                             }
-                        }
+
 
                     }
 

@@ -37,6 +37,9 @@ class StudentLoginViewModel @Inject constructor(
     private var _loginState = MutableStateFlow(LoginModel())
     val loginState = _loginState.asStateFlow()
 
+    private var _fcmToken = MutableStateFlow("")
+    val fcmToken = _fcmToken.asStateFlow()
+
 
     private var _studentLoginSideEffect = Channel<StudentLoginSideEffect>()
     val studentLoginSideEffect = _studentLoginSideEffect.receiveAsFlow()
@@ -47,62 +50,64 @@ class StudentLoginViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             Log.d("TAG", "login: 시작2")
             // FcmToken 저장
-            var fcmToken = ""
+
             firebaseTokenRepository.getToken().catch {
                 _studentLoginSideEffect.send(StudentLoginSideEffect.FailedLoad(it))
                 Log.d("TAG", "login: $it dxc")
-            }.collect{
-                when(it){
-                    is Resource.Success ->{
-                        fcmToken = it.data?.fcmToken.toString()
+            }.collect {
+                when (it) {
+                    is Resource.Success -> {
+                        _fcmToken.value = it.data?.fcmToken.toString()
                     }
-                    is Resource.Error ->{
-                        _studentLoginSideEffect.send(StudentLoginSideEffect.FailedLogin(it.error ?: Throwable()))
+
+                    is Resource.Error -> {
+                        _studentLoginSideEffect.send(
+                            StudentLoginSideEffect.FailedLogin(
+                                it.error ?: Throwable()
+                            )
+                        )
                         Log.d("TAG", "login error:  ${it.error}")
                     }
-                    is Resource.Loading ->{
+
+                    is Resource.Loading -> {
                         Log.d("TAG", "login: $it")
                     }
                 }
             }
-            if (fcmToken != null) {
-                Log.d("TAG", "login: 시작3")
-                // FcmToken이 Null이 아닐 때만 로그인 로직을 수행
-                studentLoginRepository.login(
-                    StudentLoginRequest(
-                        code = code,
-                        fcmToken = fcmToken
-                    )
-                ).catch {
-                    Log.d("TAG", "login: ${it.message}")
-                }.collectLatest { resource ->
-                    when (resource) {
-                        is Resource.Success -> {
-                            // 성공하면 서버에서 받은 AccessToken과 RefreshToken 저장
-                            Log.d("TAG", "login: ${resource.data}")
-                            val token = resource.data?.accessToken
-                            val refreshToken = resource.data?.refreshToken
-                            if (token != null && refreshToken != null) {
-                                tokenRepository.insert(token, refreshToken)
-                                _loginState.value = _loginState.value.copy(
-                                    accessToken = token,
-                                    refreshToken = refreshToken
-                                )
-                            }
+            Log.d("TAG", "login: 시작3")
+            // FcmToken이 Null이 아닐 때만 로그인 로직을 수행
+            studentLoginRepository.login(
+                StudentLoginRequest(
+                    code = code,
+                    fcmToken = fcmToken.value
+                )
+            ).catch {
+                Log.d("TAG", "login: ${it.message}")
+            }.collectLatest { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        // 성공하면 서버에서 받은 AccessToken과 RefreshToken 저장
+                        Log.d("TAG", "login: ${resource.data}")
+                        val token = resource.data?.accessToken
+                        val refreshToken = resource.data?.refreshToken
+                        if (token != null && refreshToken != null) {
+                            tokenRepository.insert(token, refreshToken)
+                            _loginState.value = _loginState.value.copy(
+                                accessToken = token,
+                                refreshToken = refreshToken
+                            )
                         }
-
-                        is Resource.Error -> {
-                            Log.d("TAG", "login: 실패 ${resource.error}")
-                        }
-
-                        is Resource.Loading -> {
-                            Log.d("TAG", "login:로딩 ${resource.error} ${resource.data}")
-                        }
-
                     }
+
+                    is Resource.Error -> {
+                        Log.d("TAG", "login: 실패 ${resource.error}")
+                    }
+
+                    is Resource.Loading -> {
+                        Log.d("TAG", "login:로딩 ${resource.error} ${resource.data}")
+                    }
+
                 }
-            } else {
-                Log.d("TAG", "login: $fcmToken")
             }
         }
     }
@@ -133,7 +138,11 @@ class StudentLoginViewModel @Inject constructor(
             }.collectLatest { resource ->
                 when (resource) {
                     is Resource.Error -> {
-                        _studentLoginSideEffect.send(StudentLoginSideEffect.FailedDAuth(resource.error ?: Throwable()))
+                        _studentLoginSideEffect.send(
+                            StudentLoginSideEffect.FailedDAuth(
+                                resource.error ?: Throwable()
+                            )
+                        )
                         Log.d("TAG", "실패: ${resource.error}")
                     }
 
@@ -145,6 +154,7 @@ class StudentLoginViewModel @Inject constructor(
                             Log.d("TAG", "성공: ${code}")
                         }
                     }
+
                     is Resource.Loading -> {
                         Log.d("TAG", "로딩: ${resource.data}, ${resource.error}")
                     }
