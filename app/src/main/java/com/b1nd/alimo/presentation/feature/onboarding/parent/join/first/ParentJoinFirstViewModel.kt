@@ -7,9 +7,9 @@ import com.b1nd.alimo.data.repository.ParentJoinRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -21,8 +21,8 @@ class ParentJoinFirstViewModel @Inject constructor(
     private val parentJoinRepository: ParentJoinRepository
 ): BaseViewModel() {
 
-    private val _trueFalse = MutableSharedFlow<ParentJoinFirstModel>(replay = 0)
-    val trueFalse: SharedFlow<ParentJoinFirstModel> = _trueFalse.asSharedFlow()
+    private val _trueFalse =  MutableStateFlow(ParentJoinFirstModel())
+    val trueFalse: SharedFlow<ParentJoinFirstModel> = _trueFalse.asStateFlow()
 
     private val _parentJoinSideEffect = Channel<ParentJoinFirstSideEffect>()
     val parentJoinFirstSideEffect = _parentJoinSideEffect.receiveAsFlow()

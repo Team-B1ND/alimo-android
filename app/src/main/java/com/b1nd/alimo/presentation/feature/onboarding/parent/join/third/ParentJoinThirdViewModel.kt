@@ -9,8 +9,8 @@ import com.b1nd.alimo.data.repository.TokenRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -23,8 +23,8 @@ class ParentJoinThirdViewModel @Inject constructor(
     private val tokenRepository: TokenRepository
 ): BaseViewModel() {
 
-    private var _parentJoinState = MutableSharedFlow<JoinModel>()
-    val  parentJoinState: SharedFlow<JoinModel> = _parentJoinState
+    private var _parentJoinState = MutableStateFlow(JoinModel())
+    val  parentJoinState =_parentJoinState.asStateFlow()
 
     private val _parentJoinThirdSideEffect = Channel<ParentJoinThirdSideEffect>()
     val parentJoinThirdSideEffect = _parentJoinThirdSideEffect.receiveAsFlow()

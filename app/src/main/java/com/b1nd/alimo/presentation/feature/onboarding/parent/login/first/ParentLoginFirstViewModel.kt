@@ -12,8 +12,8 @@ import com.b1nd.alimo.presentation.feature.onboarding.student.first.LoginModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -27,11 +27,11 @@ class ParentLoginFirstViewModel @Inject constructor(
     private val tokenRepository: TokenRepository
 ): BaseViewModel() {
 
-    private var _loginState = MutableSharedFlow<LoginModel>()
-    val loginState: SharedFlow<LoginModel> = _loginState
+    private var _loginState = MutableStateFlow(LoginModel())
+    val loginState = _loginState.asStateFlow()
 
-    private var _fcmToken = MutableSharedFlow<String>()
-    val fcmToken : SharedFlow<String> = _fcmToken
+    private var _fcmToken = MutableStateFlow("")
+    val fcmToken  = _fcmToken.asStateFlow()
 
     private var _parentLoginSideEffect = Channel<ParentLoginSideEffect>()
     val parentLoginSideEffect = _parentLoginSideEffect.receiveAsFlow()

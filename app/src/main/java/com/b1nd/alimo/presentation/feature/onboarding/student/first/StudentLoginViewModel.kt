@@ -14,9 +14,8 @@ import com.b1nd.alimo.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -32,11 +31,11 @@ class StudentLoginViewModel @Inject constructor(
     private val tokenRepository: TokenRepository
 ) : BaseViewModel() {
 
-    private val _dodamCode = MutableSharedFlow<DodamState>()
-    val dodamCode: SharedFlow<DodamState> = _dodamCode.asSharedFlow()
+    private val _dodamCode = MutableStateFlow(DodamState())
+    val dodamCode = _dodamCode.asStateFlow()
 
-    private var _loginState = MutableSharedFlow<LoginModel>()
-    val loginState: SharedFlow<LoginModel> = _loginState
+    private var _loginState = MutableStateFlow(LoginModel())
+    val loginState = _loginState.asStateFlow()
 
 
     private var _studentLoginSideEffect = Channel<StudentLoginSideEffect>()

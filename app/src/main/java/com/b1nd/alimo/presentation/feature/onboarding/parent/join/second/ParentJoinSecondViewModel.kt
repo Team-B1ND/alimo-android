@@ -9,11 +9,8 @@ import com.b1nd.alimo.data.repository.ParentJoinRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -26,11 +23,11 @@ class ParentJoinSecondViewModel @Inject constructor(
     private val firebaseTokenRepository: FirebaseTokenRepository
 ) : BaseViewModel() {
 
-    private val _studentCode = MutableStateFlow<String>("")
-    private val studentCode: StateFlow<String> = _studentCode
+    private val _studentCode = MutableStateFlow("")
+    private val studentCode = _studentCode.asStateFlow()
 
-    private val _memberName = MutableSharedFlow<MemberNameModel>(replay = 0)
-    val memberName: SharedFlow<MemberNameModel> = _memberName.asSharedFlow()
+    private val _memberName = MutableStateFlow(MemberNameModel())
+    val memberName = _memberName.asStateFlow()
 
     private val _parentJoinSideEffect = Channel<ParentJoinSecondSideEffect>()
     val parentJoinSecondSideEffect = _parentJoinSideEffect.receiveAsFlow()
