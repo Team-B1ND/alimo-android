@@ -45,7 +45,7 @@ class ParentLoginFirstViewModel @Inject constructor(
             }.collectLatest {
                 when(it){
                     is Resource.Success ->{
-                        _fcmToken.emit(it.data?.fcmToken.toString())
+                        _fcmToken.value = it.data?.fcmToken.toString()
                     }
                     is Resource.Error -> {
                         _parentLoginSideEffect.send(ParentLoginSideEffect.FailedLoadFcmToken(it.error ?:Throwable()))
@@ -78,11 +78,9 @@ class ParentLoginFirstViewModel @Inject constructor(
                             tokenRepository.insert(token, refreshToken)
 
 
-                            _loginState.emit(
-                                LoginModel(
-                                    accessToken = token,
-                                    refreshToken = refreshToken
-                                )
+                            _loginState.value = _loginState.value.copy(
+                                accessToken = token,
+                                refreshToken = refreshToken
                             )
                         }
                     }

@@ -53,18 +53,9 @@ class ParentJoinThirdViewModel @Inject constructor(
                         if (token != null && refreshToken != null) {
                             tokenRepository.insert(token, refreshToken)
 
-                            _parentJoinState.emit(
-                                JoinModel(
-                                    accessToken = token,
-                                    refreshToken = refreshToken
-                                )
-                            )
-                        }else{
-                            _parentJoinState.emit(
-                                JoinModel(
-                                    accessToken = null,
-                                    refreshToken = null
-                                )
+                            _parentJoinState.value = _parentJoinState.value.copy(
+                                accessToken = token,
+                                refreshToken = refreshToken
                             )
                         }
                     }

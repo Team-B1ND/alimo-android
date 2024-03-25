@@ -84,11 +84,9 @@ class StudentLoginViewModel @Inject constructor(
                             val refreshToken = resource.data?.refreshToken
                             if (token != null && refreshToken != null) {
                                 tokenRepository.insert(token, refreshToken)
-                                _loginState.emit(
-                                    LoginModel(
-                                        accessToken = token,
-                                        refreshToken = refreshToken
-                                    )
+                                _loginState.value = _loginState.value.copy(
+                                    accessToken = token,
+                                    refreshToken = refreshToken
                                 )
                             }
                         }
@@ -137,16 +135,13 @@ class StudentLoginViewModel @Inject constructor(
                     is Resource.Error -> {
                         _studentLoginSideEffect.send(StudentLoginSideEffect.FailedDAuth(resource.error ?: Throwable()))
                         Log.d("TAG", "실패: ${resource.error}")
-                        _dodamCode.emit(DodamState(
-                            error = "${resource.error}"
-                        ))
                     }
 
                     is Resource.Success -> {
                         if (resource.data?.location != null) {
                             // 데이터에서 코드만 가져와서 저장
                             val code = resource.data.location.split("[=&]".toRegex())[1]
-                            _dodamCode.emit(DodamState(code))
+                            _dodamCode.value = _dodamCode.value.copy(code)
                             Log.d("TAG", "성공: ${code}")
                         }
                     }

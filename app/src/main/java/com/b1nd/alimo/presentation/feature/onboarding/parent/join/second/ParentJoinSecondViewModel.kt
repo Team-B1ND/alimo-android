@@ -43,7 +43,7 @@ class ParentJoinSecondViewModel @Inject constructor(
                     when (resource) {
                         is Resource.Success -> {
                             Log.d("TAG", ":서공  ${resource.data?.name}")
-                            _memberName.emit(MemberNameModel(resource.data?.name))
+                            _memberName.value = _memberName.value.copy(resource.data?.name)
                         }
 
                         is Resource.Error -> {
