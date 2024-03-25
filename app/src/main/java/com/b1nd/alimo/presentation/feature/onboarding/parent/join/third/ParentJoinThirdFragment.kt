@@ -46,8 +46,6 @@ class ParentJoinThirdFragment :
                 if (accessToken != null && refreshToken != null) {
                     mBinding.joinBtnOff.visibility = View.INVISIBLE
                     mBinding.joinBtnOn.visibility = View.VISIBLE
-                } else {
-                    mBinding.error.visibility = View.VISIBLE
                 }
             }
         }
@@ -119,13 +117,14 @@ class ParentJoinThirdFragment :
                     Log.d("TAG", "initSideEffect: 오류${it.throwable}")
                 }
                 is ParentJoinThirdSideEffect.FailedEmailCheck ->{
-                    requireContext().shortToast("이메일 인증에 실패하였습니다.")
+                    mBinding.error.visibility = View.VISIBLE
                     Log.d("TAG", "initSideEffect: 이메일 인증 실패${it.throwable}")
                 }
                 is ParentJoinThirdSideEffect.FailedPostEmail ->{
                     Log.d("TAG", "initSideEffect: ${it.throwable}")
                 }
                 ParentJoinThirdSideEffect.Success ->{
+                    mBinding.error.visibility = View.INVISIBLE
                     requireContext().shortToast("이메일 인증에 성공하였습니다.")
                     Log.d("TAG", "initSideEffect: 성공")
                 }
