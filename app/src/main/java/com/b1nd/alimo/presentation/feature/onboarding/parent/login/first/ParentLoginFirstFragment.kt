@@ -66,7 +66,9 @@ class ParentLoginFirstFragment:
         // 로그인을 성공하면 MainActivity로 이동
         lifecycleScope.launch {
             viewModel.loginState.collect{
-                startActivityWithFinishAll(MainActivity::class.java)
+                if (it.refreshToken != null && it.accessToken != null){
+                    startActivityWithFinishAll(MainActivity::class.java)
+                }
                 Log.d("TAG", "${it.accessToken}, ${it.refreshToken} ")
             }
         }
