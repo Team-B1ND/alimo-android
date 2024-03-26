@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.security.MessageDigest
 import javax.inject.Inject
 
 @HiltViewModel
@@ -158,15 +157,6 @@ class StudentLoginViewModel @Inject constructor(
         }
     }
 
-    // DAuth를 사용하기 위해 비번을 암호화
-    fun sha512(text: String): String {
-        val bytes = text.toByteArray()
-        val md = MessageDigest.getInstance("SHA-512")
-        val digest = md.digest(bytes)
-        val pw = digest.fold("", { str, it -> str + "%02x".format(it) })
-        Log.d("TAG", "sha512: $pw")
-        return pw
-    }
 
     fun onClickBack() = viewEvent(ON_CLICK_BACK)
     fun onClickLoginOn() = viewEvent(ON_CLICK_LOGIN_ON)

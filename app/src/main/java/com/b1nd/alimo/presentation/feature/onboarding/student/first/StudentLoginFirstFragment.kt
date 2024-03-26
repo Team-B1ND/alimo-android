@@ -17,6 +17,7 @@ import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLogin
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.sha512
 import com.b1nd.alimo.presentation.utiles.shortToast
 import com.b1nd.alimo.presentation.utiles.startActivityWithFinishAll
 import dagger.hilt.android.AndroidEntryPoint
@@ -67,7 +68,7 @@ class StudentLoginFirstFragment:
                     ON_CLICK_LOGIN_ON -> {
                         val id = mBinding.idEditText.text.toString()
                         val pw = mBinding.pwEditText.text.toString()
-                        val hashedPw = viewModel.sha512(pw)
+                        val hashedPw = sha512(pw)
                         viewModel.getCode(id, hashedPw)
                     }
                     ON_CLICK_BACKGROUND -> {

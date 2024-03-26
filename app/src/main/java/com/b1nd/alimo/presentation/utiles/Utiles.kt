@@ -2,6 +2,7 @@ package com.b1nd.alimo.presentation.utiles
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import com.bumptech.glide.load.Key
@@ -71,4 +72,14 @@ class BackgroundColorTransform(private val backgroundColor: Int) : BitmapTransfo
     override fun updateDiskCacheKey(messageDigest: MessageDigest) {
         messageDigest.update(("BackgroundColorTransform:$backgroundColor").toByteArray(Key.CHARSET))
     }
+}
+
+// DAuth를 사용하기 위해 비번을 암호화
+fun sha512(text: String): String {
+    val bytes = text.toByteArray()
+    val md = MessageDigest.getInstance("SHA-512")
+    val digest = md.digest(bytes)
+    val pw = digest.fold("", { str, it -> str + "%02x".format(it) })
+    Log.d("TAG", "sha512: $pw")
+    return pw
 }
