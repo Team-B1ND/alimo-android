@@ -112,12 +112,7 @@ class StudentLoginViewModel @Inject constructor(
         }
     }
 
-    fun tokenCheck() {
-        viewModelScope.launch {
-            val tokenEntity = tokenRepository.getToken()
-            Log.d("TAG", "tokenCheck: $tokenEntity")
-        }
-    }
+
 
     // DAuth를 사용해서 Code를 가져오는 기능
     fun getCode(
