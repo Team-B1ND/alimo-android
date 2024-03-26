@@ -16,6 +16,7 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJo
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_CERTIFICATION
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_CHECK
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_JOIN
+import com.b1nd.alimo.presentation.utiles.Env
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
@@ -114,7 +115,7 @@ class ParentJoinThirdFragment :
         collectFlow(viewModel.parentJoinThirdSideEffect){
             when(it){
                 is ParentJoinThirdSideEffect.FailedLoad ->{
-                    requireContext().shortToast("오류가 발생했습니다")
+                    requireContext().shortToast(Env.ERROR)
                     Log.d("TAG", "initSideEffect: 오류${it.throwable}")
                 }
                 is ParentJoinThirdSideEffect.FailedEmailCheck ->{
@@ -122,7 +123,7 @@ class ParentJoinThirdFragment :
                     Log.d("TAG", "initSideEffect: 이메일 인증 실패${it.throwable}")
                 }
                 is ParentJoinThirdSideEffect.FailedPostEmail ->{
-                    requireContext().shortToast("오류가 발생했습니다")
+                    requireContext().shortToast(Env.ERROR)
                     Log.d("TAG", "initSideEffect: ${it.throwable}")
                 }
                 ParentJoinThirdSideEffect.Success ->{

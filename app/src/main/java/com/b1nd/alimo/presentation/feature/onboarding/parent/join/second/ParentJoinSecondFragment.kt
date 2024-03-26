@@ -15,6 +15,7 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJ
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.ON_CLICK_BACKGROUND
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.ON_CLICK_LOGIN
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.ON_CLICK_NEXT
+import com.b1nd.alimo.presentation.utiles.Env
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
@@ -185,11 +186,11 @@ class ParentJoinSecondFragment :
                     Log.d("TAG", "initSideEffect: 로그인 실패")
                 }
                 is ParentJoinSecondSideEffect.FailedLoad ->{
-                    requireContext().shortToast("오류가 발생했습니다")
+                    requireContext().shortToast(Env.ERROR)
                     Log.d("TAG", "initSideEffect: 예외")
                 }
                 is ParentJoinSecondSideEffect.FailedMemberName ->{
-                    requireContext().shortToast("오류가 발생했습니다")
+                    requireContext().shortToast(Env.ERROR)
                     Log.d("TAG", "initSideEffect: 이름 가져오기 실패")
                 }
                 ParentJoinSecondSideEffect.SuccessSignup ->{

@@ -16,6 +16,7 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentL
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_FIND_PW
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_JOIN
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_LOGIN
+import com.b1nd.alimo.presentation.utiles.Env
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
@@ -127,11 +128,11 @@ class ParentLoginFirstFragment:
                     Log.d("TAG", "initSideEffect: 로그인실패 ${it.throwable}")
                 }
                 is ParentLoginSideEffect.FailedLoad ->{
-                    requireContext().shortToast("오류가 발생했습니다")
+                    requireContext().shortToast(Env.ERROR)
                     Log.d("TAG", "initSideEffect: 몰라 ${it.throwable}")
                 }
                 is ParentLoginSideEffect.FailedLoadFcmToken ->{
-                    requireContext().shortToast("오류가 발생했습니다")
+                    requireContext().shortToast(Env.ERROR)
                     Log.d("TAG", "initSideEffect: fcm ${it.throwable}")
 
                 }

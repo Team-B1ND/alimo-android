@@ -21,6 +21,7 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJo
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_LOGIN
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_NEXT
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_STUDENT_CODE
+import com.b1nd.alimo.presentation.utiles.Env
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
@@ -244,7 +245,7 @@ class ParentJoinFirstFragment :
         collectFlow(viewModel.parentJoinFirstSideEffect) {
             when(it) {
                 is ParentJoinFirstSideEffect.FailedLoad ->{
-                    requireContext().shortToast("오류가 발생했습니다")
+                    requireContext().shortToast(Env.ERROR)
                 }
                 is ParentJoinFirstSideEffect.FailedChildCode -> {
                     dialog.show(requireActivity().supportFragmentManager, "올바르지 않은 학생코드")

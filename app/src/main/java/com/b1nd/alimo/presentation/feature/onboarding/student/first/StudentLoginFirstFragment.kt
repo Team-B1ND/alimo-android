@@ -14,6 +14,7 @@ import com.b1nd.alimo.presentation.feature.main.MainActivity
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACKGROUND
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_LOGIN_ON
+import com.b1nd.alimo.presentation.utiles.Env
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
@@ -135,7 +136,7 @@ class StudentLoginFirstFragment:
                     requireContext().shortToast("도담도담 아이디를 다시 확인해주세요")
                 }
                 is StudentLoginSideEffect.FailedLoad ->{
-                    requireContext().shortToast("오류가 발생했습니다")
+                    requireContext().shortToast(Env.ERROR)
                     Log.d("TAG", "initSideEffect: 몰라 ${it.throwable}")
                 }
                 is StudentLoginSideEffect.FailedDAuth ->{
