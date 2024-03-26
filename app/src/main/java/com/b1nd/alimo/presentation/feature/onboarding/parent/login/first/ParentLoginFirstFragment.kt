@@ -127,9 +127,11 @@ class ParentLoginFirstFragment:
                     Log.d("TAG", "initSideEffect: 로그인실패 ${it.throwable}")
                 }
                 is ParentLoginSideEffect.FailedLoad ->{
+                    requireContext().shortToast("오류가 발생했습니다")
                     Log.d("TAG", "initSideEffect: 몰라 ${it.throwable}")
                 }
                 is ParentLoginSideEffect.FailedLoadFcmToken ->{
+                    requireContext().shortToast("오류가 발생했습니다")
                     Log.d("TAG", "initSideEffect: fcm ${it.throwable}")
 
                 }

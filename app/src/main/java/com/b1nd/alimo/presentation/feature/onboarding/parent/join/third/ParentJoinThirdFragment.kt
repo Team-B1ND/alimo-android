@@ -114,6 +114,7 @@ class ParentJoinThirdFragment :
         collectFlow(viewModel.parentJoinThirdSideEffect){
             when(it){
                 is ParentJoinThirdSideEffect.FailedLoad ->{
+                    requireContext().shortToast("오류가 발생했습니다")
                     Log.d("TAG", "initSideEffect: 오류${it.throwable}")
                 }
                 is ParentJoinThirdSideEffect.FailedEmailCheck ->{
@@ -121,6 +122,7 @@ class ParentJoinThirdFragment :
                     Log.d("TAG", "initSideEffect: 이메일 인증 실패${it.throwable}")
                 }
                 is ParentJoinThirdSideEffect.FailedPostEmail ->{
+                    requireContext().shortToast("오류가 발생했습니다")
                     Log.d("TAG", "initSideEffect: ${it.throwable}")
                 }
                 ParentJoinThirdSideEffect.Success ->{

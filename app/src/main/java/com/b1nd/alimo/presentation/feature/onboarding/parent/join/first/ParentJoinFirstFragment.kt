@@ -24,6 +24,7 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJo
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.shortToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -243,7 +244,7 @@ class ParentJoinFirstFragment :
         collectFlow(viewModel.parentJoinFirstSideEffect) {
             when(it) {
                 is ParentJoinFirstSideEffect.FailedLoad ->{
-
+                    requireContext().shortToast("오류가 발생했습니다")
                 }
                 is ParentJoinFirstSideEffect.FailedChildCode -> {
                     dialog.show(requireActivity().supportFragmentManager, "올바르지 않은 학생코드")

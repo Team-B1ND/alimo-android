@@ -135,6 +135,7 @@ class StudentLoginFirstFragment:
                     requireContext().shortToast("도담도담 아이디를 다시 확인해주세요")
                 }
                 is StudentLoginSideEffect.FailedLoad ->{
+                    requireContext().shortToast("오류가 발생했습니다")
                     Log.d("TAG", "initSideEffect: 몰라 ${it.throwable}")
                 }
                 is StudentLoginSideEffect.FailedDAuth ->{

@@ -18,6 +18,7 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJ
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.shortToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -184,9 +185,11 @@ class ParentJoinSecondFragment :
                     Log.d("TAG", "initSideEffect: 로그인 실패")
                 }
                 is ParentJoinSecondSideEffect.FailedLoad ->{
+                    requireContext().shortToast("오류가 발생했습니다")
                     Log.d("TAG", "initSideEffect: 예외")
                 }
                 is ParentJoinSecondSideEffect.FailedMemberName ->{
+                    requireContext().shortToast("오류가 발생했습니다")
                     Log.d("TAG", "initSideEffect: 이름 가져오기 실패")
                 }
                 ParentJoinSecondSideEffect.SuccessSignup ->{
