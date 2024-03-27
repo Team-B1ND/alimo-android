@@ -16,6 +16,8 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentL
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_FIND_PW
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_JOIN
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_LOGIN
+import com.b1nd.alimo.presentation.utiles.Env
+import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import com.b1nd.alimo.presentation.utiles.shortToast
@@ -30,6 +32,7 @@ class ParentLoginFirstFragment:
 ) {
     override val viewModel: ParentLoginFirstViewModel by viewModels()
     override fun initView() {
+        initSideEffect()
         bindingViewEvent { event ->
             event.onSuccessEvent {
                 when(it){
@@ -64,7 +67,9 @@ class ParentLoginFirstFragment:
         // 로그인을 성공하면 MainActivity로 이동
         lifecycleScope.launch {
             viewModel.loginState.collect{
-                startActivityWithFinishAll(MainActivity::class.java)
+                if (it.refreshToken != null && it.accessToken != null){
+                    startActivityWithFinishAll(MainActivity::class.java)
+                }
                 Log.d("TAG", "${it.accessToken}, ${it.refreshToken} ")
             }
         }
@@ -114,6 +119,27 @@ class ParentLoginFirstFragment:
 
         }
     }
+
+    private fun initSideEffect() {
+        collectFlow(viewModel.parentLoginSideEffect){
+            when(it){
+                is ParentLoginSideEffect.FailedLogin -> {
+                    requireContext().shortToast("아이디와 비밀번호를 다시 확인해주세요")
+                    Log.d("TAG", "initSideEffect: 로그인실패 ${it.throwable}")
+                }
+                is ParentLoginSideEffect.FailedLoad ->{
+                    requireContext().shortToast(Env.ERROR)
+                    Log.d("TAG", "initSideEffect: 몰라 ${it.throwable}")
+                }
+                is ParentLoginSideEffect.FailedLoadFcmToken ->{
+                    requireContext().shortToast(Env.ERROR)
+                    Log.d("TAG", "initSideEffect: fcm ${it.throwable}")
+
+                }
+            }
+        }
+    }
+
 
 
 }

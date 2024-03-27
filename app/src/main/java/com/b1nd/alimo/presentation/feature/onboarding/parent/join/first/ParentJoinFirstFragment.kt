@@ -21,8 +21,11 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJo
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_LOGIN
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_NEXT
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_STUDENT_CODE
+import com.b1nd.alimo.presentation.utiles.Env
+import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.shortToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -37,25 +40,21 @@ class ParentJoinFirstFragment :
 
 
     override fun initView() {
-//        findNavController().popBackStack(R.id.parentLoginFirst, false)
-
+        initSideEffect()
         lifecycleScope.launch {
             // 학생코드가 올바른 지 확인
             viewModel.trueFalse.collect { studentCode ->
-                val d = studentCode.data
+                val d = studentCode
                 // 올바르지 않다면 리턴
-                if (d?.memberId == null) {
-                    Log.d("TAG", "initView: member id is null")
-                    dialog.show(requireActivity().supportFragmentManager, "올바르지 않은 학생코드")
-                    return@collect
+                if (d.memberId != null){
+                    Log.d("TAG", "initView: ${getChildCode()} ${d.memberId} ")
+                    val direction =
+                        ParentJoinFirstFragmentDirections.actionParentJoinFirstToParentJoinSecond(
+                            getChildCode(),
+                            d.memberId,
+                        )
+                    findNavController().navigate(direction)
                 }
-                Log.d("TAG", "initView: ${getChildCode()} ${d.memberId} ")
-                val direction =
-                    ParentJoinFirstFragmentDirections.actionParentJoinFirstToParentJoinSecond(
-                        getChildCode(),
-                        d.memberId,
-                    )
-                findNavController().navigate(direction)
             }
         }
 
@@ -240,5 +239,19 @@ class ParentJoinFirstFragment :
         val imm =
             requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(mBinding.studentCode1, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    private fun initSideEffect() {
+        collectFlow(viewModel.parentJoinFirstSideEffect) {
+            when(it) {
+                is ParentJoinFirstSideEffect.FailedLoad ->{
+                    requireContext().shortToast(Env.ERROR)
+                }
+                is ParentJoinFirstSideEffect.FailedChildCode -> {
+                    dialog.show(requireActivity().supportFragmentManager, "올바르지 않은 학생코드")
+                }
+
+            }
+        }
     }
 }

@@ -2,7 +2,6 @@ package com.b1nd.alimo.data.remote.service
 
 import com.b1nd.alimo.data.remote.request.ParentJoinRequest
 import com.b1nd.alimo.data.remote.response.BaseResponse
-import com.b1nd.alimo.data.remote.response.Response
 import com.b1nd.alimo.data.remote.response.onbaording.parent.ChildCodeResponse
 import com.b1nd.alimo.data.remote.response.onbaording.parent.MemberNameResponse
 import com.b1nd.alimo.data.remote.response.onbaording.parent.ParentLoginResponse
@@ -16,11 +15,10 @@ import io.ktor.client.request.setBody
 import javax.inject.Inject
 
 
-
 class ParentJoinService @Inject constructor(
     @NoTokenHttpClient private val httpClient: HttpClient
 ){
-    suspend fun singUp(data: ParentJoinRequest): BaseResponse<Response> =
+    suspend fun singUp(data: ParentJoinRequest): BaseResponse<String?> =
         httpClient.post("/sign-up"){
             setBody(data)
         }.body()
@@ -37,11 +35,11 @@ class ParentJoinService @Inject constructor(
         }.body()
 
     suspend fun member(query: String): BaseResponse<MemberNameResponse> =
-        httpClient.get("/member"){
-            parameter("childCode", query)
+        httpClient.get("/member/student-search"){
+            parameter("child-code", query)
         }.body()
 
-    suspend fun postEmailsVerification(query: String): BaseResponse<Response> =
+    suspend fun postEmailsVerification(query: String): BaseResponse<String?> =
         httpClient.post("/member/emails/verification-requests"){
             parameter("email", query)
         }.body()

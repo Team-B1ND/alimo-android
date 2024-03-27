@@ -13,10 +13,13 @@ import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.main.MainActivity
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACKGROUND
-import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_LOGIN_OFF
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_LOGIN_ON
+import com.b1nd.alimo.presentation.utiles.Env
+import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.sha512
+import com.b1nd.alimo.presentation.utiles.shortToast
 import com.b1nd.alimo.presentation.utiles.startActivityWithFinishAll
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -29,6 +32,7 @@ class StudentLoginFirstFragment:
     override val viewModel: StudentLoginViewModel by viewModels()
 
     override fun initView() {
+        initSideEffect()
         // DAuth를 사용해서 코드를 가져온다면 로그인 실행
         lifecycleScope.launch {
             viewModel.dodamCode.collect{
@@ -65,7 +69,7 @@ class StudentLoginFirstFragment:
                     ON_CLICK_LOGIN_ON -> {
                         val id = mBinding.idEditText.text.toString()
                         val pw = mBinding.pwEditText.text.toString()
-                        val hashedPw = viewModel.sha512(pw)
+                        val hashedPw = sha512(pw)
                         viewModel.getCode(id, hashedPw)
                     }
                     ON_CLICK_BACKGROUND -> {
@@ -74,9 +78,6 @@ class StudentLoginFirstFragment:
                         mBinding.pwEditText.clearFocus()
                         view?.hideKeyboard()
                     }
-                    ON_CLICK_LOGIN_OFF -> {
-                        viewModel.tokenCheck()
-                    } 
                 }
             }
         }
@@ -124,6 +125,24 @@ class StudentLoginFirstFragment:
             mBinding.loginBtnOff.visibility = View.VISIBLE
             mBinding.loginBtnOn.visibility = View.GONE
 
+        }
+    }
+
+    private fun initSideEffect() {
+        collectFlow(viewModel.studentLoginSideEffect){
+            when(it){
+                is StudentLoginSideEffect.FailedLogin -> {
+                    Log.d("TAG", "initSideEffect: 로그인실패 ${it.throwable}")
+                    requireContext().shortToast("도담도담 아이디를 다시 확인해주세요")
+                }
+                is StudentLoginSideEffect.FailedLoad ->{
+                    requireContext().shortToast(Env.ERROR)
+                    Log.d("TAG", "initSideEffect: 몰라 ${it.throwable}")
+                }
+                is StudentLoginSideEffect.FailedDAuth ->{
+                   requireContext().shortToast("도담도담 아이디를 다시 확인해주세요")
+                }
+            }
         }
     }
 

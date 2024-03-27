@@ -8,10 +8,12 @@ import com.b1nd.alimo.data.repository.ParentJoinRepository
 import com.b1nd.alimo.data.repository.TokenRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,8 +23,11 @@ class ParentJoinThirdViewModel @Inject constructor(
     private val tokenRepository: TokenRepository
 ): BaseViewModel() {
 
-    private var _parentJoinState = MutableSharedFlow<JoinModel>()
-    val  parentJoinState: SharedFlow<JoinModel> = _parentJoinState
+    private var _parentJoinState = MutableStateFlow(JoinModel())
+    val  parentJoinState =_parentJoinState.asStateFlow()
+
+    private val _parentJoinThirdSideEffect = Channel<ParentJoinThirdSideEffect>()
+    val parentJoinThirdSideEffect = _parentJoinThirdSideEffect.receiveAsFlow()
 
     fun emailCheck(
         email: String,
@@ -35,10 +40,12 @@ class ParentJoinThirdViewModel @Inject constructor(
                 email = email,
                 code = code
             ).catch {
+                _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.FailedLoad(it))
                 Log.d("TAG", "emailCheck: $it")
             }.collectLatest {resource ->
                 when(resource){
                     is Resource.Success ->{
+                        _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.Success)
                         Log.d("TAG", "성공: ${resource.data}")
                         val token = resource.data?.accessToken
                         val refreshToken = resource.data?.refreshToken
@@ -46,22 +53,14 @@ class ParentJoinThirdViewModel @Inject constructor(
                         if (token != null && refreshToken != null) {
                             tokenRepository.insert(token, refreshToken)
 
-                            _parentJoinState.emit(
-                                JoinModel(
-                                    accessToken = token,
-                                    refreshToken = refreshToken
-                                )
-                            )
-                        }else{
-                            _parentJoinState.emit(
-                                JoinModel(
-                                    accessToken = null,
-                                    refreshToken = null
-                                )
+                            _parentJoinState.value = _parentJoinState.value.copy(
+                                accessToken = token,
+                                refreshToken = refreshToken
                             )
                         }
                     }
                     is Resource.Error ->{
+                        _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.FailedEmailCheck(resource.error ?: Throwable()))
                         Log.d("TAG", "실패: ${resource.error}")
                     }
                     is Resource.Loading ->{
@@ -78,6 +77,7 @@ class ParentJoinThirdViewModel @Inject constructor(
     ){
         viewModelScope.launch {
             parentJoinRepository.postEmailsVerification(email).catch {
+                _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.FailedLoad(it))
                 Log.d("TAG", "postEmail: $it")
             }.collectLatest {resource->
                 when (resource){
@@ -85,6 +85,7 @@ class ParentJoinThirdViewModel @Inject constructor(
                         Log.d("TAG", "postEmail:성공 ${resource.data?.message}")
                     }
                     is Resource.Error -> {
+                        _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.FailedPostEmail(resource.error ?: Throwable()))
                         Log.d("TAG", "postEmail:실패 ${resource.error}")
                     }
                     is Resource.Loading -> {
