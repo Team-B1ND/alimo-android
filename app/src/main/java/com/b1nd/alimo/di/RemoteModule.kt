@@ -92,9 +92,7 @@ object RemoteModule {
                 // 헤더에 AccessToken
                 loadTokens {
                     var accessToken = ""
-                    tokenRepository.getToken().catch {
-                        Log.d("TAG", "위에: $it")
-                    }.collect{
+                    tokenRepository.getToken().collect{
                         when(it){
                             is Resource.Success ->{
                                 accessToken = it.data?.token.toString()

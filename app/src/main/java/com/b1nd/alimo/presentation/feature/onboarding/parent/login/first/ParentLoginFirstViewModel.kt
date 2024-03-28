@@ -14,7 +14,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -40,9 +39,7 @@ class ParentLoginFirstViewModel @Inject constructor(
     fun login(email:String, password:String){
         viewModelScope.launch(Dispatchers.IO) {
             Log.d("TAG", "login: 시작2")
-            firebaseTokenRepository.getToken().catch {
-                _parentLoginSideEffect.send(ParentLoginSideEffect.FailedLoad(it))
-            }.collectLatest {
+            firebaseTokenRepository.getToken().collectLatest {
                 when(it){
                     is Resource.Success ->{
                         _fcmToken.value = it.data?.fcmToken.toString()
@@ -65,10 +62,7 @@ class ParentLoginFirstViewModel @Inject constructor(
                     password = password,
                     fcmToken = fcmToken.value
                 )
-            ).catch {
-                _parentLoginSideEffect.send(ParentLoginSideEffect.FailedLoad(it))
-                Log.d("TAG", "login: ${it.message}")
-            }.collectLatest { resource ->
+            ).collectLatest { resource ->
                 when (resource) {
                     is Resource.Success -> {
                         Log.d("TAG", "login: ${resource.data}")
