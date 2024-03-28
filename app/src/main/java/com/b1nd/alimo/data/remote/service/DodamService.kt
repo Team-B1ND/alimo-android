@@ -10,11 +10,6 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import javax.inject.Inject
 
-
-//interface DodamService {
-//    suspend fun login(data: DodamRequest): Flow<Resource<BaseResponse<DodamResponse>>>
-//}
-
 class DodamService @Inject constructor(
     @DAuthHttpClient private val httpClient: HttpClient
 ) {

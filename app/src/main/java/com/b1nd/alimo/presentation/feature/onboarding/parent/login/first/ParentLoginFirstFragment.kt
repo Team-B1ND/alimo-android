@@ -55,9 +55,7 @@ class ParentLoginFirstFragment:
                         findNavController().navigate(R.id.action_parentLoginFirst_to_parentJoinFirst)
                     }
                     ON_CLICK_FIND_PW -> {
-                        // TODO: 비번 찾기 기능
                         requireContext().shortToast("추후 업데이트 될 예정입니다")
-//                        findNavController().navigate(R.id.action_parentLoginFirst_to_parentFindPWFirst)
                     }
                 }
             }

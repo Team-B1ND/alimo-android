@@ -10,10 +10,6 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import javax.inject.Inject
 
-//interface ParentLoginService {
-//    suspend fun login(data: ParentLoginRequest): Flow<Resource<BaseResponse<ParentLoginResponse>>>
-//}
-
 class ParentLoginService @Inject constructor(
     @AppHttpClient private val httpClient: HttpClient
 ){
