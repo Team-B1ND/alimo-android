@@ -114,10 +114,6 @@ class ParentJoinThirdFragment :
     private fun initSideEffect(){
         collectFlow(viewModel.parentJoinThirdSideEffect){
             when(it){
-                is ParentJoinThirdSideEffect.FailedLoad ->{
-                    requireContext().shortToast(Env.ERROR)
-                    Log.d("TAG", "initSideEffect: 오류${it.throwable}")
-                }
                 is ParentJoinThirdSideEffect.FailedEmailCheck ->{
                     mBinding.error.visibility = View.VISIBLE
                     Log.d("TAG", "initSideEffect: 이메일 인증 실패${it.throwable}")
