@@ -11,6 +11,3 @@ annotation class AppHttpClient
 annotation class DAuthHttpClient
 
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class NoTokenHttpClient
