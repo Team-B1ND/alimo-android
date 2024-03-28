@@ -16,7 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -121,10 +120,7 @@ class StudentLoginViewModel @Inject constructor(
                     clientId = BuildConfig.CLIENT_ID,
                     redirectUrl = BuildConfig.REDIRECT_URL
                 )
-            ).catch {
-                _studentLoginSideEffect.send(StudentLoginSideEffect.FailedLoad(it))
-                Log.d("TAG", "checkStudentCode: ${it.message}")
-            }.collectLatest { resource ->
+            ).collectLatest { resource ->
                 when (resource) {
                     is Resource.Error -> {
                         _studentLoginSideEffect.send(
