@@ -94,7 +94,7 @@ fun isDebuggable(context: Context): Boolean {
         appInfo.flags
         ApplicationInfo.FLAG_DEBUGGABLE
         (appInfo.flags == ApplicationInfo.FLAG_DEBUGGABLE)
-        debuggable = (0 == (appInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE))
+        debuggable = (ApplicationInfo.FLAG_DEBUGGABLE == (appInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE))
     } catch (e: PackageManager.NameNotFoundException) {
         /* debuggable variable will remain false */
     }
