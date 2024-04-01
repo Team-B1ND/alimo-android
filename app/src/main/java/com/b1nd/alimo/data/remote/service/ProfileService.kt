@@ -4,7 +4,7 @@ import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.response.Response
 import com.b1nd.alimo.data.remote.response.profile.ProfileCategoryResponse
 import com.b1nd.alimo.data.remote.response.profile.ProfileInfoResponse
-import com.b1nd.alimo.di.AppHttpClient
+import com.b1nd.alimo.di.url.AlimoUrl
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
@@ -14,26 +14,26 @@ import io.ktor.client.request.post
 import javax.inject.Inject
 
 class ProfileService @Inject constructor(
-    @AppHttpClient private val httpClient: HttpClient
+    private val httpClient: HttpClient
 ) {
 
     suspend fun getInfo(): BaseResponse<ProfileInfoResponse> =
-        httpClient.get("/member/info") {
+        httpClient.get(AlimoUrl.Member.INFO) {
 
         }.body()
 
     suspend fun getCategory(): BaseResponse<ProfileCategoryResponse> =
-        httpClient.get("/category/list/member") {
+        httpClient.get(AlimoUrl.Category.MEMBER_LIST) {
 
         }.body()
 
     suspend fun setAlarmState(value: Boolean): Response =
-        httpClient.post("/member/alarm") {
+        httpClient.post(AlimoUrl.Member.ALARM) {
             parameter("status", value)
         }.body()
 
     suspend fun deleteWithdrawal(): BaseResponse<String?> =
-        httpClient.delete("/member") {
+        httpClient.delete(AlimoUrl.Member.DELETE) {
 
         }.body()
 }

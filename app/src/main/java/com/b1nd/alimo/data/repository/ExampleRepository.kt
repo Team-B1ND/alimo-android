@@ -8,7 +8,6 @@ import com.b1nd.alimo.data.remote.makeApiPostRequest
 import com.b1nd.alimo.data.remote.request.ExampleRequest
 import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.service.ExampleService
-import com.b1nd.alimo.di.AppHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -18,7 +17,7 @@ import javax.inject.Inject
 
 
 class ExampleRepository @Inject constructor(
-    @AppHttpClient private val httpClient: HttpClient,
+    private val httpClient: HttpClient,
     private val exampleDao: ExampleDao
 ): ExampleService {
     override suspend fun getExample(data: ExampleRequest): Flow<Resource<BaseResponse<ExampleRequest>>> =
