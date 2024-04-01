@@ -11,7 +11,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -39,10 +38,7 @@ class ParentJoinThirdViewModel @Inject constructor(
             parentJoinRepository.emailCheck(
                 email = email,
                 code = code
-            ).catch {
-                _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.FailedLoad(it))
-                Log.d("TAG", "emailCheck: $it")
-            }.collectLatest {resource ->
+            ).collectLatest {resource ->
                 when(resource){
                     is Resource.Success ->{
                         _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.Success)
@@ -76,10 +72,7 @@ class ParentJoinThirdViewModel @Inject constructor(
         email: String
     ){
         viewModelScope.launch {
-            parentJoinRepository.postEmailsVerification(email).catch {
-                _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.FailedLoad(it))
-                Log.d("TAG", "postEmail: $it")
-            }.collectLatest {resource->
+            parentJoinRepository.postEmailsVerification(email).collectLatest {resource->
                 when (resource){
                     is Resource.Success -> {
                         Log.d("TAG", "postEmail:성공 ${resource.data?.message}")

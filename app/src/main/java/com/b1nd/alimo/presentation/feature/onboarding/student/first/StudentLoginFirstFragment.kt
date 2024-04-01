@@ -135,10 +135,7 @@ class StudentLoginFirstFragment:
                     Log.d("TAG", "initSideEffect: 로그인실패 ${it.throwable}")
                     requireContext().shortToast("도담도담 아이디를 다시 확인해주세요")
                 }
-                is StudentLoginSideEffect.FailedLoad ->{
-                    requireContext().shortToast(Env.ERROR)
-                    Log.d("TAG", "initSideEffect: 몰라 ${it.throwable}")
-                }
+
                 is StudentLoginSideEffect.FailedDAuth ->{
                    requireContext().shortToast("도담도담 아이디를 다시 확인해주세요")
                 }

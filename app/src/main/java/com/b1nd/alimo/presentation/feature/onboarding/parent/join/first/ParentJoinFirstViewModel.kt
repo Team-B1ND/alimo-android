@@ -9,7 +9,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -29,10 +28,7 @@ class ParentJoinFirstViewModel @Inject constructor(
     // 학생 코드 인증
     fun checkStudentCode(studentCode: String){
         viewModelScope.launch {
-            parentJoinRepository.childCode(studentCode).catch {
-                _parentJoinSideEffect.send(ParentJoinFirstSideEffect.FailedLoad(it))
-                Log.d("TAG", "checkStudentCode: ${it.message}")
-            }.collectLatest {resource ->
+            parentJoinRepository.childCode(studentCode).collectLatest {resource ->
                 when(resource){
                     is Resource.Error ->{
                         _parentJoinSideEffect.send(ParentJoinFirstSideEffect.FailedChildCode(resource.error ?: Throwable()))
