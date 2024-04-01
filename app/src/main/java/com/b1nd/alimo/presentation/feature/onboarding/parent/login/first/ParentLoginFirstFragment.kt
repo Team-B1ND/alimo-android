@@ -16,6 +16,7 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentL
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_FIND_PW
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_JOIN
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_LOGIN
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import com.b1nd.alimo.presentation.utiles.shortToast
@@ -43,7 +44,7 @@ class ParentLoginFirstFragment:
                         )
                     }
                     ON_CLICK_BACKGROUND -> {
-                        Log.d("TAG", "initView: background")
+                        Dlog.d("initView: background")
                         mBinding.idEditTextLayout.clearFocus()
                         mBinding.pwEditTextLayout.clearFocus()
                         view?.hideKeyboard()
@@ -102,12 +103,12 @@ class ParentLoginFirstFragment:
 
         // 버튼의 색상을 변경하는 로직 추가
         if (text1.isNotEmpty() && text2.isNotEmpty()) {
-            Log.d("TAG", "updateButtonColor: on")
+            Dlog.d("updateButtonColor: on")
             // 두 EditText의 텍스트가 null이 아닐 때 버튼의 색상을 변경
             mBinding.loginBtnOff.visibility = View.INVISIBLE
             mBinding.loginBtnOn.visibility = View.VISIBLE
         } else {
-            Log.d("TAG", "updateButtonColor: off")
+            Dlog.d("updateButtonColor: off")
             // 두 EditText 중 하나라도 텍스트가 null일 때 버튼의 색상을 기본 색상으로 변경
             mBinding.loginBtnOff.visibility = View.VISIBLE
             mBinding.loginBtnOn.visibility = View.INVISIBLE

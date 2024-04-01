@@ -16,6 +16,7 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJo
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_CERTIFICATION
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_CHECK
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.third.ParentJoinThirdViewModel.Companion.ON_CLICK_JOIN
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import com.b1nd.alimo.presentation.utiles.startActivityWithFinishAll
@@ -92,7 +93,7 @@ class ParentJoinThirdFragment :
                     }
 
                     ON_CLICK_CHECK -> {
-                        Log.d("TAG", "initView: ${args.email} ${ mBinding.idEditText.text.toString()}")
+                        Dlog.d("initView: ${args.email} ${ mBinding.idEditText.text.toString()}")
                         // 서버로 인증 코드 전송
                         viewModel.emailCheck(
                             email = args.email,

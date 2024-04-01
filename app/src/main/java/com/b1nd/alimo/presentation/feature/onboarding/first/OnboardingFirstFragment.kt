@@ -13,6 +13,7 @@ import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentOnboardingFirstBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.main.MainActivity
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.collectStateFlow
 import com.b1nd.alimo.presentation.utiles.startActivityWithFinishAll
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,7 +33,7 @@ class OnboardingFirstFragment:BaseFragment<FragmentOnboardingFirstBinding, Onboa
             collectStateFlow(viewModel.tokenState) {
                 // Refresh토큰이 만료됐는지 않됐거나 없는지 확인
                 // 만료됐다면 Text에 "만료"를 넣어서 보냄
-                Log.d("TAG", "initView: $it")
+                Dlog.d("initView: $it")
                 if (it.token == "만료" || it.token == null) {
                     val direction =
                         OnboardingFirstFragmentDirections.actionOnboardingFirstToOnboardingSecond(

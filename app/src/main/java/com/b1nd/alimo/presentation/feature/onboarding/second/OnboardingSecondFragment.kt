@@ -13,6 +13,7 @@ import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentOnboardingSecondBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.onboarding.second.OnboardingSecondViewModel.Companion.ON_CLICK_START
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.collectStateFlow
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import com.b1nd.alimo.presentation.utiles.shortToast
@@ -33,7 +34,7 @@ class OnboardingSecondFragment :
 
         collectStateFlow(viewModel.tokenState){
             if (it.token == "만료") {
-                Log.d("TAG", "initView: $it")
+                Dlog.d("initView: $it")
                 requireContext().shortToast("세션이 만료되었습니다")
                 viewModel.tokenReset()
             }

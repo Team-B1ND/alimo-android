@@ -3,7 +3,6 @@ package com.b1nd.alimo.presentation.feature.main.detail
 import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.DecelerateInterpolator
@@ -34,6 +33,7 @@ import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_SAD
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_SEND
 import com.b1nd.alimo.presentation.feature.main.image.ImageFragment
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.collectStateFlow
 import com.b1nd.alimo.presentation.utiles.downloadFile
@@ -181,7 +181,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     }
 
     private fun requestSendText() {
-        Log.d("TAG", "initView: send")
+        Dlog.d("initView: send")
         with(mBinding) {
             if (!editSend.isEnabled) {
                 return
@@ -236,7 +236,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
                 }
                 is DetailSideEffect.SuccessChangeBookmark -> {
-                    Log.d("TAG", "initSideEffect: ewqqwe")
+                    Dlog.d("initSideEffect: ewqqwe")
                     changeBookmark()
                 }
                 is DetailSideEffect.FailedChangeBookmark -> {
@@ -263,7 +263,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 parentId = null
                 textParentCommenter.visibility = View.GONE
                 state.notificationState?.let {
-                    Log.d("TAG", "initNotice: ${it.emoji}")
+                    Dlog.d("initNotice: ${it.emoji}")
                     textTitle.text = it.title
                     textAuthor.text = it.member
                     textContent.text = it.content
@@ -313,7 +313,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         }
 
                         imageView.loadNotCropImage(file.fileUrl) { ratio ->
-                            Log.d("TAG", "initNotice: $ratio")
+                            Dlog.d("initNotice: $ratio")
                             lifecycleScope.launch(Dispatchers.Main) {
                                 layoutNestedScroll.post {
                                     layoutNestedScroll.scrollTo(scroll.first, scroll.second)

@@ -7,6 +7,7 @@ import com.b1nd.alimo.data.model.JoinModel
 import com.b1nd.alimo.data.repository.ParentJoinRepository
 import com.b1nd.alimo.data.repository.TokenRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
+import com.b1nd.alimo.presentation.utiles.Dlog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -28,18 +29,18 @@ class ParentJoinThirdViewModel @Inject constructor(
         email: String,
         code: String
     ){
-        Log.d("TAG", "emailCheck: 시작")
+        Dlog.d("emailCheck: 시작")
         viewModelScope.launch {
             // 인증 코드를 서버로 전송
             parentJoinRepository.emailCheck(
                 email = email,
                 code = code
             ).catch {
-                Log.d("TAG", "emailCheck: $it")
+                Dlog.d("emailCheck: $it")
             }.collectLatest {resource ->
                 when(resource){
                     is Resource.Success ->{
-                        Log.d("TAG", "성공: ${resource.data}")
+                        Dlog.d("성공: ${resource.data}")
                         val token = resource.data?.accessToken
                         val refreshToken = resource.data?.refreshToken
                         // 성공시 토큰 저장
@@ -78,17 +79,17 @@ class ParentJoinThirdViewModel @Inject constructor(
     ){
         viewModelScope.launch {
             parentJoinRepository.postEmailsVerification(email).catch {
-                Log.d("TAG", "postEmail: $it")
+                Dlog.d("postEmail: $it")
             }.collectLatest {resource->
                 when (resource){
                     is Resource.Success -> {
-                        Log.d("TAG", "postEmail:성공 ${resource.data?.message}")
+                        Dlog.d("postEmail:성공 ${resource.data?.message}")
                     }
                     is Resource.Error -> {
-                        Log.d("TAG", "postEmail:실패 ${resource.error}")
+                        Dlog.e("postEmail:실패 ${resource.error}")
                     }
                     is Resource.Loading -> {
-                        Log.d("TAG", "로딩: ")
+                        Dlog.d("로딩: ")
                     }
                 }
             }

@@ -1,6 +1,5 @@
 package com.b1nd.alimo.presentation.feature.onboarding.parent.join.second
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.remote.request.ParentJoinRequest
@@ -8,6 +7,7 @@ import com.b1nd.alimo.data.repository.FirebaseTokenRepository
 import com.b1nd.alimo.data.repository.ParentJoinRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.MemberNameModel
+import com.b1nd.alimo.presentation.utiles.Dlog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,20 +36,20 @@ class ParentJoinSecondViewModel @Inject constructor(
         viewModelScope.launch {
             studentCode.collectLatest { code ->
                 parentJoinRepository.member(code).catch { exception ->
-                    Log.d("TAG", "getMemberName: ${exception.message}")
+                    Dlog.d("getMemberName: ${exception.message}")
                 }.collect { resource ->
                     when (resource) {
                         is Resource.Success -> {
-                            Log.d("TAG", ":서공  ${resource.data?.name}")
+                            Dlog.d(":서공  ${resource.data?.name}")
                             _memberName.emit(MemberNameModel(resource.data?.name))
                         }
 
                         is Resource.Error -> {
-                            Log.d("TAG", ":실패  ${resource.error}")
+                            Dlog.e(":실패  ${resource.error}")
                         }
 
                         is Resource.Loading -> {
-                            Log.d("TAG", ": 로딩")
+                            Dlog.d(": 로딩")
                         }
 
                         else -> {}
@@ -71,7 +71,7 @@ class ParentJoinSecondViewModel @Inject constructor(
         memberId: Int
     ) {
         viewModelScope.launch {
-            Log.d("TAG", "singUp: ${firebaseTokenRepository.getToken()}")
+            Dlog.d("singUp: ${firebaseTokenRepository.getToken()}")
             firebaseTokenRepository.getToken().catch { firebaseException ->
 
             }.collect { firebaseResource ->
@@ -80,10 +80,7 @@ class ParentJoinSecondViewModel @Inject constructor(
                         val fcmToken = firebaseResource.data?.fcmToken
                         if (fcmToken != null) {
 
-                            Log.d(
-                                "TAG",
-                                "$email $password ${fcmToken} $childCode $memberId"
-                            )
+                            Dlog.d("$email $password ${fcmToken} $childCode $memberId")
                             parentJoinRepository.singUp(
                                 data = ParentJoinRequest(
                                     email = email,
@@ -93,11 +90,11 @@ class ParentJoinSecondViewModel @Inject constructor(
                                     memberId = memberId
                                 )
                             ).catch { exception ->
-                                Log.d("TAG", "singUp: ${exception.message}")
+                                Dlog.e("singUp: ${exception.message}")
                             }.collect { resource ->
                                 when (resource) {
                                     is Resource.Success -> {
-                                        Log.d("TAG", "singUp: 성공 ${resource.data}")
+                                        Dlog.d("singUp: 성공 ${resource.data}")
                                         if (resource.data == null) {
                                             failure()
                                         } else {
@@ -106,14 +103,11 @@ class ParentJoinSecondViewModel @Inject constructor(
                                     }
 
                                     is Resource.Error -> {
-                                        Log.d(
-                                            "TAG",
-                                            "singUp: 에러 ${resource.error}, ${resource.data}"
-                                        )
+                                        Dlog.e("singUp: 에러 ${resource.error}, ${resource.data}")
                                     }
 
                                     is Resource.Loading -> {
-                                        Log.d("TAG", "singUp: 로딩")
+                                        Dlog.d("singUp: 로딩")
                                     }
 
                                 }
@@ -123,11 +117,11 @@ class ParentJoinSecondViewModel @Inject constructor(
                     }
 
                     is Resource.Error -> {
-                        Log.d("TAG", "singUp: 에서 ${firebaseResource.error}")
+                        Dlog.d("singUp: 에서 ${firebaseResource.error}")
                     }
 
                     is Resource.Loading -> {
-                        Log.d("TAG", "singUp: $firebaseResource")
+                        Dlog.d("singUp: $firebaseResource")
                     }
                 }
             }

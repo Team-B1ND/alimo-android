@@ -21,6 +21,7 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJo
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_LOGIN
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_NEXT
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_STUDENT_CODE
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,11 +47,11 @@ class ParentJoinFirstFragment :
                 val d = studentCode.data
                 // 올바르지 않다면 리턴
                 if (d?.memberId == null) {
-                    Log.d("TAG", "initView: member id is null")
+                    Dlog.d("initView: member id is null")
                     dialog.show(childFragmentManager, "올바르지 않은 학생코드")
                     return@collect
                 }
-                Log.d("TAG", "initView: ${getChildCode()} ${d.memberId} ")
+                Dlog.d("initView: ${getChildCode()} ${d.memberId} ")
                 val direction =
                     ParentJoinFirstFragmentDirections.actionParentJoinFirstToParentJoinSecond(
                         getChildCode(),
@@ -64,7 +65,7 @@ class ParentJoinFirstFragment :
             event.onSuccessEvent {
                 when (it) {
                     ON_CLICK_BACK -> {
-                        Log.d("TAG", "initView: 뒤로가")
+                        Dlog.d("initView: 뒤로가")
                         findNavController().navigate(R.id.action_parentJoinFirst_to_onboardingThird)
 
                     }
@@ -77,14 +78,14 @@ class ParentJoinFirstFragment :
 //                        Log.d("TAG", "${viewModel.tureFalse.value.data?.isCorrectChildCode}: ")
 
                         val studentCode = getChildCode()
-                        Log.d("TAG", "학생 코드: $studentCode")
+                        Dlog.d("학생 코드: $studentCode")
 
                         viewModel.checkStudentCode(studentCode)
                     }
 
                     ON_CLICK_STUDENT_CODE -> {
                         // "학생 코드가 무엇인가요?"를 클릭시 아래의 Url로 이동
-                        Log.d("TAG", "studentCode: click")
+                        Dlog.d("studentCode: click")
                         val url = "https://subsequent-grouse.super.site/"
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                         startActivity(intent)

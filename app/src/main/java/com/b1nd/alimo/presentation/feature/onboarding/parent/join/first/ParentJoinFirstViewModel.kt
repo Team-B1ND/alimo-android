@@ -1,10 +1,10 @@
 package com.b1nd.alimo.presentation.feature.onboarding.parent.join.first
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.repository.ParentJoinRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
+import com.b1nd.alimo.presentation.utiles.Dlog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -26,7 +26,7 @@ class ParentJoinFirstViewModel @Inject constructor(
     fun checkStudentCode(studentCode: String){
         viewModelScope.launch {
             parentJoinRepository.childCode(studentCode).catch {
-                Log.d("TAG", "checkStudentCode: ${it.message}")
+                Dlog.d("checkStudentCode: ${it.message}")
             }.collectLatest {resource ->
                 when(resource){
                     is Resource.Error ->{
@@ -36,10 +36,10 @@ class ParentJoinFirstViewModel @Inject constructor(
                     is Resource.Success ->{
                         val newEffect = ParentJoinFirstState(resource.data)
                         _trueFalse.emit(newEffect)
-                        Log.d("TAG", "성공: ${resource.data}")
+                        Dlog.d("성공: ${resource.data}")
                     }
                     is Resource.Loading ->{
-                        Log.d("TAG", "로딩: ")
+                        Dlog.d("로딩: ")
                     }
                 }
             }

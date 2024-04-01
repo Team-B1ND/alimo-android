@@ -11,6 +11,7 @@ import com.b1nd.alimo.data.repository.FirebaseTokenRepository
 import com.b1nd.alimo.data.repository.StudentLoinRepository
 import com.b1nd.alimo.data.repository.TokenRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
+import com.b1nd.alimo.presentation.utiles.Dlog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -38,28 +39,28 @@ class StudentLoginViewModel @Inject constructor(
 
     // 학생 로그인 기능
     fun login(code: String) {
-        Log.d("TAG", "login: 시작")
+        Dlog.d("login: 시작")
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d("TAG", "login: 시작2")
+            Dlog.d("login: 시작2")
             // FcmToken 저장
             var fcmToken = ""
             firebaseTokenRepository.getToken().catch {
-                Log.d("TAG", "login: $it dxc")
+                Dlog.d("login: $it dxc")
             }.collect{
                 when(it){
                     is Resource.Success ->{
                         fcmToken = it.data?.fcmToken.toString()
                     }
                     is Resource.Error ->{
-                        Log.d("TAG", "login error:  ${it.error}")
+                        Dlog.d("login error:  ${it.error}")
                     }
                     is Resource.Loading ->{
-                        Log.d("TAG", "login: $it")
+                        Dlog.d("login: $it")
                     }
                 }
             }
             if (fcmToken != null) {
-                Log.d("TAG", "login: 시작3")
+                Dlog.d("login: 시작3")
                 // FcmToken이 Null이 아닐 때만 로그인 로직을 수행
                 studentLoginRepository.login(
                     StudentLoginRequest(
@@ -67,12 +68,12 @@ class StudentLoginViewModel @Inject constructor(
                         fcmToken = fcmToken
                     )
                 ).catch {
-                    Log.d("TAG", "login: ${it.message}")
+                    Dlog.d("login: ${it.message}")
                 }.collectLatest { resource ->
                     when (resource) {
                         is Resource.Success -> {
                             // 성공하면 서버에서 받은 AccessToken과 RefreshToken 저장
-                            Log.d("TAG", "login: ${resource.data}")
+                            Dlog.d("login: ${resource.data}")
                             val token = resource.data?.accessToken
                             val refreshToken = resource.data?.refreshToken
                             if (token != null && refreshToken != null) {
@@ -87,17 +88,17 @@ class StudentLoginViewModel @Inject constructor(
                         }
 
                         is Resource.Error -> {
-                            Log.d("TAG", "login: 실패 ${resource.error}")
+                            Dlog.e("login: 실패 ${resource.error}")
                         }
 
                         is Resource.Loading -> {
-                            Log.d("TAG", "login:로딩 ${resource.error} ${resource.data}")
+                            Dlog.d("login:로딩 ${resource.error} ${resource.data}")
                         }
 
                     }
                 }
             } else {
-                Log.d("TAG", "login: $fcmToken")
+                Dlog.d("login: $fcmToken")
             }
         }
     }
@@ -105,7 +106,7 @@ class StudentLoginViewModel @Inject constructor(
     fun tokenCheck() {
         viewModelScope.launch {
             val tokenEntity = tokenRepository.getToken()
-            Log.d("TAG", "tokenCheck: $tokenEntity")
+            Dlog.d("tokenCheck: $tokenEntity")
         }
     }
 
@@ -123,11 +124,11 @@ class StudentLoginViewModel @Inject constructor(
                     redirectUrl = BuildConfig.REDIRECT_URL
                 )
             ).catch {
-                Log.d("TAG", "checkStudentCode: ${it.message}")
+                Dlog.d("checkStudentCode: ${it.message}")
             }.collectLatest { resource ->
                 when (resource) {
                     is Resource.Error -> {
-                        Log.d("TAG", "실패: ${resource.error}")
+                        Dlog.d("실패: ${resource.error}")
                         _dodamCode.emit(DodamState(
                             error = "${resource.error}"
                         ))
@@ -138,11 +139,11 @@ class StudentLoginViewModel @Inject constructor(
                             // 데이터에서 코드만 가져와서 저장
                             val code = resource.data.location.split("[=&]".toRegex())[1]
                             _dodamCode.emit(DodamState(code))
-                            Log.d("TAG", "성공: ${code}")
+                            Dlog.d("성공: ${code}")
                         }
                     }
                     is Resource.Loading -> {
-                        Log.d("TAG", "로딩: ${resource.data}, ${resource.error}")
+                        Dlog.d("로딩: ${resource.data}, ${resource.error}")
                     }
                 }
             }

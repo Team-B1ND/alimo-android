@@ -1,6 +1,5 @@
 package com.b1nd.alimo.data.remote.service
 
-import android.util.Log
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.NotificationModel
 import com.b1nd.alimo.data.remote.mapper.toModels
@@ -8,6 +7,7 @@ import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.response.home.HomeSpeakerResponse
 import com.b1nd.alimo.data.remote.response.notification.NotificationResponse
 import com.b1nd.alimo.di.AppHttpClient
+import com.b1nd.alimo.presentation.utiles.Dlog
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -29,7 +29,7 @@ class HomeService @Inject constructor(
                 parameter("size", size)
                 parameter("category", if (category == "전체") "null" else category)
             }.body<BaseResponse<List<NotificationResponse>>>()
-            Log.d("TAG", "getPost: $body")
+            Dlog.d("getPost: $body")
             Resource.Success(body.data.toModels())
         } catch (e: Exception) {
             e.printStackTrace()
