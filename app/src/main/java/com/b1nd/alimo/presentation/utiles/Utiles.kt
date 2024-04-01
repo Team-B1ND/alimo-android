@@ -1,5 +1,8 @@
 package com.b1nd.alimo.presentation.utiles
 
+import android.content.Context
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.View
@@ -71,4 +74,19 @@ class BackgroundColorTransform(private val backgroundColor: Int) : BitmapTransfo
     override fun updateDiskCacheKey(messageDigest: MessageDigest) {
         messageDigest.update(("BackgroundColorTransform:$backgroundColor").toByteArray(Key.CHARSET))
     }
+}
+
+fun isDebuggable(context: Context): Boolean {
+    var debuggable = false;
+    val pm = context.getPackageManager();
+    try {
+        val appInfo = pm.getApplicationInfo(context.getPackageName(), 0);
+        appInfo.flags
+        ApplicationInfo.FLAG_DEBUGGABLE
+        (appInfo.flags == ApplicationInfo.FLAG_DEBUGGABLE)
+        debuggable = (0 == (appInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE))
+    } catch (e: PackageManager.NameNotFoundException) {
+        /* debuggable variable will remain false */
+    }
+    return debuggable;
 }
