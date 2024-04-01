@@ -10,6 +10,7 @@ import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.response.token.TokenResponse
 import com.b1nd.alimo.data.repository.TokenRepository
 import com.b1nd.alimo.di.url.AlimoUrl
+import com.b1nd.alimo.di.url.DodamUrl
 import com.b1nd.alimo.presentation.feature.onboarding.OnboardingActivity
 import com.b1nd.alimo.presentation.utiles.AlimoApplication
 import dagger.Module
@@ -161,6 +162,7 @@ object RemoteModule {
                         AlimoUrl.CHILD_CODE -> false
                         AlimoUrl.Member.STUDENT_SEARCH -> false
                         AlimoUrl.Member.POST_EMAIL -> false
+                        DodamUrl.LOGIN -> false
 
                         else -> true
                     }
