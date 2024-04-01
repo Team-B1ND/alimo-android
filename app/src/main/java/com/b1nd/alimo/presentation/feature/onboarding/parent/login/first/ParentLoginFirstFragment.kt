@@ -16,6 +16,7 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentL
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_FIND_PW
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_JOIN
 import com.b1nd.alimo.presentation.feature.onboarding.parent.login.first.ParentLoginFirstViewModel.Companion.ON_CLICK_LOGIN
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.Env
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard

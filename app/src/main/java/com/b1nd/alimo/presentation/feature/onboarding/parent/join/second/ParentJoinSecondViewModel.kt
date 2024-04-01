@@ -6,6 +6,7 @@ import com.b1nd.alimo.data.remote.request.ParentJoinRequest
 import com.b1nd.alimo.data.repository.FirebaseTokenRepository
 import com.b1nd.alimo.data.repository.ParentJoinRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
+import com.b1nd.alimo.presentation.utiles.Dlog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,13 +42,13 @@ class ParentJoinSecondViewModel @Inject constructor(
                 parentJoinRepository.member(code).collect { resource ->
                     when (resource) {
                         is Resource.Success -> {
-                            Log.d("TAG", ":서공  ${resource.data?.name}")
+                            Dlog.d(":서공  ${resource.data?.name}")
                             _memberName.value = _memberName.value.copy(resource.data?.name)
                         }
 
                         is Resource.Error -> {
                             _parentJoinSideEffect.send(ParentJoinSecondSideEffect.FailedMemberName(resource.error ?: Throwable()))
-                            Log.d("TAG", ":실패  ${resource.error}")
+                            Dlog.e(":실패  ${resource.error}")
                         }
 
                         is Resource.Loading -> {
@@ -73,7 +74,7 @@ class ParentJoinSecondViewModel @Inject constructor(
         memberId: Int
     ) {
         viewModelScope.launch {
-            Log.d("TAG", "singUp: ${firebaseTokenRepository.getToken()}")
+            Dlog.d("singUp: ${firebaseTokenRepository.getToken()}")
             firebaseTokenRepository.getToken().collect { firebaseResource ->
                 when (firebaseResource) {
                     is Resource.Success -> {
@@ -98,12 +99,12 @@ class ParentJoinSecondViewModel @Inject constructor(
                                         }else{
                                             _parentJoinSideEffect.send(ParentJoinSecondSideEffect.FailedSignup(resource.error ?:Throwable()))
                                         }
-                                        Log.d("TAG", "singUp: 성공 ${resource.data?.status}")
+                                        Dlog.d("singUp: 성공 ${resource.data?.status}")
                                     }
 
                                     is Resource.Error -> {
                                         _parentJoinSideEffect.send(ParentJoinSecondSideEffect.FailedSignup(resource.error ?: Throwable()))
-                                        Log.d("TAG", "singUp: 에러 ${resource.error}, ${resource.data}"
+                                        Dlog.e("singUp: 에러 ${resource.error}, ${resource.data}"
                                         )
                                     }
 

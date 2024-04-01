@@ -21,6 +21,7 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJo
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_LOGIN
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_NEXT
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstViewModel.Companion.ON_CLICK_STUDENT_CODE
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
@@ -47,7 +48,7 @@ class ParentJoinFirstFragment :
                 val d = studentCode
                 // 올바르지 않다면 리턴
                 if (d.memberId != null){
-                    Log.d("TAG", "initView: ${getChildCode()} ${d.memberId} ")
+                    Dlog.d("initView: ${getChildCode()} ${d.memberId} ")
                     val direction =
                         ParentJoinFirstFragmentDirections.actionParentJoinFirstToParentJoinSecond(
                             getChildCode(),

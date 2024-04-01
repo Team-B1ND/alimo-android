@@ -38,7 +38,7 @@ class ParentLoginFirstViewModel @Inject constructor(
     // 학부모 로그인 기능
     fun login(email:String, password:String){
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d("TAG", "login: 시작2")
+            Dlog.d("login: 시작2")
             firebaseTokenRepository.getToken().collectLatest {
                 when(it){
                     is Resource.Success ->{
@@ -46,7 +46,7 @@ class ParentLoginFirstViewModel @Inject constructor(
                     }
                     is Resource.Error -> {
                         _parentLoginSideEffect.send(ParentLoginSideEffect.FailedLoadFcmToken(it.error ?:Throwable()))
-                        Log.d("TAG", "에러 login: ${it.error}")
+                        Dlog.d("에러 login: ${it.error}")
                     }
                     is Resource.Loading ->{
                         Dlog.d("로딩 login: $it")
@@ -81,7 +81,7 @@ class ParentLoginFirstViewModel @Inject constructor(
 
                     is Resource.Error -> {
                         _parentLoginSideEffect.send(ParentLoginSideEffect.FailedLogin(resource.error ?:Throwable()))
-                        Log.d("TAG", "login: 실패 ${resource.error}")
+                        Dlog.d("login: 실패 ${resource.error}")
                     }
 
                     is Resource.Loading -> {

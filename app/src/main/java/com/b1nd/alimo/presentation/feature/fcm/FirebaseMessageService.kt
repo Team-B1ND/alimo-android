@@ -67,7 +67,7 @@ class FirebaseMessageService : FirebaseMessagingService() {
         val body = message.notification?.body
         val data = message.data
         val type = data["type"]
-        Log.d("TAG", "title: $title, body: $body, data: $data, type: $type ")
+        Dlog.d("title: $title, body: $body, data: $data, type: $type ")
 
 
         // 알림 권한 창

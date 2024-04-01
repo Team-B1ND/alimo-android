@@ -26,7 +26,7 @@ class OnboardingFirstViewModel @Inject constructor(
             tokenRepository.getToken().collect{
                 when(it){
                     is Resource.Success ->{
-                        Log.d("TAG", "성공: ${it.data?.token} ${it.data?.refreshToken}")
+                        Dlog.d("성공: ${it.data?.token} ${it.data?.refreshToken}")
                         _tokenState.value = _tokenState.value.copy(it.data?.token, it.data?.refreshToken)
                     }
                     is Resource.Error ->{

@@ -2,6 +2,7 @@ package com.b1nd.alimo.presentation.feature.onboarding.student.first
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -13,7 +14,7 @@ import com.b1nd.alimo.presentation.feature.main.MainActivity
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACKGROUND
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_LOGIN_ON
-import com.b1nd.alimo.presentation.utiles.Env
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent

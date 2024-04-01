@@ -32,12 +32,12 @@ class ParentJoinFirstViewModel @Inject constructor(
                 when(resource){
                     is Resource.Error ->{
                         _parentJoinSideEffect.send(ParentJoinFirstSideEffect.FailedChildCode(resource.error ?: Throwable()))
-                        Log.d("TAG", "실패: ")
+                        Dlog.d("실패: ")
                     }
                     is Resource.Success ->{
                         val newEffect = ParentJoinFirstModel(resource.data?.isCorrectChildCode, resource.data?.memberId)
                         _trueFalse.value = _trueFalse.value.copy(newEffect.isCorrectChildCode, newEffect.memberId)
-                        Log.d("TAG", "성공: ${resource.data}")
+                        Dlog.d("성공: ${resource.data}")
                     }
                     is Resource.Loading ->{
                         Dlog.d("로딩: ")

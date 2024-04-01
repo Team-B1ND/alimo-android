@@ -15,6 +15,7 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJ
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.ON_CLICK_BACKGROUND
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.ON_CLICK_LOGIN
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.ON_CLICK_NEXT
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.Env
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
