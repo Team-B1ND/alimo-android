@@ -16,7 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -50,10 +49,7 @@ class StudentLoginViewModel @Inject constructor(
             Log.d("TAG", "login: 시작2")
             // FcmToken 저장
 
-            firebaseTokenRepository.getToken().catch {
-                _studentLoginSideEffect.send(StudentLoginSideEffect.FailedLoad(it))
-                Log.d("TAG", "login: $it dxc")
-            }.collect {
+            firebaseTokenRepository.getToken().collect {
                 when (it) {
                     is Resource.Success -> {
                         _fcmToken.value = it.data?.fcmToken.toString()
@@ -80,9 +76,7 @@ class StudentLoginViewModel @Inject constructor(
                     code = code,
                     fcmToken = fcmToken.value
                 )
-            ).catch {
-                Log.d("TAG", "login: ${it.message}")
-            }.collectLatest { resource ->
+            ).collectLatest { resource ->
                 when (resource) {
                     is Resource.Success -> {
                         // 성공하면 서버에서 받은 AccessToken과 RefreshToken 저장
@@ -126,10 +120,7 @@ class StudentLoginViewModel @Inject constructor(
                     clientId = BuildConfig.CLIENT_ID,
                     redirectUrl = BuildConfig.REDIRECT_URL
                 )
-            ).catch {
-                _studentLoginSideEffect.send(StudentLoginSideEffect.FailedLoad(it))
-                Log.d("TAG", "checkStudentCode: ${it.message}")
-            }.collectLatest { resource ->
+            ).collectLatest { resource ->
                 when (resource) {
                     is Resource.Error -> {
                         _studentLoginSideEffect.send(

@@ -185,10 +185,6 @@ class ParentJoinSecondFragment :
                 is ParentJoinSecondSideEffect.FailedSignup ->{
                     Log.d("TAG", "initSideEffect: 로그인 실패")
                 }
-                is ParentJoinSecondSideEffect.FailedLoad ->{
-                    requireContext().shortToast(Env.ERROR)
-                    Log.d("TAG", "initSideEffect: 예외")
-                }
                 is ParentJoinSecondSideEffect.FailedMemberName ->{
                     requireContext().shortToast(Env.ERROR)
                     Log.d("TAG", "initSideEffect: 이름 가져오기 실패")

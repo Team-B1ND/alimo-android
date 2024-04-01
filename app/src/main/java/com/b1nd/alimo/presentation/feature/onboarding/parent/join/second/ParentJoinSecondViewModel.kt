@@ -11,7 +11,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -40,10 +39,7 @@ class ParentJoinSecondViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             studentCode.collectLatest { code ->
-                parentJoinRepository.member(code).catch { exception ->
-                    _parentJoinSideEffect.send(ParentJoinSecondSideEffect.FailedLoad(exception))
-                    Log.d("TAG", "getMemberName: ${exception.message}")
-                }.collect { resource ->
+                parentJoinRepository.member(code).collect { resource ->
                     when (resource) {
                         is Resource.Success -> {
                             Log.d("TAG", ":서공  ${resource.data?.name}")
@@ -79,9 +75,7 @@ class ParentJoinSecondViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             Log.d("TAG", "singUp: ${firebaseTokenRepository.getToken()}")
-            firebaseTokenRepository.getToken().catch { firebaseException ->
-                _parentJoinSideEffect.send(ParentJoinSecondSideEffect.FailedLoad(firebaseException))
-            }.collect { firebaseResource ->
+            firebaseTokenRepository.getToken().collect { firebaseResource ->
                 when (firebaseResource) {
                     is Resource.Success -> {
                         _fcmToken.value = firebaseResource.data?.fcmToken.toString()
@@ -98,10 +92,7 @@ class ParentJoinSecondViewModel @Inject constructor(
                                     childCode = childCode,
                                     memberId = memberId
                                 )
-                            ).catch { exception ->
-                                _parentJoinSideEffect.send(ParentJoinSecondSideEffect.FailedLoad(exception))
-                                Log.d("TAG", "singUp: ${exception.message}")
-                            }.collect { resource ->
+                            ).collect { resource ->
                                 when (resource) {
                                     is Resource.Success -> {
                                         val status = resource.data?.status
@@ -151,7 +142,6 @@ class ParentJoinSecondViewModel @Inject constructor(
     fun onClickBackground() = viewEvent(ON_CLICK_BACKGROUND)
 
     fun success() = viewEvent(SUCCESS)
-    fun failure() = viewEvent(FAILURE)
 
 
     companion object {
@@ -160,6 +150,5 @@ class ParentJoinSecondViewModel @Inject constructor(
         const val ON_CLICK_LOGIN = "ON_CLICK_LOGIN"
         const val ON_CLICK_BACKGROUND = "ON_CLICK_BACKGROUND"
         const val SUCCESS = "SUCCESS"
-        const val FAILURE = "FAILURE"
     }
 }

@@ -55,9 +55,7 @@ class ParentLoginFirstFragment:
                         findNavController().navigate(R.id.action_parentLoginFirst_to_parentJoinFirst)
                     }
                     ON_CLICK_FIND_PW -> {
-                        // TODO: 비번 찾기 기능
                         requireContext().shortToast("추후 업데이트 될 예정입니다")
-//                        findNavController().navigate(R.id.action_parentLoginFirst_to_parentFindPWFirst)
                     }
                 }
             }
@@ -127,10 +125,7 @@ class ParentLoginFirstFragment:
                     requireContext().shortToast("아이디와 비밀번호를 다시 확인해주세요")
                     Log.d("TAG", "initSideEffect: 로그인실패 ${it.throwable}")
                 }
-                is ParentLoginSideEffect.FailedLoad ->{
-                    requireContext().shortToast(Env.ERROR)
-                    Log.d("TAG", "initSideEffect: 몰라 ${it.throwable}")
-                }
+
                 is ParentLoginSideEffect.FailedLoadFcmToken ->{
                     requireContext().shortToast(Env.ERROR)
                     Log.d("TAG", "initSideEffect: fcm ${it.throwable}")

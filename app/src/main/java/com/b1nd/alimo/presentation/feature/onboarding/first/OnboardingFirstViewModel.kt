@@ -9,7 +9,6 @@ import com.b1nd.alimo.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,9 +23,7 @@ class OnboardingFirstViewModel @Inject constructor(
     // 현재 토큰 Check
     fun tokenCheck(){
         viewModelScope.launch {
-            tokenRepository.getToken().catch {
-                Log.d("TAG", "위에: $it")
-            }.collect{
+            tokenRepository.getToken().collect{
                 when(it){
                     is Resource.Success ->{
                         Log.d("TAG", "성공: ${it.data?.token} ${it.data?.refreshToken}")

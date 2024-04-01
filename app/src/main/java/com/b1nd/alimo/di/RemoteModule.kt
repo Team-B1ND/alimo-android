@@ -92,9 +92,7 @@ object RemoteModule {
                 // 헤더에 AccessToken
                 loadTokens {
                     var accessToken = ""
-                    tokenRepository.getToken().catch {
-                        Log.d("TAG", "위에: $it")
-                    }.collect{
+                    tokenRepository.getToken().collect{
                         when(it){
                             is Resource.Success ->{
                                 accessToken = it.data?.token.toString()
@@ -165,6 +163,14 @@ object RemoteModule {
                 sendWithoutRequest { request ->
                     when (request.url.toString()) {
                         "${BuildConfig.SERVER_URL}/refresh" -> false
+                        "${BuildConfig.SERVER_URL}/sign-in/dodam" -> false
+                        "${BuildConfig.SERVER_URL}/sign-in" -> false
+                        "${BuildConfig.SERVER_URL}/sign-up" -> false
+                        "${BuildConfig.SERVER_URL}/member/emails/verifications" -> false
+                        "${BuildConfig.SERVER_URL}/verify-childCode" -> false
+                        "${BuildConfig.SERVER_URL}/member/student-search" -> false
+                        "${BuildConfig.SERVER_URL}/member/emails/verification-requests" -> false
+
                         else -> true
                     }
                 }
@@ -198,38 +204,6 @@ object RemoteModule {
         }
         install(DefaultRequest) {
             url(BuildConfig.DAUTH_SERVER_URL)
-            header(HttpHeaders.ContentType, ContentType.Application.Json)
-        }
-        install(Logging) {
-            logger = object : Logger {
-                override fun log(message: String) {
-                    Log.v("ktor_logger:", message)
-                }
-            }
-            level = LogLevel.ALL
-        }
-        install(ResponseObserver) {
-            onResponse { response ->
-                Log.d("http_status:", "${response.status.value}")
-            }
-        }
-    }
-
-    // 토큰이 필요없으때 사용하는 HttpClient
-    @Singleton
-    @Provides
-    @NoTokenHttpClient
-    fun provideKtorNoTokenHttpClient() = HttpClient(CIO) {
-        install(ContentNegotiation) {
-            gson {
-                registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeTypeAdapter())
-                setPrettyPrinting()
-                setLenient()
-            }
-            json()
-        }
-        install(DefaultRequest) {
-            url(BuildConfig.SERVER_URL)
             header(HttpHeaders.ContentType, ContentType.Application.Json)
         }
         install(Logging) {
