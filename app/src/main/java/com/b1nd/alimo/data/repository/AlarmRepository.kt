@@ -8,7 +8,7 @@ class AlarmRepository @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ){
     fun getAlarmState(): Boolean =
-        sharedPreferences.getBoolean("alarm", false) ?: true
+        sharedPreferences.getBoolean("alarm", false)
 
 
     fun setAlarmState(value: Boolean) =

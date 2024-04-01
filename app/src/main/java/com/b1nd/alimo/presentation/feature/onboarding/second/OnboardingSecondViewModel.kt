@@ -1,15 +1,10 @@
 package com.b1nd.alimo.presentation.feature.onboarding.second
 
 import androidx.lifecycle.viewModelScope
-import com.b1nd.alimo.data.Resource
-import com.b1nd.alimo.data.model.TokenModel
 import com.b1nd.alimo.data.repository.TokenRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
 import com.b1nd.alimo.presentation.utiles.Dlog
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,31 +14,7 @@ class OnboardingSecondViewModel @Inject constructor(
 ): BaseViewModel() {
 
 
-    private val _tokenState = MutableStateFlow(TokenModel("", ""))
-    val tokenState = _tokenState.asStateFlow()
 
-    // 현재 토큰 Check
-    fun tokenCheck(){
-        viewModelScope.launch {
-            tokenRepository.getToken().catch {
-                Dlog.d("위에: $it")
-            }.collect{
-                when(it){
-                    is Resource.Success ->{
-                        Dlog.d("성공: ${it.data?.token} ${it.data?.refreshToken}")
-                        _tokenState.emit(TokenModel(it.data?.token, it.data?.refreshToken))
-                    }
-                    is Resource.Error ->{
-                        Dlog.d("중간 에러: ${it.error}")
-                    }
-                    is Resource.Loading ->{
-                        Dlog.d("로딩 아래: $it")
-                    }
-                }
-            }
-        }
-
-    }
 
     fun onClickStart() = viewEvent(ON_CLICK_START)
 

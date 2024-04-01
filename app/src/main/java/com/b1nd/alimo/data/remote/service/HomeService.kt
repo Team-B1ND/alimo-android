@@ -6,8 +6,7 @@ import com.b1nd.alimo.data.remote.mapper.toModels
 import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.response.home.HomeSpeakerResponse
 import com.b1nd.alimo.data.remote.response.notification.NotificationResponse
-import com.b1nd.alimo.di.AppHttpClient
-import com.b1nd.alimo.presentation.utiles.Dlog
+import com.b1nd.alimo.di.url.AlimoUrl
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -15,7 +14,7 @@ import io.ktor.client.request.parameter
 import javax.inject.Inject
 
 class HomeService @Inject constructor(
-    @AppHttpClient private val httpClient: HttpClient
+    private val httpClient: HttpClient
 ) {
 
     suspend fun getPost(
@@ -24,7 +23,7 @@ class HomeService @Inject constructor(
         category: String
     ): Resource<List<NotificationModel>> {
         return try {
-            val body = httpClient.get("/notification/load") {
+            val body = httpClient.get(AlimoUrl.Notification.LOAD) {
                 parameter("page", page)
                 parameter("size", size)
                 parameter("category", if (category == "전체") "null" else category)
@@ -38,7 +37,7 @@ class HomeService @Inject constructor(
     }
 
     suspend fun getSpeaker(): BaseResponse<HomeSpeakerResponse?> =
-        httpClient.get("/notification/speaker") {
+        httpClient.get(AlimoUrl.Notification.SPEAKER) {
 
         }.body()
 }

@@ -67,15 +67,8 @@ class FirebaseMessageService : FirebaseMessagingService() {
         val body = message.notification?.body
         val data = message.data
         val type = data["type"]
-        Dlog.d("title: $title, body: $body, data: $data, type: $type ")
-//        serviceScope.launch {
-//            alarmInsertUseCase.invoke(AlarmModel(
-//                idx = 0,
-//                title = title!!,
-//                body = body!!,
-//                type = type!!
-//            ))
-//        }
+        Log.d("TAG", "title: $title, body: $body, data: $data, type: $type ")
+
 
         // 알림 권한 창
         createNotificationChannel()

@@ -11,10 +11,11 @@ import com.b1nd.alimo.presentation.feature.onboarding.student.first.LoginModel
 import com.b1nd.alimo.presentation.utiles.Dlog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,25 +26,27 @@ class ParentLoginFirstViewModel @Inject constructor(
     private val tokenRepository: TokenRepository
 ): BaseViewModel() {
 
-    private var _loginState = MutableSharedFlow<LoginModel>()
-    val loginState: SharedFlow<LoginModel> = _loginState
+    private var _loginState = MutableStateFlow(LoginModel())
+    val loginState = _loginState.asStateFlow()
 
-    private var _fcmToken = MutableSharedFlow<String>(replay = 0)
-    val fcmToken : SharedFlow<String> = _fcmToken
+    private var _fcmToken = MutableStateFlow("")
+    val fcmToken  = _fcmToken.asStateFlow()
+
+    private var _parentLoginSideEffect = Channel<ParentLoginSideEffect>()
+    val parentLoginSideEffect = _parentLoginSideEffect.receiveAsFlow()
 
     // 학부모 로그인 기능
     fun login(email:String, password:String){
         viewModelScope.launch(Dispatchers.IO) {
-            Dlog.d("login: 시작2")
-            firebaseTokenRepository.getToken().catch {
-                Dlog.d("login: $it")
-            }.collectLatest {
+            Log.d("TAG", "login: 시작2")
+            firebaseTokenRepository.getToken().collectLatest {
                 when(it){
                     is Resource.Success ->{
-                        _fcmToken.emit(it.data?.fcmToken.toString())
+                        _fcmToken.value = it.data?.fcmToken.toString()
                     }
                     is Resource.Error -> {
-                        Dlog.d("에러 login: ${it.error}")
+                        _parentLoginSideEffect.send(ParentLoginSideEffect.FailedLoadFcmToken(it.error ?:Throwable()))
+                        Log.d("TAG", "에러 login: ${it.error}")
                     }
                     is Resource.Loading ->{
                         Dlog.d("로딩 login: $it")
@@ -57,11 +60,9 @@ class ParentLoginFirstViewModel @Inject constructor(
                 ParentLoginRequest(
                     email = email,
                     password = password,
-                    fcmToken = fcmToken.toString()
+                    fcmToken = fcmToken.value
                 )
-            ).catch {
-                Dlog.d("login: ${it.message}")
-            }.collectLatest { resource ->
+            ).collectLatest { resource ->
                 when (resource) {
                     is Resource.Success -> {
                         Dlog.d("login: ${resource.data}")
@@ -71,17 +72,16 @@ class ParentLoginFirstViewModel @Inject constructor(
                             tokenRepository.insert(token, refreshToken)
 
 
-                            _loginState.emit(
-                                LoginModel(
-                                    accessToken = token,
-                                    refreshToken = refreshToken
-                                )
+                            _loginState.value = _loginState.value.copy(
+                                accessToken = token,
+                                refreshToken = refreshToken
                             )
                         }
                     }
 
                     is Resource.Error -> {
-                        Dlog.d("login: 실패 ${resource.error}")
+                        _parentLoginSideEffect.send(ParentLoginSideEffect.FailedLogin(resource.error ?:Throwable()))
+                        Log.d("TAG", "login: 실패 ${resource.error}")
                     }
 
                     is Resource.Loading -> {
