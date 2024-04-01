@@ -3,7 +3,6 @@ package com.b1nd.alimo.di
 import LocalDateTimeTypeAdapter
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.remote.request.TokenRequest
 import com.b1nd.alimo.data.remote.response.BaseResponse
@@ -13,6 +12,7 @@ import com.b1nd.alimo.di.url.AlimoUrl
 import com.b1nd.alimo.di.url.DodamUrl
 import com.b1nd.alimo.presentation.feature.onboarding.OnboardingActivity
 import com.b1nd.alimo.presentation.utiles.AlimoApplication
+import com.b1nd.alimo.presentation.utiles.Dlog
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -67,7 +67,7 @@ object RemoteModule {
         install(Logging) {
             logger = object : Logger {
                 override fun log(message: String) {
-                    Log.v("ktor_logger:", message)
+                    Dlog.v("ktor_logger: $message")
                 }
             }
             level = LogLevel.ALL
@@ -75,7 +75,7 @@ object RemoteModule {
         // 응답 Status값 로그
         install(ResponseObserver) {
             onResponse { response ->
-                Log.d("http_status:", "${response.status.value}")
+                Dlog.d("http_status: ${response.status.value}")
             }
         }
         // TokenInterceptor
@@ -90,14 +90,14 @@ object RemoteModule {
                                 accessToken = it.data?.token.toString()
                             }
                             is Resource.Error ->{
-                                Log.d("TAG", "중간 에러: ${it.error}")
+                                Dlog.e("중간 에러: ${it.error}")
                             }
                             is Resource.Loading ->{
-                                Log.d("TAG", "로딩 아래: $it")
+                                Dlog.d("로딩 아래: $it")
                             }
                         }
                     }
-                    Log.d("TAG", ": 1엑세스 $accessToken")
+                    Dlog.d(": 1엑세스 $accessToken")
                     BearerTokens(accessToken, "")
                 }
                 // AccessToken 만료되면 RefreshToken을 사용해서 다시 가져옴
@@ -106,23 +106,23 @@ object RemoteModule {
                         var refreshTokne = ""
                         val task = async {
                             tokenRepository.getToken().catch {
-                                Log.d("TAG", "위에: $it")
+                                Dlog.d("위에: $it")
                             }.collect{
                                 when(it){
                                     is Resource.Success ->{
                                         refreshTokne = it.data?.refreshToken.toString()
                                     }
                                     is Resource.Error ->{
-                                        Log.d("TAG", "중간 에러: ${it.error}")
+                                        Dlog.e("중간 에러: ${it.error}")
                                     }
                                     is Resource.Loading ->{
-                                        Log.d("TAG", "로딩 아래: $it")
+                                        Dlog.d("로딩 아래: $it")
                                     }
                                 }
                             }
                         }
                         task.await()
-                        Log.d("TAG", ": 리플레쉬$refreshTokne")
+                        Dlog.d(": 리플레쉬$refreshTokne")
 
                         val data = client.post(AlimoUrl.REFRESH) {
                             markAsRefreshTokenRequest()
@@ -148,7 +148,7 @@ object RemoteModule {
                             )
                         }
                         val accessToken = data.data.accessToken ?: ""
-                        Log.d("TAG", "ddfs: $data")
+                        Dlog.d("ddfs: $data")
                         BearerTokens(accessToken, "")
                     }
                 }
