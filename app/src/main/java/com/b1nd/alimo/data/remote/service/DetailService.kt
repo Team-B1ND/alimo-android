@@ -5,7 +5,7 @@ import com.b1nd.alimo.data.remote.request.detail.DetailEmojiRequest
 import com.b1nd.alimo.data.remote.response.BaseResponse
 import com.b1nd.alimo.data.remote.response.detail.DetailNotificationResponse
 import com.b1nd.alimo.data.remote.response.detail.EmojiResponse
-import com.b1nd.alimo.di.AppHttpClient
+import com.b1nd.alimo.di.url.AlimoUrl
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -15,14 +15,14 @@ import io.ktor.client.request.setBody
 import javax.inject.Inject
 
 class DetailService @Inject constructor(
-    @AppHttpClient private val httpClient: HttpClient
+    private val httpClient: HttpClient
 ) {
 
     suspend fun patchEmojiEdit(
         notificationId: Int,
         reaction: String
     ): BaseResponse<String?> =
-        httpClient.patch("/emoji/status/${notificationId}") {
+        httpClient.patch("${AlimoUrl.Emoji.STATUS}/${notificationId}") {
             setBody(
                 DetailEmojiRequest(reaction)
             )
@@ -31,21 +31,21 @@ class DetailService @Inject constructor(
     suspend fun loadNotification(
         notificationId: Int
     ): BaseResponse<DetailNotificationResponse> =
-        httpClient.get("/notification/read/${notificationId}") {
+        httpClient.get("${AlimoUrl.Notification.READ}/${notificationId}") {
 
         }.body<BaseResponse<DetailNotificationResponse>>()
 
     suspend fun pathBookmark(
         notificationId: Int
     ): BaseResponse<String?> =
-        httpClient.post("/bookmark/patch/${notificationId}") {
+        httpClient.post("${AlimoUrl.Bookmark.PATCH}/${notificationId}") {
 
         }.body<BaseResponse<String?>>()
 
     suspend fun loadEmoji(
         notificationId: Int
     ): BaseResponse<List<EmojiResponse>> =
-        httpClient.get("/emoji/load/${notificationId}") {
+        httpClient.get("${AlimoUrl.Emoji.LOAD}/${notificationId}") {
 
         }.body<BaseResponse<List<EmojiResponse>>>()
 
@@ -54,7 +54,7 @@ class DetailService @Inject constructor(
         text: String,
         commentId: Int?
     ): BaseResponse<String?> =
-        httpClient.post("/comment/create/${notificationId}") {
+        httpClient.post("${AlimoUrl.Comment.CREATE}/${notificationId}") {
 
             setBody(
                 DetailCommentRequest(
