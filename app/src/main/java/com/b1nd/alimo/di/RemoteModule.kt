@@ -37,7 +37,6 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.gson.gson
-import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.catch
@@ -61,7 +60,6 @@ object RemoteModule {
                 setPrettyPrinting()
                 setLenient()
             }
-            json()
         }
         // 요청 및 응답 로그
         install(Logging) {
