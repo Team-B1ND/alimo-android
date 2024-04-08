@@ -37,9 +37,11 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.gson.gson
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
 import javax.inject.Singleton
 
@@ -82,15 +84,17 @@ object RemoteModule {
                 // 헤더에 AccessToken
                 loadTokens {
                     var accessToken = ""
-                    tokenRepository.getToken().collect{
-                        when(it){
-                            is Resource.Success ->{
+                    tokenRepository.getToken().collect {
+                        when (it) {
+                            is Resource.Success -> {
                                 accessToken = it.data?.token.toString()
                             }
-                            is Resource.Error ->{
+
+                            is Resource.Error -> {
                                 Log.d("TAG", "중간 에러: ${it.error}")
                             }
-                            is Resource.Loading ->{
+
+                            is Resource.Loading -> {
                                 Log.d("TAG", "로딩 아래: $it")
                             }
                         }
@@ -103,21 +107,28 @@ object RemoteModule {
                     coroutineScope {
                         var refreshTokne = ""
                         val task = async {
-                            tokenRepository.getToken().catch {
-                                Log.d("TAG", "위에: $it")
-                            }.collect{
-                                when(it){
-                                    is Resource.Success ->{
-                                        refreshTokne = it.data?.refreshToken.toString()
-                                    }
-                                    is Resource.Error ->{
-                                        Log.d("TAG", "중간 에러: ${it.error}")
-                                    }
-                                    is Resource.Loading ->{
-                                        Log.d("TAG", "로딩 아래: $it")
+                            runBlocking(Dispatchers.IO) {
+
+                                tokenRepository.getToken().catch {
+                                    Log.d("TAG", "위에: $it")
+                                }.collect {
+                                    when (it) {
+                                        is Resource.Success -> {
+                                            refreshTokne = it.data?.refreshToken.toString()
+                                        }
+
+                                        is Resource.Error -> {
+                                            Log.d("TAG", "중간 에러: ${it.error}")
+                                        }
+
+                                        is Resource.Loading -> {
+                                            Log.d("TAG", "로딩 아래: $it")
+                                        }
                                     }
                                 }
+
                             }
+
                         }
                         task.await()
                         Log.d("TAG", ": 리플레쉬$refreshTokne")
@@ -180,6 +191,5 @@ object RemoteModule {
 
     private const val TIME_OUT = 60_000L
 
- 
 
 }
