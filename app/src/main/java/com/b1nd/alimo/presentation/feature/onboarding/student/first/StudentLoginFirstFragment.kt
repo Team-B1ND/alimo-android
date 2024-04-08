@@ -14,7 +14,7 @@ import com.b1nd.alimo.presentation.feature.main.MainActivity
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_BACKGROUND
 import com.b1nd.alimo.presentation.feature.onboarding.student.first.StudentLoginViewModel.Companion.ON_CLICK_LOGIN_ON
-import com.b1nd.alimo.presentation.utiles.Env
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
@@ -37,11 +37,11 @@ class StudentLoginFirstFragment:
         lifecycleScope.launch {
             viewModel.dodamCode.collect{
                 val code = it.code
-                Log.d("TAG", "cccccccccc: ")
+                Dlog.d("cccccccccc: ")
                 if (code != null){
                     viewModel.
                     login(code)
-                    Log.d("TAG", "initView: ${code}")
+                    Dlog.d("initView: ${code}")
                 }
                 
             }
@@ -51,10 +51,10 @@ class StudentLoginFirstFragment:
         lifecycleScope.launch {
             viewModel.loginState.collect{
                 if(it.accessToken == null && it.refreshToken == null){
-                    Log.d("TAG", "로그인 실패: ${it.accessToken} ${it.refreshToken}")
+                    Dlog.d("로그인 실패: ${it.accessToken} ${it.refreshToken}")
                 }else{
                     startActivityWithFinishAll(MainActivity::class.java)
-                    Log.d("TAG", "${it.accessToken}, ${it.refreshToken} ")
+                    Dlog.d("${it.accessToken}, ${it.refreshToken} ")
                 }
             }
         }
@@ -73,7 +73,7 @@ class StudentLoginFirstFragment:
                         viewModel.getCode(id, hashedPw)
                     }
                     ON_CLICK_BACKGROUND -> {
-                        Log.d("TAG", "initView: background")
+                        Dlog.d("initView: background")
                         mBinding.idEditText.clearFocus()
                         mBinding.pwEditText.clearFocus()
                         view?.hideKeyboard()
@@ -115,12 +115,12 @@ class StudentLoginFirstFragment:
 
         // 버튼의 색상을 변경하는 로직 추가
         if (text1.isNotEmpty() && text2.isNotEmpty()) {
-            Log.d("TAG", "updateButtonColor: on")
+            Dlog.d("updateButtonColor: on")
             // 두 EditText의 텍스트가 null이 아닐 때 버튼의 색상을 변경
             mBinding.loginBtnOff.visibility = View.GONE
             mBinding.loginBtnOn.visibility = View.VISIBLE
         } else {
-            Log.d("TAG", "updateButtonColor: off")
+            Dlog.d("updateButtonColor: off")
             // 두 EditText 중 하나라도 텍스트가 null일 때 버튼의 색상을 기본 색상으로 변경
             mBinding.loginBtnOff.visibility = View.VISIBLE
             mBinding.loginBtnOn.visibility = View.GONE

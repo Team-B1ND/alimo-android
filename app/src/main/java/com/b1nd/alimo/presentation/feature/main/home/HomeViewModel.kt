@@ -1,6 +1,5 @@
 package com.b1nd.alimo.presentation.feature.main.home
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -9,6 +8,7 @@ import com.b1nd.alimo.data.model.NotificationModel
 import com.b1nd.alimo.data.model.SpeakerModel
 import com.b1nd.alimo.data.repository.HomeRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.Env.NETWORK_ERROR_MESSAGE
 import com.b1nd.alimo.presentation.utiles.launchIO
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,7 +42,7 @@ class HomeViewModel @Inject constructor(
                 emitAll(repository.getPost(it.first).cachedIn(viewModelScope))
             } catch (e: Exception) {
                 e.printStackTrace()
-                Log.d("TAG", ": ${e.message}")
+                Dlog.e(e.message)
                 emitAll(emptyFlow<PagingData<NotificationModel>>())
             }
         }
@@ -110,7 +110,7 @@ class HomeViewModel @Inject constructor(
         category: String,
         position: Int
     ) {
-        Log.d("TAG", "setCategory: $category")
+        Dlog.d("setCategory: $category")
         _chooseCategory.value = Pair(category, position)
     }
 

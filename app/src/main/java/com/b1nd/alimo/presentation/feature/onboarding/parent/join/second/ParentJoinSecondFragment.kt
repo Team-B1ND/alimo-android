@@ -15,6 +15,7 @@ import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJ
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.ON_CLICK_BACKGROUND
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.ON_CLICK_LOGIN
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel.Companion.ON_CLICK_NEXT
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.Env
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
@@ -71,7 +72,7 @@ class ParentJoinSecondFragment :
                     }
 
                     ON_CLICK_BACKGROUND -> {
-                        Log.d("TAG", "initView: background")
+                        Dlog.d("initView: background")
                         mBinding.idEditTextLayout.clearFocus()
                         mBinding.pwEditTextLayout.clearFocus()
                         view?.hideKeyboard()
@@ -158,12 +159,12 @@ class ParentJoinSecondFragment :
 
         // 버튼의 색상을 변경하는 로직 추가
         if (text1.isNotEmpty() && text2.isNotEmpty() && text3.isNotEmpty()) {
-            Log.d("TAG", "updateButtonColor: on")
+            Dlog.d("updateButtonColor: on")
             // 두 EditText의 텍스트가 null이 아닐 때 버튼의 색상을 변경
             mBinding.loginBtnOff.visibility = View.INVISIBLE
             mBinding.loginBtnOn.visibility = View.VISIBLE
         } else {
-            Log.d("TAG", "updateButtonColor: off")
+            Dlog.d("updateButtonColor: off")
             // 두 EditText 중 하나라도 텍스트가 null일 때 버튼의 색상을 기본 색상으로 변경
             mBinding.loginBtnOff.visibility = View.VISIBLE
             mBinding.loginBtnOn.visibility = View.INVISIBLE
@@ -175,7 +176,7 @@ class ParentJoinSecondFragment :
     private fun comparisonPassword(): Boolean {
         val password = mBinding.pwEditText.text.toString()
         val verifyPassword = mBinding.verifyPwEditText.text.toString()
-        Log.d("TAG", "comparisonPassword: ${ password == verifyPassword }")
+        Dlog.d("comparisonPassword: ${ password == verifyPassword }")
         return password == verifyPassword
     }
 

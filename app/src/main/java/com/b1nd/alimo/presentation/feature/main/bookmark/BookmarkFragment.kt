@@ -10,6 +10,7 @@ import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentBookmarkBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.main.post.PostRecyclerAdapter
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.Env
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.shortToast
@@ -79,7 +80,7 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
         adapter = PostRecyclerAdapter(
             requireContext(),
             onClickBookmark = { notificationId ->
-                Log.d("TAG", "initNotification: 북마크 클릭함")
+                Dlog.d("initNotification: 북마크 클릭함")
                 viewModel.patchBookmark(notificationId)
                 lifecycleScope.launch(Dispatchers.Main) {
                     delay(200)
@@ -112,7 +113,7 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
                 is LoadState.Error -> {
                     // 에러 상태일 때 처리
                     val errorState = loadState.refresh as LoadState.Error
-                    Log.d("TAG", "initNotice: ${errorState.error.message}")
+                    Dlog.d("initNotice: ${errorState.error.message}")
                     viewModel.addErrorCount()
                     lifecycleScope.launch(Dispatchers.Main) {
                         delay(500)

@@ -1,7 +1,6 @@
 package com.b1nd.alimo.presentation.feature.main.post
 
 import android.content.Context
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.widget.ImageView
@@ -9,6 +8,7 @@ import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.CustomPopupEmojiBinding
+import com.b1nd.alimo.presentation.utiles.Dlog
 
 class PostEmojiPopup(
     context: Context,
@@ -45,7 +45,7 @@ class PostEmojiPopup(
         isOutsideTouchable = true
         contentView.setOnFocusChangeListener { view, b ->
             dismiss()
-            Log.d("TAG", ": fcous change")
+            Dlog.d("focus Change")
         }
 
 //        val layout = contentView

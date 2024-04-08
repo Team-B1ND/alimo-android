@@ -1,12 +1,12 @@
 package com.b1nd.alimo.presentation.feature.main.detail
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.b1nd.alimo.data.model.SubCommentModel
 import com.b1nd.alimo.databinding.ItemCommentCommentBinding
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.loadImage
 import com.b1nd.alimo.presentation.utiles.toDateString
 
@@ -39,7 +39,7 @@ class DetailCommentCommentRv constructor(
             }
             binding.textUserComment.text = it.content
             binding.textUserDatetime.text = it.createdAt.toDateString()
-            Log.d("TAG", "onBindViewHolder: ${items.size - position}")
+            Dlog.d("onBindViewHolder: ${items.size - position}")
             if (items.size - position != 1) { // 마지막 댓글인 경우 선 안보이도록
                 binding.imageLine.visibility = View.VISIBLE
             }

@@ -11,6 +11,7 @@ import com.b1nd.alimo.data.repository.FirebaseTokenRepository
 import com.b1nd.alimo.data.repository.StudentLoinRepository
 import com.b1nd.alimo.data.repository.TokenRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
+import com.b1nd.alimo.presentation.utiles.Dlog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -44,9 +45,9 @@ class StudentLoginViewModel @Inject constructor(
 
     // 학생 로그인 기능
     fun login(code: String) {
-        Log.d("TAG", "login: 시작")
+        Dlog.d("login: 시작")
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d("TAG", "login: 시작2")
+            Dlog.d("login: 시작2")
             // FcmToken 저장
 
             firebaseTokenRepository.getToken().collect {
@@ -141,7 +142,7 @@ class StudentLoginViewModel @Inject constructor(
                     }
 
                     is Resource.Loading -> {
-                        Log.d("TAG", "로딩: ${resource.data}, ${resource.error}")
+                        Dlog.d("로딩: ${resource.data}, ${resource.error}")
                     }
                 }
             }

@@ -1,5 +1,8 @@
 package com.b1nd.alimo.presentation.utiles
 
+import android.content.Context
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.util.Log
@@ -82,4 +85,18 @@ fun sha512(text: String): String {
     val pw = digest.fold("", { str, it -> str + "%02x".format(it) })
     Log.d("TAG", "sha512: $pw")
     return pw
+}
+fun isDebuggable(context: Context): Boolean {
+    var debuggable = false;
+    val pm = context.getPackageManager();
+    try {
+        val appInfo = pm.getApplicationInfo(context.getPackageName(), 0);
+        appInfo.flags
+        ApplicationInfo.FLAG_DEBUGGABLE
+        (appInfo.flags == ApplicationInfo.FLAG_DEBUGGABLE)
+        debuggable = (ApplicationInfo.FLAG_DEBUGGABLE == (appInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE))
+    } catch (e: PackageManager.NameNotFoundException) {
+        /* debuggable variable will remain false */
+    }
+    return debuggable;
 }

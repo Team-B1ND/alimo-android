@@ -20,17 +20,17 @@ object AlimoUrl {
 
 
     object Emoji{
-        const val STATUS = "$EMOJI/status/"
-        const val LOAD = "$EMOJI/load/"
+        const val STATUS = "$EMOJI/status"
+        const val LOAD = "$EMOJI/load"
     }
 
     object Comment{
-        const val CREATE = "$COMMENT/create/"
+        const val CREATE = "$COMMENT/create"
     }
 
     object Notification{
         const val SPEAKER = "$NOTIFICATION/speaker"
-        const val READ = "$NOTIFICATION/read/"
+        const val READ = "$NOTIFICATION/read"
         const val LOAD = "$NOTIFICATION/load"
     }
 
@@ -53,7 +53,7 @@ object AlimoUrl {
     }
 
     object Bookmark{
-        const val PATCH = "$BOOKMARK/patch/"
+        const val PATCH = "$BOOKMARK/patch"
         const val LOAD = "$BOOKMARK/load"
     }
 
