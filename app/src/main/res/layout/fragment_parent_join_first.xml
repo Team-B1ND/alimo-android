@@ -72,6 +72,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/edittext_border_background"
                 android:enabled="true"
+                android:maxLength="1"
                 android:gravity="center" />
 
             <com.google.android.material.textfield.TextInputEditText
@@ -82,6 +83,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/edittext_border_background"
                 android:enabled="true"
+                android:maxLength="1"
 
                 android:gravity="center" />
 
@@ -93,6 +95,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/edittext_border_background"
                 android:enabled="true"
+                android:maxLength="1"
 
                 android:gravity="center" />
 
@@ -104,6 +107,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/edittext_border_background"
                 android:enabled="true"
+                android:maxLength="1"
 
                 android:gravity="center" />
 
@@ -114,8 +118,8 @@
                 android:layout_marginStart="6dp"
                 android:layout_weight="1"
                 android:background="@drawable/edittext_border_background"
+                android:maxLength="1"
                 android:enabled="true"
-
                 android:gravity="center" />
 
             <com.google.android.material.textfield.TextInputEditText
@@ -126,7 +130,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/edittext_border_background"
                 android:enabled="true"
-
+                android:maxLength="1"
                 android:gravity="center" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
