@@ -105,21 +105,25 @@ object RemoteModule {
                     coroutineScope {
                         var refreshTokne = ""
                         val task = async {
-                            tokenRepository.getToken().catch {
-                                Dlog.d("위에: $it")
-                            }.collect{
-                                when(it){
-                                    is Resource.Success ->{
-                                        refreshTokne = it.data?.refreshToken.toString()
-                                    }
-                                    is Resource.Error ->{
-                                        Dlog.e("중간 에러: ${it.error}")
-                                    }
-                                    is Resource.Loading ->{
-                                        Dlog.d("로딩 아래: $it")
-                                    }
-                                }
+                            runBlocking(Dispatchers.IO) {
+                                tokenRepository.getToken().catch {
+                                    Dlog.d("위에: $it")
+                                }.collect {
+                                    when (it) {
+                                        is Resource.Success -> {
+                                            refreshTokne = it.data?.refreshToken.toString()
+                                        }
 
+                                        is Resource.Error -> {
+                                            Dlog.e("중간 에러: ${it.error}")
+                                        }
+
+                                        is Resource.Loading -> {
+                                            Dlog.d("로딩 아래: $it")
+                                        }
+                                    }
+
+                                }
                             }
 
                         }
