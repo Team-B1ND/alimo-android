@@ -1,11 +1,11 @@
 package com.b1nd.alimo.presentation.feature.main.detail
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.EmojiModel
 import com.b1nd.alimo.data.repository.DetailRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.launchIO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -144,7 +144,7 @@ class DetailViewModel @Inject constructor(
     }
 
     fun onClickBack() {
-        Log.d("TAG", "onClickBack: ")
+        Dlog.d("onClickBack: ")
         viewEvent(ON_CLICK_BACK)
     }
 

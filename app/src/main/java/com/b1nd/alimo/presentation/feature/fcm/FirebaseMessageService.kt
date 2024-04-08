@@ -7,12 +7,12 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.b1nd.alimo.R
 import com.b1nd.alimo.data.repository.AlarmRepository
 import com.b1nd.alimo.data.repository.FirebaseTokenRepository
 import com.b1nd.alimo.presentation.feature.onboarding.OnboardingActivity
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,9 +35,9 @@ class FirebaseMessageService : FirebaseMessagingService() {
     private val serviceScope = CoroutineScope(Dispatchers.IO)
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        Log.d("TAG", "onNewToken: 위에")
+        Dlog.d("onNewToken: 위에")
         serviceScope.launch {
-            Log.d("TAG", "onNewToken: $token")
+            Dlog.d("onNewToken: $token")
             // FirebaseToken을 Database에 저장
             firebaseTokenRepository.insert(
                 token
@@ -49,11 +49,8 @@ class FirebaseMessageService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        Log.d("TAG", "onMessageReceived Data: ${message.data} ")
-        Log.d(
-            "TAG",
-            "onMessageReceived Noti: ${message.notification?.title}  and ${message.notification?.body} "
-        )
+        Dlog.d("onMessageReceived Data: ${message.data} ")
+        Dlog.d("onMessageReceived Noti: ${message.notification?.title}  and ${message.notification?.body} ")
 
         // 알림 현재 상태
         var status: Boolean
@@ -70,7 +67,7 @@ class FirebaseMessageService : FirebaseMessagingService() {
         val body = message.notification?.body
         val data = message.data
         val type = data["type"]
-        Log.d("TAG", "title: $title, body: $body, data: $data, type: $type ")
+        Dlog.d("title: $title, body: $body, data: $data, type: $type ")
 
 
         // 알림 권한 창

@@ -9,6 +9,14 @@ class AlimoApplication: Application() {
     var nowActivity: Pair<Activity?, String?> = Pair(null, null)
     fun setActivity(activity: Activity, name: String) {
         nowActivity = Pair(activity, name)
-//        Log.d("TAG", "setActivity: ${nowActivity.first} ${nowActivity.second}")
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        DEBUG = isDebuggable(this)
+    }
+
+    companion object {
+        public var DEBUG: Boolean = false
     }
 }

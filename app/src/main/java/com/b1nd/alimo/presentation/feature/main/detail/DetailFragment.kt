@@ -3,13 +3,13 @@ package com.b1nd.alimo.presentation.feature.main.detail
 import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.allViews
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -33,6 +33,7 @@ import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_SAD
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_SEND
 import com.b1nd.alimo.presentation.feature.main.image.ImageFragment
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.collectStateFlow
 import com.b1nd.alimo.presentation.utiles.downloadFile
@@ -42,6 +43,7 @@ import com.b1nd.alimo.presentation.utiles.loadNotCropImage
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import com.b1nd.alimo.presentation.utiles.systemBarDark
 import com.b1nd.alimo.presentation.utiles.toDateString
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -100,6 +102,13 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
         super.onResume()
         (requireActivity() as? MainActivity)?.bottomVisible(false)
         changeVisibleAnimationView(false)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        for (i in mBinding.layoutImageContent.allViews) {
+            Glide.with(requireContext()).clear(i)
+        }
     }
 
     private fun changeVisibleAnimationView(visible: Boolean) {
@@ -172,7 +181,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     }
 
     private fun requestSendText() {
-        Log.d("TAG", "initView: send")
+        Dlog.d("initView: send")
         with(mBinding) {
             if (!editSend.isEnabled) {
                 return
@@ -227,7 +236,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
                 }
                 is DetailSideEffect.SuccessChangeBookmark -> {
-                    Log.d("TAG", "initSideEffect: ewqqwe")
+                    Dlog.d("initSideEffect: ewqqwe")
                     changeBookmark()
                 }
                 is DetailSideEffect.FailedChangeBookmark -> {
@@ -254,7 +263,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 parentId = null
                 textParentCommenter.visibility = View.GONE
                 state.notificationState?.let {
-                    Log.d("TAG", "initNotice: ${it.emoji}")
+                    Dlog.d("initNotice: ${it.emoji}")
                     textTitle.text = it.title
                     textAuthor.text = it.member
                     textContent.text = it.content
@@ -304,7 +313,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         }
 
                         imageView.loadNotCropImage(file.fileUrl) { ratio ->
-                            Log.d("TAG", "initNotice: $ratio")
+                            Dlog.d("initNotice: $ratio")
                             lifecycleScope.launch(Dispatchers.Main) {
                                 layoutNestedScroll.post {
                                     layoutNestedScroll.scrollTo(scroll.first, scroll.second)

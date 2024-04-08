@@ -1,6 +1,5 @@
 package com.b1nd.alimo.data.repository
 
-import android.util.Log
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.MemberNameModel
 import com.b1nd.alimo.data.model.ParentLoginModel
@@ -10,6 +9,7 @@ import com.b1nd.alimo.data.remote.request.ParentJoinRequest
 import com.b1nd.alimo.data.remote.safeFlow
 import com.b1nd.alimo.data.remote.service.ParentJoinService
 import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.ParentJoinFirstModel
+import com.b1nd.alimo.presentation.utiles.Dlog
 import javax.inject.Inject
 
 class ParentJoinRepository @Inject constructor(
@@ -18,7 +18,7 @@ class ParentJoinRepository @Inject constructor(
     suspend fun singUp(data: ParentJoinRequest) =
         safeFlow<ResponseModel> {
             val response = parentJoinService.singUp(data).errorCheck()
-            Log.d("TAG", "singUp: ${response}")
+            Dlog.d("singUp: ${response}")
             emit(
                 Resource.Success(ResponseModel(response.status, response.message))
             )

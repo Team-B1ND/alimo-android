@@ -1,10 +1,10 @@
 package com.b1nd.alimo.presentation.feature.onboarding.parent.join.first
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.repository.ParentJoinRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
+import com.b1nd.alimo.presentation.utiles.Dlog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,15 +32,15 @@ class ParentJoinFirstViewModel @Inject constructor(
                 when(resource){
                     is Resource.Error ->{
                         _parentJoinSideEffect.send(ParentJoinFirstSideEffect.FailedChildCode(resource.error ?: Throwable()))
-                        Log.d("TAG", "실패: ")
+                        Dlog.d("실패: ")
                     }
                     is Resource.Success ->{
                         val newEffect = ParentJoinFirstModel(resource.data?.isCorrectChildCode, resource.data?.memberId)
                         _trueFalse.value = _trueFalse.value.copy(newEffect.isCorrectChildCode, newEffect.memberId)
-                        Log.d("TAG", "성공: ${resource.data}")
+                        Dlog.d("성공: ${resource.data}")
                     }
                     is Resource.Loading ->{
-                        Log.d("TAG", "로딩: ")
+                        Dlog.d("로딩: ")
                     }
                 }
             }

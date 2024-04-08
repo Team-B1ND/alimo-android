@@ -15,6 +15,7 @@ import com.b1nd.alimo.databinding.FragmentHomeBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.main.home.HomeViewModel.Companion.ON_CLICK_SPEAKER
 import com.b1nd.alimo.presentation.feature.main.post.PostRecyclerAdapter
+import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import com.b1nd.alimo.presentation.utiles.shortToast
@@ -83,7 +84,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
                     as? HomeCategoryRv.ViewHolder)
             val categoryFirstViewHolder = (mBinding.rvCategory.findViewHolderForAdapterPosition(0)
                     as? HomeCategoryRv.ViewHolder)
-            Log.d("TAG", "onResume: $categoryFirstViewHolder")
+            Dlog.d("onResume: $categoryFirstViewHolder")
             targetCategoryViewHolder?.binding?.run {
                 categoryFirstViewHolder?.binding?.layoutCategory?.setBackgroundResource(R.drawable.ripple_gray100_12)
                 categoryFirstViewHolder?.binding?.text?.setTextColor(requireContext().getColor(R.color.Gray500))
@@ -110,7 +111,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
     private fun initSpeaker() {
         collectFlow(viewModel.speakerData) {
             if (it == null) {
-                Log.d("TAG", "initSpeaker: ")
+                Dlog.d("initSpeaker:")
                 lifecycleScope.launch(Dispatchers.Main) {
                     mBinding.textSpeaker.text = "등록된 공지가 없습니다."
                 }
@@ -206,7 +207,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
                 is LoadState.Error -> {
                     // 에러 상태일 때 처리
                     val errorState = loadState.refresh as LoadState.Error
-                    Log.d("TAG", "initNotice: ${errorState.error.message}")
+                    Dlog.d("initNotice: ${errorState.error.message}")
                     viewModel.addErrorCount()
                     lifecycleScope.launch(Dispatchers.Main) {
                         delay(1000)

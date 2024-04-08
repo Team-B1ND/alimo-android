@@ -1,11 +1,11 @@
 package com.b1nd.alimo.presentation.feature.onboarding.first
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.TokenModel
 import com.b1nd.alimo.data.repository.TokenRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
+import com.b1nd.alimo.presentation.utiles.Dlog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,14 +26,14 @@ class OnboardingFirstViewModel @Inject constructor(
             tokenRepository.getToken().collect{
                 when(it){
                     is Resource.Success ->{
-                        Log.d("TAG", "성공: ${it.data?.token} ${it.data?.refreshToken}")
+                        Dlog.d("성공: ${it.data?.token} ${it.data?.refreshToken}")
                         _tokenState.value = _tokenState.value.copy(it.data?.token, it.data?.refreshToken)
                     }
                     is Resource.Error ->{
-                        Log.d("TAG", "중간 에러: ${it.error}")
+                        Dlog.e("중간 에러: ${it.error}")
                     }
                     is Resource.Loading ->{
-                        Log.d("TAG", "로딩 아래: $it")
+                        Dlog.d("로딩 아래: $it")
                     }
                 }
             }

@@ -27,6 +27,7 @@ import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
@@ -97,6 +98,7 @@ internal fun ImageView.loadImage(url: String, onLoad: (String) -> (Unit) = {}) {
         .load(url)
         .listener(createLogListener(onLoad))
         .centerCrop()
+        .format(DecodeFormat.PREFER_RGB_565)
         .into(this)
 }
 

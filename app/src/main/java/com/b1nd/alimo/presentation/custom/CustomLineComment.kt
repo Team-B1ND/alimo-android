@@ -6,9 +6,9 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import com.b1nd.alimo.R
+import com.b1nd.alimo.presentation.utiles.Dlog
 
 
 class CustomLineComment(context: Context?, Attrif: AttributeSet) : View(context, Attrif) {
@@ -31,7 +31,7 @@ class CustomLineComment(context: Context?, Attrif: AttributeSet) : View(context,
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        Log.d("TAG", "onDraw: $rectF")
+        Dlog.d("onDraw: $rectF")
         rectF?.let {
 //            val radius = it.height() / 6 // 호의 반지름
             path.moveTo(2f, 0f)

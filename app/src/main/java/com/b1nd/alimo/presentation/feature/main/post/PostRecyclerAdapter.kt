@@ -18,6 +18,7 @@ import com.b1nd.alimo.databinding.ItemPostBinding
 import com.b1nd.alimo.presentation.utiles.loadImage
 import com.b1nd.alimo.presentation.utiles.setImageResourceAndClearTint
 import com.b1nd.alimo.presentation.utiles.toDateString
+import com.bumptech.glide.Glide
 
 class PostRecyclerAdapter constructor(
     private val context: Context,
@@ -31,7 +32,11 @@ class PostRecyclerAdapter constructor(
     }
 
 
-
+    override fun onViewRecycled(holder: ViewHolder) {
+        super.onViewRecycled(holder)
+        Glide.with(holder.itemView.context).clear(holder.binding.imageContent)
+        Glide.with(holder.itemView.context).clear(holder.binding.imageProfile)
+    }
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

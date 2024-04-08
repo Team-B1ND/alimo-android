@@ -7,6 +7,7 @@ import com.b1nd.alimo.data.model.JoinModel
 import com.b1nd.alimo.data.repository.ParentJoinRepository
 import com.b1nd.alimo.data.repository.TokenRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
+import com.b1nd.alimo.presentation.utiles.Dlog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +33,7 @@ class ParentJoinThirdViewModel @Inject constructor(
         email: String,
         code: String
     ){
-        Log.d("TAG", "emailCheck: 시작")
+        Dlog.d("emailCheck: 시작")
         viewModelScope.launch {
             // 인증 코드를 서버로 전송
             parentJoinRepository.emailCheck(
@@ -75,14 +76,14 @@ class ParentJoinThirdViewModel @Inject constructor(
             parentJoinRepository.postEmailsVerification(email).collectLatest {resource->
                 when (resource){
                     is Resource.Success -> {
-                        Log.d("TAG", "postEmail:성공 ${resource.data?.message}")
+                        Dlog.d("postEmail:성공 ${resource.data?.message}")
                     }
                     is Resource.Error -> {
                         _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.FailedPostEmail(resource.error ?: Throwable()))
                         Log.d("TAG", "postEmail:실패 ${resource.error}")
                     }
                     is Resource.Loading -> {
-                        Log.d("TAG", "로딩: ")
+                        Dlog.d("로딩: ")
                     }
                 }
             }

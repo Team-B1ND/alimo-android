@@ -3,15 +3,22 @@ package com.b1nd.alimo.presentation.feature.onboarding.parent.join.first
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.DialogIncorrectCodeBinding
+import com.b1nd.alimo.presentation.base.BaseDialogFragment
+import com.b1nd.alimo.presentation.feature.onboarding.parent.join.first.IncorrectCodeViewModel.Companion.ON_CLICK_CLOSE
+import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class IncorrectCodeDialog : DialogFragment() {
-    private lateinit var binding: DialogIncorrectCodeBinding
+class IncorrectCodeDialog: BaseDialogFragment<DialogIncorrectCodeBinding, IncorrectCodeViewModel>(R.layout.dialog_incorrect_code) {
+
+    override val viewModel: IncorrectCodeViewModel by viewModels(
+        { requireParentFragment() }
+    )
 
     override fun onStart() {
         super.onStart()
@@ -21,22 +28,18 @@ class IncorrectCodeDialog : DialogFragment() {
         view?.z = 1f
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DialogIncorrectCodeBinding.inflate(inflater, container, false)
-        binding.closeButton.setOnClickListener{
-            dialog?.dismiss()
-        }
-        return binding.root
-    }
+    override fun initView() {
 
-    companion object {
-        // 다이얼로그를 생성하는 메서드를 추가하여 중복 생성을 방지합니다.
-        fun newInstance(): IncorrectCodeDialog {
-            return IncorrectCodeDialog()
+        bindingViewEvent { evnet ->
+            evnet.onSuccessEvent {
+                when(it) {
+                    ON_CLICK_CLOSE -> {
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            dialog?.dismiss()
+                        }
+                    }
+                }
+            }
         }
     }
 }
