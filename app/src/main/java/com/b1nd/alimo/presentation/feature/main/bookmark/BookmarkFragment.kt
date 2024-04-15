@@ -2,6 +2,8 @@ package com.b1nd.alimo.presentation.feature.main.bookmark
 
 import android.os.Parcelable
 import android.util.Log
+import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -17,6 +19,7 @@ import com.b1nd.alimo.presentation.utiles.shortToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -51,6 +54,11 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
         adapter.refresh()
         recyclerViewState?.let { state ->
             mBinding.rvPost.layoutManager?.onRestoreInstanceState(state)
+        }
+        lifecycleScope.launch(Dispatchers.Main) {
+            adapter.onPagesUpdatedFlow.collectLatest {
+                mBinding.layoutNot.visibility = if (adapter.itemCount <= 0 && mBinding.layoutNot.isVisible) View.VISIBLE else View.GONE
+            }
         }
     }
 

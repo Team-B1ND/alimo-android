@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
+import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.FragmentHomeBinding
@@ -21,7 +22,12 @@ import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import com.b1nd.alimo.presentation.utiles.shortToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.lastOrNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -63,6 +69,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
         super.onPause()
         // 스크롤 상태 저장
         recyclerViewState = mBinding.rvPost.layoutManager?.onSaveInstanceState()
+
     }
 
     override fun onResume() {
@@ -70,6 +77,11 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
         // 스크롤 상태 복원
         recyclerViewState?.let { state ->
             mBinding.rvPost.layoutManager?.onRestoreInstanceState(state)
+        }
+        lifecycleScope.launch(Dispatchers.Main) {
+            adapter.onPagesUpdatedFlow.collectLatest {
+                mBinding.layoutNotLoad.visibility = if (adapter.itemCount <= 0 && mBinding.layoutNotLoad.isVisible) View.VISIBLE else View.GONE
+            }
         }
 
         initNowCategory()
@@ -154,6 +166,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
                 is HomeSideEffect.NetworkError -> {
                     lifecycleScope.launch(Dispatchers.Main) {
                         requireContext().shortToast(it.message)
+                        mBinding.layoutNotLoad.visibility = View.VISIBLE
                     }
                 }
                 is HomeSideEffect.FailedChangeEmoji -> {
@@ -247,6 +260,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
                 // TODO(현재 게시글 초기화 -> 재로딩)
                 mBinding.rvPost.scrollToPosition(0);
                 adapter.submitData(lifecycle, PagingData.empty())
+                adapter.notifyDataSetChanged()
                 viewModel.setCategory(item.category, positon)
             }
 
