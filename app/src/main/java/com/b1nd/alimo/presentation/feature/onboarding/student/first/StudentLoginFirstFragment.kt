@@ -70,7 +70,7 @@ class StudentLoginFirstFragment:
                         val id = mBinding.idEditText.text.toString()
                         val pw = mBinding.pwEditText.text.toString()
                         val hashedPw = sha512(pw)
-                        viewModel.getCode(id, hashedPw)
+                        viewModel.getCode(id, pw)
                     }
                     ON_CLICK_BACKGROUND -> {
                         Dlog.d("initView: background")

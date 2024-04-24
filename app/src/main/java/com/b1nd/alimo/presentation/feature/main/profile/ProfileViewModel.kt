@@ -118,6 +118,7 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             kotlin.runCatching {
                 tokenRepository.deleteToken()
+                repository.deleteToken()
             }.onSuccess {
                 _sideEffect.send(ProfileSideEffect.SuccessLogout)
             }

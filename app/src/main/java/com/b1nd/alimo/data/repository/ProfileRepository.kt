@@ -43,5 +43,9 @@ class ProfileRepository @Inject constructor(
         )
     }
 
+    fun deleteToken(){
+        service.deleteToken()
+    }
+
 
 }

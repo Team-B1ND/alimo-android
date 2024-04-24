@@ -7,6 +7,9 @@ import com.b1nd.alimo.data.remote.response.profile.ProfileInfoResponse
 import com.b1nd.alimo.di.url.AlimoUrl
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BearerAuthProvider
+import io.ktor.client.plugins.plugin
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
@@ -36,4 +39,10 @@ class ProfileService @Inject constructor(
         httpClient.delete(AlimoUrl.Member.DELETE) {
 
         }.body()
+
+    fun deleteToken(){
+        httpClient.plugin(Auth).providers
+            .filterIsInstance<BearerAuthProvider>()
+            .first().clearToken()
+    }
 }
