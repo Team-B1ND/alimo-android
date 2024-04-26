@@ -10,6 +10,7 @@ import com.b1nd.alimo.presentation.base.BaseViewModel
 import com.b1nd.alimo.presentation.utiles.Dlog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -28,6 +29,9 @@ class ParentJoinThirdViewModel @Inject constructor(
 
     private val _parentJoinThirdSideEffect = Channel<ParentJoinThirdSideEffect>()
     val parentJoinThirdSideEffect = _parentJoinThirdSideEffect.receiveAsFlow()
+
+    private val _isButtonClicked = MutableStateFlow<Boolean>(true)
+    val isButtonClicked = _isButtonClicked.asStateFlow()
 
     fun emailCheck(
         email: String,
@@ -54,6 +58,8 @@ class ParentJoinThirdViewModel @Inject constructor(
                                 accessToken = token,
                                 refreshToken = refreshToken
                             )
+                            delay(5000) // 2초 후 버튼 클릭 상태 초기화
+                            _isButtonClicked.value = true
                         }
                     }
                     is Resource.Error ->{

@@ -12,6 +12,7 @@ import com.b1nd.alimo.presentation.utiles.Dlog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -35,9 +36,14 @@ class ParentLoginFirstViewModel @Inject constructor(
     private var _parentLoginSideEffect = Channel<ParentLoginSideEffect>()
     val parentLoginSideEffect = _parentLoginSideEffect.receiveAsFlow()
 
+    private val _isButtonClicked = MutableStateFlow<Boolean>(true)
+    val isButtonClicked = _isButtonClicked.asStateFlow()
+
+
     // 학부모 로그인 기능
     fun login(email:String, password:String){
         viewModelScope.launch(Dispatchers.IO) {
+            _isButtonClicked.value = false
             Dlog.d("login: 시작2")
             firebaseTokenRepository.getToken().collectLatest {
                 when(it){
@@ -70,12 +76,12 @@ class ParentLoginFirstViewModel @Inject constructor(
                         val refreshToken = resource.data?.refreshToken
                         if (token != null && refreshToken != null) {
                             tokenRepository.insert(token, refreshToken)
-
-
                             _loginState.value = _loginState.value.copy(
                                 accessToken = token,
                                 refreshToken = refreshToken
                             )
+                            delay(5000) // 2초 후 버튼 클릭 상태 초기화
+                            _isButtonClicked.value = true
                         }
                     }
 

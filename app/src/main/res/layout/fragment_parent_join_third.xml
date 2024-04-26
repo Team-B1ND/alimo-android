@@ -153,6 +153,7 @@
             android:layout_marginBottom="30dp"
             android:background="@drawable/btn_shape_rounded_on"
             android:onClick="@{() -> vm.onClickJoin()}"
+            android:enabled="@{vm.isButtonClicked}"
             android:text="@string/join"
             android:textFontWeight="700"
             android:textColor="@color/Main900"
