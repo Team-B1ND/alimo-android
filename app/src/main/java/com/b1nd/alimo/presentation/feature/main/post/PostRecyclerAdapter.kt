@@ -3,9 +3,7 @@ package com.b1nd.alimo.presentation.feature.main.post
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.isVisible
@@ -44,21 +42,20 @@ class PostRecyclerAdapter constructor(
         val item = getItem(position)
         item?.let {
             with(binding) {
+                imageContent.isVisible = item.images.isNotEmpty()
+                layoutFile.isVisible = item.files.isNotEmpty()
+                imageNewBadge.isVisible = item.isNew
+
                 if (item.memberProfile != null) {
                     imageProfile.loadImage(item.memberProfile)
                 }
                 if (item.images.isNotEmpty()) {
-                    imageContent.visibility = View.VISIBLE
                     imageContent.loadImage(item.images[0].fileUrl)
                 }
                 if (item.files.isNotEmpty()) {
                     val file = item.files[0]
-                    layoutFile.isVisible = true
                     textFileName.text = file.fileName
                     textFileCount.text = "총 ${item.files.size}개 파일"
-                }
-                if (item.isNew) {
-                    imageNewBadge.visibility = View.VISIBLE
                 }
                 if (item.isBookmark) {
                     imageBookmark.setBookmark(true)
@@ -76,9 +73,7 @@ class PostRecyclerAdapter constructor(
                     imageAddEmoji.tag = item.emoji
                 }
                 val menu = PostEmojiPopup(context, emojis) {
-                    Log.d("TAG", "onBindViewHolder: $it")
                     onClickEmoji(item.notificationId, it.title)
-                    Log.d("TAG", "onBindViewHolder: $")
                     if (imageAddEmoji.tag == it.title) {
                         imageAddEmoji.tag = "not_emoji"
                         imageAddEmoji.setImageResource(R.drawable.ic_add_emoji)
@@ -95,7 +90,6 @@ class PostRecyclerAdapter constructor(
 
                 imageAddEmoji.setOnClickListener {
                     menu.showAsDropDown(imageAddEmoji)
-//                    onClickEmoji(item.notificationId, item.emoji)
                 }
 
                 imageBookmark.setOnClickListener {
