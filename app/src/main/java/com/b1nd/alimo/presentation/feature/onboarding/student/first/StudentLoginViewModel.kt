@@ -134,6 +134,8 @@ class StudentLoginViewModel @Inject constructor(
                                 resource.error ?: Throwable()
                             )
                         )
+                        delay(5000) // 2초 후 버튼 클릭 상태 초기화
+                        _isButtonClicked.value = true
                         Log.d("TAG", "실패: ${resource.error}")
                     }
 

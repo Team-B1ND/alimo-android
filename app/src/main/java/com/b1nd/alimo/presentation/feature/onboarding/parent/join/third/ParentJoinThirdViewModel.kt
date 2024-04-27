@@ -39,6 +39,7 @@ class ParentJoinThirdViewModel @Inject constructor(
     ){
         Dlog.d("emailCheck: 시작")
         viewModelScope.launch {
+            _isButtonClicked.value = false
             // 인증 코드를 서버로 전송
             parentJoinRepository.emailCheck(
                 email = email,

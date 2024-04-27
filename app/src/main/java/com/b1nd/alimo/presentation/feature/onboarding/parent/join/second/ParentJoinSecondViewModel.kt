@@ -78,6 +78,7 @@ class ParentJoinSecondViewModel @Inject constructor(
         memberId: Int
     ) {
         viewModelScope.launch {
+            _isButtonClicked.value = false
             Dlog.d("singUp: ${firebaseTokenRepository.getToken()}")
             firebaseTokenRepository.getToken().collect { firebaseResource ->
                 when (firebaseResource) {
@@ -109,6 +110,8 @@ class ParentJoinSecondViewModel @Inject constructor(
 
                                     is Resource.Error -> {
                                         _parentJoinSideEffect.send(ParentJoinSecondSideEffect.FailedSignup(resource.error ?: Throwable()))
+                                        delay(5000) // 2초 후 버튼 클릭 상태 초기화
+                                        _isButtonClicked.value = true
                                         Dlog.e("singUp: 에러 ${resource.error}, ${resource.data}"
                                         )
                                     }

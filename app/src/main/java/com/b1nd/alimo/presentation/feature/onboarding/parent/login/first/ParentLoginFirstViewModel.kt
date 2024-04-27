@@ -87,6 +87,8 @@ class ParentLoginFirstViewModel @Inject constructor(
 
                     is Resource.Error -> {
                         _parentLoginSideEffect.send(ParentLoginSideEffect.FailedLogin(resource.error ?:Throwable()))
+                        delay(5000) // 2초 후 버튼 클릭 상태 초기화
+                        _isButtonClicked.value = true
                         Dlog.d("login: 실패 ${resource.error}")
                     }
 
