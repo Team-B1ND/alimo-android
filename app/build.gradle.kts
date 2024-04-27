@@ -7,6 +7,7 @@ plugins {
     id("androidx.navigation.safeargs")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 val prperties = Properties()
@@ -95,6 +96,7 @@ dependencies {
     // firebase
     implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
     implementation ("com.google.firebase:firebase-messaging")
+    implementation("com.google.firebase:firebase-crashlytics")
     implementation ("com.google.firebase:firebase-analytics")
 
     // circle
