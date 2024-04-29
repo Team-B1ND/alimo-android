@@ -35,7 +35,7 @@ class ParentLoginFirstViewModel @Inject constructor(
     private var _parentLoginSideEffect = Channel<ParentLoginSideEffect>()
     val parentLoginSideEffect = _parentLoginSideEffect.receiveAsFlow()
 
-    private val _isButtonClicked = MutableStateFlow<Boolean>(true)
+    private val _isButtonClicked = MutableStateFlow<Boolean>(false)
     val isButtonClicked = _isButtonClicked.asStateFlow()
 
 

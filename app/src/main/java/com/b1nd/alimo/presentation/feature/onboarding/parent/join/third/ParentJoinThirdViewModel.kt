@@ -29,7 +29,7 @@ class ParentJoinThirdViewModel @Inject constructor(
     private val _parentJoinThirdSideEffect = Channel<ParentJoinThirdSideEffect>()
     val parentJoinThirdSideEffect = _parentJoinThirdSideEffect.receiveAsFlow()
 
-    private val _isButtonClicked = MutableStateFlow<Boolean>(true)
+    private val _isButtonClicked = MutableStateFlow<Boolean>(false)
     val isButtonClicked = _isButtonClicked.asStateFlow()
 
     fun emailCheck(

@@ -43,7 +43,7 @@ class StudentLoginViewModel @Inject constructor(
     private var _studentLoginSideEffect = Channel<StudentLoginSideEffect>()
     val studentLoginSideEffect = _studentLoginSideEffect.receiveAsFlow()
 
-    private val _isButtonClicked = MutableStateFlow<Boolean>(true)
+    private val _isButtonClicked = MutableStateFlow<Boolean>(false)
     val isButtonClicked = _isButtonClicked.asStateFlow()
 
     // 학생 로그인 기능

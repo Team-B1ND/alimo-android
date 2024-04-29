@@ -26,7 +26,7 @@ class ParentJoinFirstViewModel @Inject constructor(
     val parentJoinFirstSideEffect = _parentJoinSideEffect.receiveAsFlow()
 
 
-    private val _isButtonClicked = MutableStateFlow<Boolean>(true)
+    private val _isButtonClicked = MutableStateFlow<Boolean>(false)
     val isButtonClicked = _isButtonClicked.asStateFlow()
 
     // 학생 코드 인증

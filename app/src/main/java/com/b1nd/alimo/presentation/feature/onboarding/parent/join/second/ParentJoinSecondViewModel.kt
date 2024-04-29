@@ -35,7 +35,7 @@ class ParentJoinSecondViewModel @Inject constructor(
     private val _parentJoinSideEffect = Channel<ParentJoinSecondSideEffect>()
     val parentJoinSecondSideEffect = _parentJoinSideEffect.receiveAsFlow()
 
-    private val _isButtonClicked = MutableStateFlow<Boolean>(true)
+    private val _isButtonClicked = MutableStateFlow<Boolean>(false)
     val isButtonClicked = _isButtonClicked.asStateFlow()
 
     // 학생 이름 가져오는 기능
