@@ -29,12 +29,16 @@ class ParentJoinThirdViewModel @Inject constructor(
     private val _parentJoinThirdSideEffect = Channel<ParentJoinThirdSideEffect>()
     val parentJoinThirdSideEffect = _parentJoinThirdSideEffect.receiveAsFlow()
 
+    private val _isButtonClicked = MutableStateFlow<Boolean>(false)
+    val isButtonClicked = _isButtonClicked.asStateFlow()
+
     fun emailCheck(
         email: String,
         code: String
     ){
         Dlog.d("emailCheck: 시작")
         viewModelScope.launch {
+            _isButtonClicked.value = false
             // 인증 코드를 서버로 전송
             parentJoinRepository.emailCheck(
                 email = email,
@@ -54,10 +58,12 @@ class ParentJoinThirdViewModel @Inject constructor(
                                 accessToken = token,
                                 refreshToken = refreshToken
                             )
+                            _isButtonClicked.value = true
                         }
                     }
                     is Resource.Error ->{
                         _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.FailedEmailCheck(resource.error ?: Throwable()))
+                        _isButtonClicked.value = true
                         Log.d("TAG", "실패: ${resource.error}")
                     }
                     is Resource.Loading ->{

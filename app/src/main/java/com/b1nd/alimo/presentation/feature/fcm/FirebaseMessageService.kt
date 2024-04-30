@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
@@ -86,13 +87,15 @@ class FirebaseMessageService : FirebaseMessagingService() {
             RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val notificationBuilder = NotificationCompat.Builder(this, "Alimo_default_channels")
-            .setSmallIcon(R.drawable.ic_alimo) // 알림 아이콘
+            .setSmallIcon(R.drawable.frame_239) // 알림 아이콘
             .setContentTitle("Alimo") // 알림 제목
             .setContentText("$body") // 알림 내용
             .setAutoCancel(true) // 알림을 클릭하면 자동으로 닫힘
             .setSound(defaultSoundUri) // 알림 소리
             .setContentIntent(pendingIntent) // 알림 클릭 시 실행될 Intent
-            .setColor(applicationContext.getColor(R.color.Main500))
+            .setColor(Color.WHITE)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setVibrate(LongArray(0))
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

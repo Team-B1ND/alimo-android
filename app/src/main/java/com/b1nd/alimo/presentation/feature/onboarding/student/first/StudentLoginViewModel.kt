@@ -43,6 +43,9 @@ class StudentLoginViewModel @Inject constructor(
     private var _studentLoginSideEffect = Channel<StudentLoginSideEffect>()
     val studentLoginSideEffect = _studentLoginSideEffect.receiveAsFlow()
 
+    private val _isButtonClicked = MutableStateFlow<Boolean>(false)
+    val isButtonClicked = _isButtonClicked.asStateFlow()
+
     // 학생 로그인 기능
     fun login(code: String) {
         Dlog.d("login: 시작")
@@ -114,6 +117,7 @@ class StudentLoginViewModel @Inject constructor(
         pw: String
     ) {
         viewModelScope.launch {
+            _isButtonClicked.value = false
             dodamRepository.login(
                 DodamRequest(
                     id = id,
@@ -129,6 +133,7 @@ class StudentLoginViewModel @Inject constructor(
                                 resource.error ?: Throwable()
                             )
                         )
+                        _isButtonClicked.value = true
                         Log.d("TAG", "실패: ${resource.error}")
                     }
 
@@ -136,7 +141,8 @@ class StudentLoginViewModel @Inject constructor(
                         if (resource.data?.location != null) {
                             // 데이터에서 코드만 가져와서 저장
                             val code = resource.data.location.split("[=&]".toRegex())[1]
-                            _dodamCode.value = _dodamCode.value.copy(code)
+                            _dodamCode.value = _dodamCode.value.copy(code = code)
+                            _isButtonClicked.value = true
                             Log.d("TAG", "성공: ${code}")
                         }
                     }

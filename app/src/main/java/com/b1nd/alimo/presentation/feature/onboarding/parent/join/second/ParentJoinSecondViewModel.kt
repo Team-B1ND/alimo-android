@@ -35,6 +35,9 @@ class ParentJoinSecondViewModel @Inject constructor(
     private val _parentJoinSideEffect = Channel<ParentJoinSecondSideEffect>()
     val parentJoinSecondSideEffect = _parentJoinSideEffect.receiveAsFlow()
 
+    private val _isButtonClicked = MutableStateFlow<Boolean>(false)
+    val isButtonClicked = _isButtonClicked.asStateFlow()
+
     // 학생 이름 가져오는 기능
     init {
         viewModelScope.launch {
@@ -74,6 +77,7 @@ class ParentJoinSecondViewModel @Inject constructor(
         memberId: Int
     ) {
         viewModelScope.launch {
+            _isButtonClicked.value = false
             Dlog.d("singUp: ${firebaseTokenRepository.getToken()}")
             firebaseTokenRepository.getToken().collect { firebaseResource ->
                 when (firebaseResource) {
@@ -95,7 +99,7 @@ class ParentJoinSecondViewModel @Inject constructor(
                                         val status = resource.data?.status
                                         if (status == 200){
                                             _parentJoinSideEffect.send(ParentJoinSecondSideEffect.SuccessSignup)
-
+                                            _isButtonClicked.value = true
                                         }else{
                                             _parentJoinSideEffect.send(ParentJoinSecondSideEffect.FailedSignup(resource.error ?:Throwable()))
                                         }
@@ -104,6 +108,7 @@ class ParentJoinSecondViewModel @Inject constructor(
 
                                     is Resource.Error -> {
                                         _parentJoinSideEffect.send(ParentJoinSecondSideEffect.FailedSignup(resource.error ?: Throwable()))
+                                        _isButtonClicked.value = true
                                         Dlog.e("singUp: 에러 ${resource.error}, ${resource.data}"
                                         )
                                     }

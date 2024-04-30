@@ -35,9 +35,14 @@ class ParentLoginFirstViewModel @Inject constructor(
     private var _parentLoginSideEffect = Channel<ParentLoginSideEffect>()
     val parentLoginSideEffect = _parentLoginSideEffect.receiveAsFlow()
 
+    private val _isButtonClicked = MutableStateFlow<Boolean>(false)
+    val isButtonClicked = _isButtonClicked.asStateFlow()
+
+
     // 학부모 로그인 기능
     fun login(email:String, password:String){
         viewModelScope.launch(Dispatchers.IO) {
+            _isButtonClicked.value = false
             Dlog.d("login: 시작2")
             firebaseTokenRepository.getToken().collectLatest {
                 when(it){
@@ -70,17 +75,17 @@ class ParentLoginFirstViewModel @Inject constructor(
                         val refreshToken = resource.data?.refreshToken
                         if (token != null && refreshToken != null) {
                             tokenRepository.insert(token, refreshToken)
-
-
                             _loginState.value = _loginState.value.copy(
                                 accessToken = token,
                                 refreshToken = refreshToken
                             )
+                            _isButtonClicked.value = true
                         }
                     }
 
                     is Resource.Error -> {
                         _parentLoginSideEffect.send(ParentLoginSideEffect.FailedLogin(resource.error ?:Throwable()))
+                        _isButtonClicked.value = true
                         Dlog.d("login: 실패 ${resource.error}")
                     }
 

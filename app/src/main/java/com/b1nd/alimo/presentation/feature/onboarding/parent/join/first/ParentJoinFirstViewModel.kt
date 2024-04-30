@@ -25,18 +25,25 @@ class ParentJoinFirstViewModel @Inject constructor(
     private val _parentJoinSideEffect = Channel<ParentJoinFirstSideEffect>()
     val parentJoinFirstSideEffect = _parentJoinSideEffect.receiveAsFlow()
 
+
+    private val _isButtonClicked = MutableStateFlow<Boolean>(false)
+    val isButtonClicked = _isButtonClicked.asStateFlow()
+
     // 학생 코드 인증
     fun checkStudentCode(studentCode: String){
         viewModelScope.launch {
+            _isButtonClicked.value = false
             parentJoinRepository.childCode(studentCode).collectLatest {resource ->
                 when(resource){
                     is Resource.Error ->{
                         _parentJoinSideEffect.send(ParentJoinFirstSideEffect.FailedChildCode(resource.error ?: Throwable()))
+                        _isButtonClicked.value = true
                         Dlog.d("실패: ")
                     }
                     is Resource.Success ->{
                         val newEffect = ParentJoinFirstModel(resource.data?.isCorrectChildCode, resource.data?.memberId)
                         _trueFalse.value = _trueFalse.value.copy(newEffect.isCorrectChildCode, newEffect.memberId)
+                        _isButtonClicked.value = true
                         Dlog.d("성공: ${resource.data}")
                     }
                     is Resource.Loading ->{
