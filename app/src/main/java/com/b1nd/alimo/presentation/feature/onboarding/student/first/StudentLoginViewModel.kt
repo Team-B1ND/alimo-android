@@ -117,7 +117,7 @@ class StudentLoginViewModel @Inject constructor(
         pw: String
     ) {
         viewModelScope.launch {
-            _isButtonClicked.value = false
+            _isButtonClicked.value = true
             dodamRepository.login(
                 DodamRequest(
                     id = id,
@@ -133,7 +133,7 @@ class StudentLoginViewModel @Inject constructor(
                                 resource.error ?: Throwable()
                             )
                         )
-                        _isButtonClicked.value = true
+                        _isButtonClicked.value = false
                         Log.d("TAG", "실패: ${resource.error}")
                     }
 
@@ -142,7 +142,7 @@ class StudentLoginViewModel @Inject constructor(
                             // 데이터에서 코드만 가져와서 저장
                             val code = resource.data.location.split("[=&]".toRegex())[1]
                             _dodamCode.value = _dodamCode.value.copy(code = code)
-                            _isButtonClicked.value = true
+                            _isButtonClicked.value = false
                             Log.d("TAG", "성공: ${code}")
                         }
                     }

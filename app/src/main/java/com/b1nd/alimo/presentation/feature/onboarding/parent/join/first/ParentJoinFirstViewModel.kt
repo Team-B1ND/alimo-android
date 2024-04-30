@@ -32,18 +32,18 @@ class ParentJoinFirstViewModel @Inject constructor(
     // 학생 코드 인증
     fun checkStudentCode(studentCode: String){
         viewModelScope.launch {
-            _isButtonClicked.value = false
+            _isButtonClicked.value = true
             parentJoinRepository.childCode(studentCode).collectLatest {resource ->
                 when(resource){
                     is Resource.Error ->{
                         _parentJoinSideEffect.send(ParentJoinFirstSideEffect.FailedChildCode(resource.error ?: Throwable()))
-                        _isButtonClicked.value = true
+                        _isButtonClicked.value = false
                         Dlog.d("실패: ")
                     }
                     is Resource.Success ->{
                         val newEffect = ParentJoinFirstModel(resource.data?.isCorrectChildCode, resource.data?.memberId)
                         _trueFalse.value = _trueFalse.value.copy(newEffect.isCorrectChildCode, newEffect.memberId)
-                        _isButtonClicked.value = true
+                        _isButtonClicked.value = false
                         Dlog.d("성공: ${resource.data}")
                     }
                     is Resource.Loading ->{
