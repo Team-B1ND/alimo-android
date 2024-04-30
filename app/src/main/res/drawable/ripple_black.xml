@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- android:color = Ripple Effect의 색깔 좀 반투명으로 나온다 -->
+<ripple android:color="@color/black_shadow"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background">
+        <color android:color="@color/black"/>
+    </item>
+</ripple>

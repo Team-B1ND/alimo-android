@@ -1,3 +1,62 @@
 <resources>
     <string name="app_name">alimo</string>
+    <string name="onboarding_title">ALIMO</string>
+    <string name="onboarding_sub_title">대소고의 모든 소식</string>
+    <string name="start">시작하기</string>
+    <string name="next">다음</string>
+    <string name="onboarding_third_title">학생이신가요?\n아니면 학부모이신가요?</string>
+    <string name="onboarding_third_sub_title">알리모에서는 학생, 학부모 모두 참여해요</string>
+    <string name="onboarding_third_parent_message">이미 계정이 있으시다면?</string>
+    <string name="login">로그인</string>
+    <string name="dodam_login">도담도담 로그인</string>
+    <string name="student_login_title">도담도담 계정으로 로그인 해주세요!</string>
+    <string name="student_login_id">아이디</string>
+    <string name="student_login_pw">비밀번호</string>
+    <string name="join">회원가입</string>
+    <string name="parent_join_first_title">학생 코드를 입력해주세요</string>
+    <string name="parent_join_first_sub_title">학생 코드가 무엇인가요?</string>
+    <string name="parent_join_email">이메일</string>
+    <string name="parent_join_pw">비밀번호 재입력</string>
+    <string name="parent_join_second_title">학부모님 안녕하세요!</string>
+    <string name="parent_name">김가영</string>
+    <string name="parent_join_thirst_title">이메일 인증 코드를 전송했어요</string>
+    <string name="authentication_code">인증코드</string>
+    <string name="find_password">비밀번호 찾기</string>
+    <string name="new_password">새 비밀번호</string>
+    <string name="re_new_password">새 비밀번호 재입력</string>
+    <string name="complete">완료</string>
+    <string name="incorrect_code">올바르지 않은 학생 코드</string>
+    <string name="reconfirm">학생 코드를 다시 확인해 주세요</string>
+    <string name="cancel">닫기</string>
+    <string name="pw_error">비밀번호가 다릅니다</string>
+    <string name="authentication_code_error">인증코드가 올바르지 않습니다</string>
+    <string name="student">학생</string>
+    <string name="parent">학부모</string>
+
+
+
+
+    <string name="not_bookmark">아직 북마크가 없어요</string>
+    <string name="user_name">김가영</string>
+    <string name="student_code">학생코드</string>
+    <string name="student_share">부모님께만 공유해주세요</string>
+    <string name="close">닫기</string>
+    <string name="text_file_size">191.3 KB</string>
+    <string name="text_file_name">B1ND회의록+작성.txt</string>
+    <string name="text_not_load_notice">공지를 불러올 수 없어요</string>
+    <string name="text_notice_loading">불러오는 중...</string>
+    <string name="profile_withdrawal">회원탈퇴</string>
+    <string name="logout">로그아웃</string>
+    <string name="profile_version">버전</string>
+    <string name="profile_service_policy">서비스 정책</string>
+    <string name="profile_privacy_policy">개인정보 이용 약관</string>
+    <string name="profile_alarm">알림 설정</string>
+    <string name="withdrawal_title">정말 탈퇴하시겠습니까?</string>
+    <string name="no">아니요</string>
+    <string name="withdrawal">탈퇴</string>
+    <string name="comment_item_that">에게</string>
+    <string name="image_dummy_date">12월 30일 오전 10:49</string>
+    <string name="image_dummy_author">테스트</string>
+    <string name="image_dummy_title">1 / 2</string>
+    <string name="text_image_that_save">이 사진만 저장</string>
 </resources>
