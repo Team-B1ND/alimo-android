@@ -42,6 +42,18 @@ class ParentJoinFirstFragment :
 
     override fun initView() {
         initSideEffect()
+
+        collectFlow(viewModel.isButtonClicked){
+            if (it){
+                mBinding.progressCir.visibility = View.VISIBLE
+                mBinding.loginBtnOn.visibility = View.INVISIBLE
+                mBinding.progressCir.setIndeterminate(it)
+            }else{
+                mBinding.progressCir.visibility = View.INVISIBLE
+                mBinding.loginBtnOn.visibility = View.VISIBLE
+            }
+        }
+
         lifecycleScope.launch {
             // 학생코드가 올바른 지 확인
             viewModel.trueFalse.collect { studentCode ->

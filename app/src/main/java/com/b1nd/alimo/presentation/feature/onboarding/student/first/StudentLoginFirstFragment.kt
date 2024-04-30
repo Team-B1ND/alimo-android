@@ -45,6 +45,19 @@ class StudentLoginFirstFragment:
                 }
                 
             }
+
+
+        }
+
+        collectFlow(viewModel.isButtonClicked){
+            if (it){
+                mBinding.progressCir.visibility = View.VISIBLE
+                mBinding.loginBtnOn.visibility = View.INVISIBLE
+                mBinding.progressCir.setIndeterminate(it)
+            }else{
+                mBinding.progressCir.visibility = View.INVISIBLE
+                mBinding.loginBtnOn.visibility = View.VISIBLE
+            }
         }
 
         // 로그인을 실행하고 됐는지 않됐는지 확인

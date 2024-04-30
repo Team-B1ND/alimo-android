@@ -93,6 +93,7 @@ class StudentLoginViewModel @Inject constructor(
                                 accessToken = token,
                                 refreshToken = refreshToken
                             )
+                            _isButtonClicked.value = false
                         }
                     }
 
@@ -142,7 +143,6 @@ class StudentLoginViewModel @Inject constructor(
                             // 데이터에서 코드만 가져와서 저장
                             val code = resource.data.location.split("[=&]".toRegex())[1]
                             _dodamCode.value = _dodamCode.value.copy(code = code)
-                            _isButtonClicked.value = false
                             Log.d("TAG", "성공: ${code}")
                         }
                     }

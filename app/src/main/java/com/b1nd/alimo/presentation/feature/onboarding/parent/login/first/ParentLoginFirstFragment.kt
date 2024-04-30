@@ -34,6 +34,18 @@ class ParentLoginFirstFragment:
     override val viewModel: ParentLoginFirstViewModel by viewModels()
     override fun initView() {
         initSideEffect()
+
+        collectFlow(viewModel.isButtonClicked){
+            if (it){
+                mBinding.progressCir.visibility = View.VISIBLE
+                mBinding.loginBtnOn.visibility = View.INVISIBLE
+                mBinding.progressCir.setIndeterminate(it)
+            }else{
+                mBinding.progressCir.visibility = View.INVISIBLE
+                mBinding.loginBtnOn.visibility = View.VISIBLE
+            }
+        }
+
         bindingViewEvent { event ->
             event.onSuccessEvent {
                 when(it){
