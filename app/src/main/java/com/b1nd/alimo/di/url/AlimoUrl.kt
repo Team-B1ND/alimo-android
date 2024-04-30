@@ -44,7 +44,7 @@ object AlimoUrl {
         const val ALARM = "$MEMBER/alarm"
         const val STUDENT_SEARCH = "$MEMBER/student-search"
         const val INFO = "$MEMBER/info"
-        const val GET_EMAIL = "$MEMBER/emails/verification"
+        const val GET_EMAIL = "$MEMBER/emails/verifications"
         const val DELETE = "$MEMBER"
     }
 

@@ -87,7 +87,7 @@ class FirebaseMessageService : FirebaseMessagingService() {
             RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val notificationBuilder = NotificationCompat.Builder(this, "Alimo_default_channels")
-            .setSmallIcon(R.drawable.frame_239) // 알림 아이콘
+            .setSmallIcon(R.drawable.ic_fcm) // 알림 아이콘
             .setContentTitle("Alimo") // 알림 제목
             .setContentText("$body") // 알림 내용
             .setAutoCancel(true) // 알림을 클릭하면 자동으로 닫힘
