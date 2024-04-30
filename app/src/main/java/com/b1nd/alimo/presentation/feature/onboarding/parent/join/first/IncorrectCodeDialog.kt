@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 class IncorrectCodeDialog: BaseDialogFragment<DialogIncorrectCodeBinding, IncorrectCodeViewModel>(R.layout.dialog_incorrect_code) {
 
     override val viewModel: IncorrectCodeViewModel by viewModels(
-        { requireParentFragment() }
+        { requireActivity() }
     )
 
     override fun onStart() {
@@ -43,3 +43,4 @@ class IncorrectCodeDialog: BaseDialogFragment<DialogIncorrectCodeBinding, Incorr
         }
     }
 }
+

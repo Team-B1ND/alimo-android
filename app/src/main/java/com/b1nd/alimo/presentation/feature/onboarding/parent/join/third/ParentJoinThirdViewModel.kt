@@ -38,7 +38,7 @@ class ParentJoinThirdViewModel @Inject constructor(
     ){
         Dlog.d("emailCheck: 시작")
         viewModelScope.launch {
-            _isButtonClicked.value = false
+            _isButtonClicked.value = true
             // 인증 코드를 서버로 전송
             parentJoinRepository.emailCheck(
                 email = email,
@@ -58,12 +58,14 @@ class ParentJoinThirdViewModel @Inject constructor(
                                 accessToken = token,
                                 refreshToken = refreshToken
                             )
-                            _isButtonClicked.value = true
+                            _isButtonClicked.value = false
+
                         }
                     }
                     is Resource.Error ->{
                         _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.FailedEmailCheck(resource.error ?: Throwable()))
-                        _isButtonClicked.value = true
+                        _isButtonClicked.value = false
+
                         Log.d("TAG", "실패: ${resource.error}")
                     }
                     is Resource.Loading ->{

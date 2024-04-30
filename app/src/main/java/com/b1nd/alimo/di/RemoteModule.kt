@@ -3,6 +3,7 @@ package com.b1nd.alimo.di
 import LocalDateTimeTypeAdapter
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.remote.request.TokenRequest
 import com.b1nd.alimo.data.remote.response.BaseResponse
@@ -159,18 +160,25 @@ object RemoteModule {
                     }
                 }
                 sendWithoutRequest { request ->
+                    Log.d("TAG", "${request.url.toString().split("?")[0]}: ")
+
                     when (request.url.toString()) {
                         AlimoUrl.REFRESH -> false
                         AlimoUrl.SignIn.DODAM_SIGN_IN -> false
                         AlimoUrl.SIGN_IN -> false
                         AlimoUrl.SIGN_UP -> false
-                        AlimoUrl.Member.GET_EMAIL -> false
-                        AlimoUrl.CHILD_CODE -> false
-                        AlimoUrl.Member.STUDENT_SEARCH -> false
-                        AlimoUrl.Member.POST_EMAIL -> false
                         DodamUrl.LOGIN -> false
 
-                        else -> true
+                        else -> {
+                            when(request.url.toString().split("?")[0]){
+                                AlimoUrl.CHILD_CODE -> false
+                                AlimoUrl.Member.GET_EMAIL -> false
+                                AlimoUrl.Member.STUDENT_SEARCH -> false
+                                AlimoUrl.Member.POST_EMAIL -> false
+
+                                else -> true
+                            }
+                        }
                     }
                 }
             }

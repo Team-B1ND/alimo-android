@@ -87,7 +87,8 @@ class ParentJoinThirdFragment :
 
                             override fun onFinish() {
                                 mBinding.time.text = "0:00"
-                                findNavController().navigate(R.id.action_parentJoinThird_to_onboardingThird)
+                                val navController = findNavController()
+                                navController.navigate(R.id.action_parentJoinThird_to_onboardingThird)
                             }
 
                         }.start()
