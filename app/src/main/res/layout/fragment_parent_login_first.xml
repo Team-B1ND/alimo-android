@@ -121,7 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@id/loginBtnOn"
+            app:layout_constraintBottom_toTopOf="@id/button_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -143,6 +143,49 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/button_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/btn_shape_rounded_on">
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/loginBtnOn"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/btn_shape_rounded_on"
+                android:onClick="@{() -> vm.onClickLogin()}"
+                android:enabled="@{!vm.isButtonClicked}"
+                android:text="@string/next"
+                android:textColor="@color/Main900"
+                android:textFontWeight="700"
+                android:visibility="invisible" />
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progress_cir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:indicatorColor="@color/Gray300"
+                app:indicatorSize="30dp"
+                android:visibility="gone"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/loginBtnOff"
@@ -160,24 +203,6 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"/>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/loginBtnOn"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:background="@drawable/btn_shape_rounded_on"
-            android:onClick="@{() -> vm.onClickLogin()}"
-            android:enabled="@{!vm.isButtonClicked}"
-            android:text="@string/login"
-            android:textColor="@color/Main900"
-            android:textFontWeight="700"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

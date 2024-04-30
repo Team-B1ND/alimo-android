@@ -39,6 +39,16 @@ class ParentJoinThirdFragment :
     override fun initView() {
         initSideEffect()
 
+        collectFlow(viewModel.isButtonClicked){
+            if (it){
+                mBinding.progressCir.visibility = View.VISIBLE
+                mBinding.joinBtnOn.visibility = View.INVISIBLE
+                mBinding.progressCir.setIndeterminate(it)
+            }else{
+                mBinding.progressCir.visibility = View.INVISIBLE
+                mBinding.joinBtnOn.visibility = View.VISIBLE
+            }
+        }
 
         lifecycleScope.launch {
             // ParentJoinState상태에 따라 성공 혹은 실패

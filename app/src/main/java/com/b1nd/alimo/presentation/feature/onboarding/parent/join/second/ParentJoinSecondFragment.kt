@@ -38,6 +38,18 @@ class ParentJoinSecondFragment :
         viewModel.setStudentCode(args.childeCode)
         initSideEffect()
 
+        collectFlow(viewModel.isButtonClicked){
+            if (it){
+                mBinding.progressCir.visibility = View.VISIBLE
+                mBinding.loginBtnOn.visibility = View.INVISIBLE
+                mBinding.progressCir.setIndeterminate(it)
+            }else{
+                mBinding.progressCir.visibility = View.INVISIBLE
+                mBinding.loginBtnOn.visibility = View.VISIBLE
+            }
+        }
+        
+
         lifecycleScope.launch {
             viewModel.memberName.collect{
                 mBinding.parentName.text = it.name

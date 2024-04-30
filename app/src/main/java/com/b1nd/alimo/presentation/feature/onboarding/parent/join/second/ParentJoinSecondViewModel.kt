@@ -77,7 +77,7 @@ class ParentJoinSecondViewModel @Inject constructor(
         memberId: Int
     ) {
         viewModelScope.launch {
-            _isButtonClicked.value = false
+            _isButtonClicked.value = true
             Dlog.d("singUp: ${firebaseTokenRepository.getToken()}")
             firebaseTokenRepository.getToken().collect { firebaseResource ->
                 when (firebaseResource) {
@@ -99,7 +99,7 @@ class ParentJoinSecondViewModel @Inject constructor(
                                         val status = resource.data?.status
                                         if (status == 200){
                                             _parentJoinSideEffect.send(ParentJoinSecondSideEffect.SuccessSignup)
-                                            _isButtonClicked.value = true
+                                            _isButtonClicked.value = false
                                         }else{
                                             _parentJoinSideEffect.send(ParentJoinSecondSideEffect.FailedSignup(resource.error ?:Throwable()))
                                         }
@@ -108,7 +108,7 @@ class ParentJoinSecondViewModel @Inject constructor(
 
                                     is Resource.Error -> {
                                         _parentJoinSideEffect.send(ParentJoinSecondSideEffect.FailedSignup(resource.error ?: Throwable()))
-                                        _isButtonClicked.value = true
+                                        _isButtonClicked.value = false
                                         Dlog.e("singUp: 에러 ${resource.error}, ${resource.data}"
                                         )
                                     }
