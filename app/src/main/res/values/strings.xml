@@ -19,7 +19,8 @@
     <string name="parent_join_pw">비밀번호 재입력</string>
     <string name="parent_join_second_title">학부모님 안녕하세요!</string>
     <string name="parent_name">김가영</string>
-    <string name="parent_join_thirst_title">이메일 인증 코드를 전송했어요</string>
+    <string name="parent_join_thirst_title_1">이메일 인증을 요청해 주세요</string>
+    <string name="parent_join_thirst_title_2">이메일 인증 코드를 전송했어요</string>
     <string name="authentication_code">인증코드</string>
     <string name="find_password">비밀번호 찾기</string>
     <string name="new_password">새 비밀번호</string>

@@ -12,6 +12,7 @@ class AlarmRepository @Inject constructor(
 
 
     fun setAlarmState(value: Boolean) =
-        sharedPreferences.edit().putBoolean("alarm", value).apply()
+        sharedPreferences.edit().putBoolean("alarm", !value).apply()
+
 
 }
