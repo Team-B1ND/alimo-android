@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="wrap_content">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="image_emoji">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/ripple_gray100_4</item>
+        <item name="android:paddingVertical">5dp</item>
+    </style>
+
+    <style name="text_title">
+        <item name="android:textFontWeight">700</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="text_subtitle">
+        <item name="android:textFontWeight">700</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="text_body">
+        <item name="android:textFontWeight">700</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    
+    <style name="text_label">
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="text_caption">
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="text_cute">
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="alimo_switch">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:track">@drawable/track_selector</item>
+        <item name="android:thumb">@drawable/thumb_selector</item>
+        <item name="android:enabled">true</item>
+        <item name="android:checked">true</item>
+    </style>
+
+    <declare-styleable name="custom_category_card">
+        <attr name="name" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="custom_setting_card">
+        <attr name="title" format="string"/>
+        <attr name="description" format="string"/>
+        <attr name="titleColor" format="color"/>
+        <attr name="switchVisible" format="boolean"/>
+        <attr name="switchEnable" format="boolean"/>
+        <attr name="switchChecked" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="custom_file_download">
+        <attr name="fileName" format="string"/>
+        <attr name="fileSize" format="string"/>
+        <attr name="link" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="custom_emoji">
+        <attr name="image" format="reference"/>
+        <attr name="count" format="string"/>
+        <attr name="countVisible" format="boolean"/>
+    </declare-styleable>
+</resources>

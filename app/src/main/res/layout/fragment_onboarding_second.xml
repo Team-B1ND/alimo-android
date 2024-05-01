@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="vm"
+            type="com.b1nd.alimo.presentation.feature.onboarding.second.OnboardingSecondViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/onboardingTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="100dp"
+            android:text="@string/onboarding_title"
+            android:textFontWeight="700"
+            android:textColor="@color/Main900"
+            android:textSize="54sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:text="."
+            android:textFontWeight="700"
+            android:textColor="@color/Main500"
+            android:textSize="54dp"
+            app:layout_constraintStart_toEndOf="@id/onboardingTitleTextView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/onboardingSubTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:text="@string/onboarding_sub_title"
+            android:textFontWeight="700"
+            android:textColor="@color/Main900"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/onboardingTitleTextView" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/onboardingImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="72dp"
+            android:src="@drawable/img_onboarding"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/onboardingSubTitleTextView" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/btn_shape_rounded_on"
+            android:text="@string/start"
+            android:textFontWeight="700"
+            android:textColor="@color/Main900"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:onClick="@{() -> vm.onClickStart()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

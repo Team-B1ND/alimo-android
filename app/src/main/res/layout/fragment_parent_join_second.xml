@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tool="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.b1nd.alimo.presentation.feature.onboarding.parent.join.second.ParentJoinSecondViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="@{() -> vm.onClickBackground()}">
+
+        <LinearLayout
+            android:id="@+id/topBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:onClick="@{() -> vm.onClickBack()}"
+                android:padding="10dp"
+                android:src="@drawable/ic_back" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="@string/join"
+                android:textFontWeight="700"
+                android:textColor="@color/Main900"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/parent_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="36dp"
+            tool:text="@string/parent_name"
+            android:textFontWeight="700"
+            android:textColor="@color/Main900"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topBar" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/student_join_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="36dp"
+            android:text="@string/parent_join_second_title"
+            android:textFontWeight="700"
+            android:textColor="@color/Main900"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/parent_name"
+            app:layout_constraintTop_toBottomOf="@id/topBar" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/id_edit_text_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:textColorHint="@color/Gray500"
+            app:endIconDrawable="@drawable/ic_clear_text"
+            app:hintEnabled="false"
+            app:endIconMode="custom"
+            app:layout_constraintTop_toBottomOf="@id/student_join_title">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/id_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:hint="@string/parent_join_email"
+                android:textColorHint="@drawable/hint_color"
+
+                android:background="@drawable/edittext_border_background" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/pw_edit_text_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            app:hintEnabled="false"
+
+            android:textColorHint="@color/Gray500"
+            app:endIconMode="password_toggle"
+            app:layout_constraintTop_toBottomOf="@id/id_edit_text_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:hint="@string/student_login_pw"
+                android:textColorHint="@drawable/hint_color"
+                android:inputType="textPassword"
+                android:id="@+id/pw_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/edittext_border_background" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/verify_pw_edit_text_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            app:hintEnabled="false"
+
+            android:layout_marginEnd="20dp"
+            android:textColorHint="@color/Gray500"
+            app:endIconMode="password_toggle"
+            app:layout_constraintTop_toBottomOf="@id/pw_edit_text_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/verify_pw_edit_text"
+                android:layout_width="match_parent"
+                android:hint="@string/parent_join_pw"
+                android:textColorHint="@drawable/hint_color"
+                android:inputType="textPassword"
+                android:layout_height="52dp"
+                android:background="@drawable/edittext_border_background" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/error_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/pw_error"
+            android:textColor="@color/Red500"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/verify_pw_edit_text_layout" />
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@id/button_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/onboarding_third_parent_message"
+                android:textColor="@color/Gray500" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/bottom_line"
+                android:onClick="@{() -> vm.onClickLogin}"
+                android:text="@string/login"
+                android:textColor="@color/Main500"
+                android:textStyle="normal" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/button_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/btn_shape_rounded_on">
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/loginBtnOn"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/btn_shape_rounded_on"
+                android:onClick="@{() -> vm.onClickNext()}"
+                android:enabled="@{!vm.isButtonClicked}"
+                android:text="@string/next"
+                android:textColor="@color/Main900"
+                android:textFontWeight="700"
+                android:visibility="invisible" />
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progress_cir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:indicatorColor="@color/Gray300"
+                app:indicatorSize="30dp"
+                android:visibility="gone"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/loginBtnOff"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/btn_shape_rounded_off"
+            android:text="@string/next"
+            android:textColor="@color/Gray500"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

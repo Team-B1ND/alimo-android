@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="vm"
+            type="com.b1nd.alimo.presentation.feature.main.image.choose.ImageChooseDialogViewModel"/>
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="36dp"
+            android:paddingVertical="12dp"
+            android:background="@drawable/shape_white_8">
+
+            <TextView
+                android:id="@+id/text_all_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10dp"
+                android:text="8장 모두 저장"
+                android:textAlignment="center"
+                android:background="@drawable/ripple_white"
+                android:onClick="@{() -> vm.onClickSaveAll()}"
+                style="@style/text_label"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <TextView
+                android:id="@+id/text_that_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10dp"
+                android:text="@string/text_image_that_save"
+                android:textAlignment="center"
+                android:background="@drawable/ripple_white"
+                android:onClick="@{() -> vm.onClickThatAll()}"
+                style="@style/text_label"
+                app:layout_constraintTop_toBottomOf="@id/text_all_save"/>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+</layout>
