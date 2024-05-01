@@ -97,6 +97,7 @@ class ProfileViewModel @Inject constructor(
             }
         }
         repository.deleteToken()
+        tokenRepository.deleteToken()
     }
 
     // 현재 알림 가져오기
