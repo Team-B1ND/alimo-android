@@ -80,7 +80,7 @@ class ParentJoinThirdFragment :
                     ON_CLICK_CERTIFICATION -> {
 
                         viewModel.postEmail(args.email)
-
+                        mBinding.parentJoinThirstTitle.text = R.string.parent_join_thirst_title_2.toString()
                         mBinding.check.visibility = View.VISIBLE
                         mBinding.time.visibility = View.VISIBLE
                         mBinding.certification.visibility = View.GONE
