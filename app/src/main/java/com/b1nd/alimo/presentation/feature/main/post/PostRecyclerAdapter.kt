@@ -25,10 +25,7 @@ class PostRecyclerAdapter constructor(
     private val onClick: (NotificationModel) -> Unit
 ): PagingDataAdapter<NotificationModel, PostRecyclerAdapter.ViewHolder>(diffCallback) {
 
-    inner class ViewHolder(binding: ItemPostBinding): RecyclerView.ViewHolder(binding.root) {
-        val binding = binding
-    }
-
+    inner class ViewHolder(val binding: ItemPostBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onViewRecycled(holder: ViewHolder) {
         super.onViewRecycled(holder)
