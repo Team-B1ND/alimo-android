@@ -46,6 +46,8 @@ class PostRecyclerAdapter constructor(
                 layoutFile.isVisible = item.files.isNotEmpty()
                 imageNewBadge.isVisible = item.isNew
 
+                imageBookmark.setBookmark(true)
+
                 if (item.memberProfile != null) {
                     imageProfile.loadImage(item.memberProfile)
                 }
@@ -56,9 +58,6 @@ class PostRecyclerAdapter constructor(
                     val file = item.files[0]
                     textFileName.text = file.fileName
                     textFileCount.text = "총 ${item.files.size}개 파일"
-                }
-                if (item.isBookmark) {
-                    imageBookmark.setBookmark(true)
                 }
 
                 if (item.emoji != null) {
