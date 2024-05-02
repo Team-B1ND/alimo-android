@@ -14,9 +14,7 @@ class DetailCommentRv constructor(
     private val onClickReply: (CommentModel) -> Unit
 ): RecyclerView.Adapter<DetailCommentRv.ViewHolder>() {
 
-    inner class ViewHolder(binding: ItemCommentBinding): RecyclerView.ViewHolder(binding.root) {
-        val binding = binding
-    }
+    inner class ViewHolder(val binding: ItemCommentBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val binding = holder.binding
