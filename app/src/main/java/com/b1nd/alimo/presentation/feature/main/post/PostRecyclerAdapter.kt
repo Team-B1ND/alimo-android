@@ -25,10 +25,7 @@ class PostRecyclerAdapter constructor(
     private val onClick: (NotificationModel) -> Unit
 ): PagingDataAdapter<NotificationModel, PostRecyclerAdapter.ViewHolder>(diffCallback) {
 
-    inner class ViewHolder(binding: ItemPostBinding): RecyclerView.ViewHolder(binding.root) {
-        val binding = binding
-    }
-
+    inner class ViewHolder(val binding: ItemPostBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onViewRecycled(holder: ViewHolder) {
         super.onViewRecycled(holder)
@@ -46,6 +43,8 @@ class PostRecyclerAdapter constructor(
                 layoutFile.isVisible = item.files.isNotEmpty()
                 imageNewBadge.isVisible = item.isNew
 
+                imageBookmark.setBookmark(true)
+
                 if (item.memberProfile != null) {
                     imageProfile.loadImage(item.memberProfile)
                 }
@@ -56,9 +55,6 @@ class PostRecyclerAdapter constructor(
                     val file = item.files[0]
                     textFileName.text = file.fileName
                     textFileCount.text = "총 ${item.files.size}개 파일"
-                }
-                if (item.isBookmark) {
-                    imageBookmark.setBookmark(true)
                 }
 
                 if (item.emoji != null) {

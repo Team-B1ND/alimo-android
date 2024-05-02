@@ -14,10 +14,7 @@ class DetailCommentCommentRv constructor(
     private val items: List<SubCommentModel>
 ): RecyclerView.Adapter<DetailCommentCommentRv.ViewHolder>() {
 
-    inner class ViewHolder(binding: ItemCommentCommentBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        val binding = binding
-    }
+    inner class ViewHolder(val binding: ItemCommentCommentBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
