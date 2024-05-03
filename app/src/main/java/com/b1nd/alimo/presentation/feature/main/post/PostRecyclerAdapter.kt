@@ -43,7 +43,7 @@ class PostRecyclerAdapter constructor(
                 layoutFile.isVisible = item.files.isNotEmpty()
                 imageNewBadge.isVisible = item.isNew
 
-                imageBookmark.setBookmark(true)
+                imageBookmark.setBookmark(item.isBookmark)
 
                 if (item.memberProfile != null) {
                     imageProfile.loadImage(item.memberProfile)
