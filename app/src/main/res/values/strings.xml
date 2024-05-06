@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">alimo</string>
+    <string name="app_name">알리모</string>
     <string name="onboarding_title">ALIMO</string>
     <string name="onboarding_sub_title">대소고의 모든 소식</string>
     <string name="start">시작하기</string>
