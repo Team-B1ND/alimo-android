@@ -178,4 +178,10 @@ class ProfileFragment:
     override fun onWithdrawal() {
         viewModel.withdrawal()
     }
+
+    override fun onPause() {
+        super.onPause()
+
+        viewModel.setAlarmState(viewModel.alarmState.value)
+    }
 }
