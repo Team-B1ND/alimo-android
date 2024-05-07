@@ -21,8 +21,8 @@ android {
         applicationId = "com.b1nd.alimo"
         minSdk = 28
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "1.0.1"
 
         buildConfigField("String", "SERVER_URL", "${prperties["SERVER_URL"]}")
 
@@ -47,7 +47,7 @@ android {
             )
         }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

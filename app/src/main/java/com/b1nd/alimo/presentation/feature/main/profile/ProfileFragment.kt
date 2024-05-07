@@ -1,6 +1,8 @@
 package com.b1nd.alimo.presentation.feature.main.profile
 
+import android.content.Intent
 import android.graphics.Paint
+import android.net.Uri
 import android.os.Build
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -62,9 +64,15 @@ class ProfileFragment:
                         dialog.show(super.getChildFragmentManager(), "student_dialog")
                     }
                     ON_CLICK_PRIVATE_POLICY -> {
+                        val url = "https://ahead-yacht-97a.notion.site/215ee2a6510e4cff92cff58f7c5011de?pvs=4"
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        startActivity(intent)
 
                     }
                     ON_CLICK_SERVICE_POLICY -> {
+                        val url = "https://ahead-yacht-97a.notion.site/e9ae676d8ecd4a9a921400ceea6c27e3?pvs=4"
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        startActivity(intent)
 
                     }
                     ON_CLICK_LOGOUT -> {
