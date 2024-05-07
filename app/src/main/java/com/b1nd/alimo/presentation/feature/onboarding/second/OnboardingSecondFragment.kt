@@ -17,7 +17,6 @@ import com.b1nd.alimo.databinding.FragmentOnboardingSecondBinding
 import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.onboarding.second.OnboardingSecondViewModel.Companion.ON_CLICK_EASTER_EGG
 import com.b1nd.alimo.presentation.feature.onboarding.second.OnboardingSecondViewModel.Companion.ON_CLICK_START
-import com.b1nd.alimo.presentation.utiles.getResourceString
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import com.b1nd.alimo.presentation.utiles.shortToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -66,7 +65,7 @@ class OnboardingSecondFragment :
                     }
                     ON_CLICK_EASTER_EGG ->{
                         easterEggCnt += 1
-                        if (easterEggCnt%5 == 0){
+                        if (easterEggCnt%3 == 0){
                             mBinding.onboardingTitleTextViewDot.setTextColor(ContextCompat.getColor(requireContext(), R.color.Red500))
                         }else{
                             mBinding.onboardingTitleTextViewDot.setTextColor(ContextCompat.getColor(requireContext(), R.color.Main500))
