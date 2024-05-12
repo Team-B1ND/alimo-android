@@ -89,11 +89,12 @@
                     android:textColor="@color/Main900"
                     android:autoLink="web"
                     android:linksClickable="true"
+                    android:lineSpacingMultiplier="1.3"
                     android:visibility="@{vm.state.loading ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintTop_toBottomOf="@id/text_author"
                     app:layout_constraintStart_toStartOf="@id/text_author"
                     app:layout_constraintEnd_toEndOf="@id/text_title"
-                    style="@style/text_caption"/>
+                    style="@style/text_body_light"/>
                 <LinearLayout
                     android:id="@+id/layout_image_content"
                     android:layout_width="0dp"
@@ -142,7 +143,7 @@
                     android:visibility="@{vm.state.loading ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintStart_toStartOf="@id/text_title"
                     app:layout_constraintTop_toBottomOf="@id/layout_files"
-                    style="@style/text_cute"/>
+                    style="@style/text_label"/>
                 <ImageView
                     android:id="@+id/image_bookmark"
                     android:layout_width="24dp"
