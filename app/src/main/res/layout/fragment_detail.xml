@@ -64,7 +64,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@id/image_profile"
                     app:layout_constraintEnd_toEndOf="parent"
-                    style="@style/text_label"/>
+                    style="@style/text_body_light"/>
 
                 <TextView
                     android:id="@+id/text_author"
@@ -75,7 +75,7 @@
                     android:visibility="@{vm.state.loading ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintTop_toBottomOf="@id/text_title"
                     app:layout_constraintStart_toStartOf="@id/text_title"
-                    style="@style/text_caption" />
+                    style="@style/text_label" />
 
 
 
