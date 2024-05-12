@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="1"
+            android:textColor="@color/Main900"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/image_emoji"
