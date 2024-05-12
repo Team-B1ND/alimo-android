@@ -33,6 +33,7 @@
             app:itemIconSize="28dp"
             app:itemActiveIndicatorStyle="@color/white"
             app:itemIconTint="@drawable/menu_item_color"
+            app:itemTextColor="@color/Main900"
             app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:menu="@menu/main_nav_menu"/>
