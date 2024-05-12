@@ -71,6 +71,7 @@
                 android:layout_width="match_parent"
                 android:hint="@string/authentication_code"
                 android:textColorHint="@drawable/hint_color"
+                android:textColor="@color/Main900"
 
                 android:layout_height="52dp"
                 android:background="@drawable/edittext_border_background" />

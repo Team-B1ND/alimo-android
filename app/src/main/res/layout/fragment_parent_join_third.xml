@@ -67,6 +67,7 @@
             app:hintEnabled="false"
 
             android:textColorHint="@color/Gray500"
+            android:textColor="@color/Main900"
             app:layout_constraintTop_toBottomOf="@id/parent_join_thirst_title">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -74,6 +75,7 @@
                 android:layout_width="match_parent"
                 android:hint="@string/authentication_code"
                 android:textColorHint="@drawable/hint_color"
+                android:textColor="@color/Main900"
 
                 android:layout_height="52dp"
                 android:background="@drawable/edittext_border_background"

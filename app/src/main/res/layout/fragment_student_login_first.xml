@@ -63,6 +63,7 @@
             app:hintEnabled="false"
 
             android:textColorHint="@color/Gray500"
+            android:textColor="@color/Main900"
             app:endIconDrawable="@drawable/ic_clear_text"
             app:endIconMode="custom"
             app:layout_constraintTop_toBottomOf="@id/student_join_title">
@@ -70,6 +71,7 @@
                 android:id="@+id/id_edit_text"
                 android:hint="@string/student_login_id"
                 android:textColorHint="@drawable/hint_color"
+                android:textColor="@color/Main900"
 
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
@@ -87,6 +89,7 @@
             android:layout_marginEnd="20dp"
             app:hintEnabled="false"
             android:textColorHint="@color/Gray500"
+            android:textColor="@color/Main900"
             app:endIconMode="password_toggle"
             app:layout_constraintTop_toBottomOf="@id/id_edit_text_layout">
 
@@ -94,6 +97,7 @@
                 android:id="@+id/pw_edit_text"
                 android:hint="@string/student_login_pw"
                 android:textColorHint="@drawable/hint_color"
+                android:textColor="@color/Main900"
                 android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
