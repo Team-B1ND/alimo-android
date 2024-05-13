@@ -3,12 +3,12 @@ package com.b1nd.alimo.presentation.feature.main.detail
 import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.allViews
 import androidx.core.view.isVisible
@@ -151,14 +151,14 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initTouch() {
-        mBinding.layoutParent.setOnTouchListener { view, motionEvent ->
+        mBinding.layoutParent.setOnTouchListener { _, motionEvent ->
             if (motionEvent.action == MotionEvent.ACTION_UP) {
                 clearFocus()
             }
 
             return@setOnTouchListener true
         }
-        mBinding.rvComment.setOnTouchListener { view, motionEvent ->
+        mBinding.rvComment.setOnTouchListener { _, motionEvent ->
             if (motionEvent.action == MotionEvent.ACTION_UP) {
                 clearFocus()
             }
@@ -193,7 +193,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
             }
 
             val text = editSend.text.toString()
-            if (text.isNullOrBlank()) {
+            if (text.isBlank()) {
                 return
             }
             editSend.isEnabled = false
@@ -223,44 +223,35 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 }
             }
         }
-        with(mBinding) {
-            val emojis = listOf(
-                imageOkay,
-                imageAngry,
-                imageLaugh,
-                imageLove,
-                imageSad
-            )
 
-            repeatOnStarted {
-                var nowItem = pickEmoji
-                var beforeItem: CustomEmoji? = null
-                while (true) {
-                    if (isLoadEmoji) {
-                        nowItem = pickEmoji
-                        isLoadEmoji = false
-                        delay(1000)
-                        continue
-                    }
-                    if (nowItem != pickEmoji) {
-                        nowItem = pickEmoji
-                        if (pickEmoji?.tag == CHOOSE) {
-                            // 이모지 등록 처리
-                            viewModel.setEmoji(
-                                args.id,
-                                pickEmoji!!.emojiName
-                            )
-                        } else {
-                            // 이모지 취소 처리
-                            viewModel.setEmoji(
-                                args.id,
-                                beforeItem!!.emojiName
-                            )
-                        }
-                    }
-                    beforeItem = nowItem
+        repeatOnStarted {
+            var nowItem = pickEmoji
+            var beforeItem: CustomEmoji? = null
+            while (true) {
+                if (isLoadEmoji) {
+                    nowItem = pickEmoji
+                    isLoadEmoji = false
                     delay(1000)
+                    continue
                 }
+                if (nowItem != pickEmoji) {
+                    nowItem = pickEmoji
+                    if (pickEmoji?.tag == CHOOSE) {
+                        // 이모지 등록 처리
+                        viewModel.setEmoji(
+                            args.id,
+                            pickEmoji!!.emojiName
+                        )
+                    } else {
+                        // 이모지 취소 처리
+                        viewModel.setEmoji(
+                            args.id,
+                            beforeItem!!.emojiName
+                        )
+                    }
+                }
+                beforeItem = nowItem
+                delay(1000)
             }
         }
     }
@@ -324,10 +315,10 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         val imageView = ImageView(requireContext())
                         imageView.run {
                             maxWidth = 30
-                            background = requireContext().getDrawable(R.drawable.shape_image_view)
+                            background = AppCompatResources.getDrawable(requireContext(), R.drawable.shape_image_view)
                             clipToOutline = true
                             isVisible = true
-                            setOnClickListener { view ->
+                            setOnClickListener { _ ->
                                 systemBarDark(true)
                                 changeVisibleAnimationView(true)
                                 mBinding.fragmentImage.isVisible = true
