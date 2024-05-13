@@ -185,9 +185,10 @@
                             android:id="@+id/image_okay"
                             android:onClick="@{() -> vm.onClickOkay()}"
                             android:clickable="true"
+                            android:tag="@{vm.NOT_CHOOSE}"
                             style="@style/image_emoji"
                             app:image="@drawable/ic_okay"
-                            app:count="0"/>
+                            app:count="0" />
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="0dp"
                             android:layout_height="0dp"
@@ -195,6 +196,7 @@
                         <com.b1nd.alimo.presentation.custom.CustomEmoji
                             android:id="@+id/image_love"
                             android:onClick="@{() -> vm.onClickLove()}"
+                            android:tag="@{vm.NOT_CHOOSE}"
                             app:image="@drawable/ic_love"
                             app:count="0"
                             style="@style/image_emoji"/>
@@ -206,6 +208,7 @@
                         <com.b1nd.alimo.presentation.custom.CustomEmoji
                             android:id="@+id/image_laugh"
                             android:onClick="@{() -> vm.onClickLaugh()}"
+                            android:tag="@{vm.NOT_CHOOSE}"
                             style="@style/image_emoji"
                             app:image="@drawable/ic_laugh"
                             app:count="0"/>
@@ -216,6 +219,7 @@
                         <com.b1nd.alimo.presentation.custom.CustomEmoji
                             android:id="@+id/image_sad"
                             android:onClick="@{() -> vm.onClickSad()}"
+                            android:tag="@{vm.NOT_CHOOSE}"
                             style="@style/image_emoji"
                             app:image="@drawable/ic_sad"
                             app:count="0"/>
@@ -226,6 +230,7 @@
                         <com.b1nd.alimo.presentation.custom.CustomEmoji
                             android:id="@+id/image_angry"
                             android:onClick="@{() -> vm.onClickAngry()}"
+                            android:tag="@{vm.NOT_CHOOSE}"
                             style="@style/image_emoji"
                             app:image="@drawable/ic_angry"
                             app:count="0" />
