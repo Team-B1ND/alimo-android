@@ -74,7 +74,8 @@
                 android:textColor="@color/Main900"
                 android:enabled="true"
                 android:maxLength="1"
-                android:gravity="center" />
+                android:gravity="center"
+                style="@style/textfield_basic" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/student_code2"
@@ -83,11 +84,11 @@
                 android:layout_marginStart="6dp"
                 android:layout_weight="1"
                 android:background="@drawable/edittext_border_background"
-                android:textColor="@color/Main900"
                 android:enabled="true"
                 android:maxLength="1"
 
-                android:gravity="center" />
+                android:gravity="center"
+                style="@style/textfield_basic" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/student_code3"
@@ -96,11 +97,11 @@
                 android:layout_marginStart="6dp"
                 android:layout_weight="1"
                 android:background="@drawable/edittext_border_background"
-                android:textColor="@color/Main900"
                 android:enabled="true"
                 android:maxLength="1"
 
-                android:gravity="center" />
+                android:gravity="center"
+                style="@style/textfield_basic" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/student_code4"
@@ -109,11 +110,11 @@
                 android:layout_marginStart="6dp"
                 android:layout_weight="1"
                 android:background="@drawable/edittext_border_background"
-                android:textColor="@color/Main900"
                 android:enabled="true"
                 android:maxLength="1"
 
-                android:gravity="center" />
+                android:gravity="center"
+                style="@style/textfield_basic" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/student_code5"
@@ -122,10 +123,10 @@
                 android:layout_marginStart="6dp"
                 android:layout_weight="1"
                 android:background="@drawable/edittext_border_background"
-                android:textColor="@color/Main900"
                 android:maxLength="1"
                 android:enabled="true"
-                android:gravity="center" />
+                android:gravity="center"
+                style="@style/textfield_basic"/>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/student_code6"
@@ -134,10 +135,10 @@
                 android:layout_marginStart="6dp"
                 android:layout_weight="1"
                 android:background="@drawable/edittext_border_background"
-                android:textColor="@color/Main900"
                 android:enabled="true"
                 android:maxLength="1"
-                android:gravity="center" />
+                android:gravity="center"
+                style="@style/textfield_basic"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.AppCompatTextView

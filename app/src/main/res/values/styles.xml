@@ -56,6 +56,18 @@
         <item name="android:checked">true</item>
     </style>
 
+    <style name="textfield_basic">
+        <item name="android:textColorHint">@drawable/hint_color</item>
+        <item name="android:textColor">@color/Main900</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="textfield_password">
+        <item name="android:textColorHint">@drawable/hint_color</item>
+        <item name="android:textColor">@color/Main900</item>
+        <item name="android:inputType">textPassword</item>
+    </style>
+
     <declare-styleable name="custom_category_card">
         <attr name="name" format="string"/>
     </declare-styleable>
