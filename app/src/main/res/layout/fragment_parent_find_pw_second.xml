@@ -76,16 +76,17 @@
             app:hintEnabled="false"
 
             android:textColorHint="@color/Gray500"
+            android:textColor="@color/Main900"
             app:endIconMode="password_toggle"
             app:layout_constraintTop_toBottomOf="@id/student_join_title">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:textColorHint="@drawable/hint_color"
                 android:hint="@string/new_password"
-                android:inputType="textPassword"
-                android:background="@drawable/edittext_border_background" />
+                android:background="@drawable/edittext_border_background"
+
+                style="@style/textfield_password"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -100,16 +101,16 @@
 
             android:layout_marginEnd="20dp"
             android:textColorHint="@color/Gray500"
+            android:textColor="@color/Main900"
             app:endIconMode="password_toggle"
             app:layout_constraintTop_toBottomOf="@id/id_edit_text_layout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:textColorHint="@drawable/hint_color"
                 android:hint="@string/re_new_password"
-                android:inputType="textPassword"
-                android:background="@drawable/edittext_border_background" />
+                android:background="@drawable/edittext_border_background"
+                style="@style/textfield_password"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 

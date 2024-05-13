@@ -26,6 +26,11 @@
         <item name="android:textFontWeight">700</item>
         <item name="android:textSize">16sp</item>
     </style>
+
+    <style name="text_body_light">
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textSize">16sp</item>
+    </style>
     
     <style name="text_label">
         <item name="android:textFontWeight">500</item>
@@ -49,6 +54,18 @@
         <item name="android:thumb">@drawable/thumb_selector</item>
         <item name="android:enabled">true</item>
         <item name="android:checked">true</item>
+    </style>
+
+    <style name="textfield_basic">
+        <item name="android:textColorHint">@drawable/hint_color</item>
+        <item name="android:textColor">@color/Main900</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="textfield_password">
+        <item name="android:textColorHint">@drawable/hint_color</item>
+        <item name="android:textColor">@color/Main900</item>
+        <item name="android:inputType">textPassword</item>
     </style>
 
     <declare-styleable name="custom_category_card">
