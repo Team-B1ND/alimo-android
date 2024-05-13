@@ -21,6 +21,10 @@ class CustomEmoji(
         )
     }
 
+    private var _emojiName: String = ""
+    val emojiName : String
+        get() = _emojiName
+
     val count
         get() = getCounts()
 
@@ -44,6 +48,7 @@ class CustomEmoji(
         binding.run {
             textCount.text = typedArray.getString(R.styleable.custom_emoji_count)?: "0"
             imageEmoji.setImageResource(typedArray.getResourceId(R.styleable.custom_emoji_image, 0))
+            _emojiName = typedArray.getString(R.styleable.custom_emoji_emojiName)?: ""
             setCountVisible(typedArray.getBoolean(R.styleable.custom_emoji_countVisible, true))
         }
         typedArray.recycle()
@@ -51,9 +56,7 @@ class CustomEmoji(
 
     fun getCounts(
 
-    ): String {
-        return binding.textCount.text.toString()
-    }
+    ) = binding.textCount.text.toString()
 
     fun setCount(
         count: String

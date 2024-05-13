@@ -3,6 +3,7 @@ package com.b1nd.alimo.presentation.feature.main.detail
 import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.DecelerateInterpolator
@@ -43,6 +44,7 @@ import com.b1nd.alimo.presentation.utiles.getResourceString
 import com.b1nd.alimo.presentation.utiles.loadImage
 import com.b1nd.alimo.presentation.utiles.loadNotCropImage
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.repeatOnStarted
 import com.b1nd.alimo.presentation.utiles.systemBarDark
 import com.b1nd.alimo.presentation.utiles.toDateString
 import com.bumptech.glide.Glide
@@ -59,6 +61,8 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
     private val args: DetailFragmentArgs by navArgs()
     private var pickEmoji: CustomEmoji? = null
+    // 이모지 새 로드시 True로 전환
+    private var isLoadEmoji: Boolean = false
 
     private var parentId: Int? = null
 
@@ -93,7 +97,6 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         clickEmoji(it)
                     }
                     ON_CLICK_BOOKMARK -> {
-//                        Log.d("TAG", "initView: ${mBinding.imageBookmark.tag.toString()}")
                         viewModel.pathBookmark(args.id)
                     }
                 }
@@ -216,9 +219,47 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 )
                 it.forEach { emoji ->
                     val index = getEmojiIndex(emoji.emojiName)
-                    if (index != null) {
-                        emojis[index].setCount(emoji.count.toString())
+                    emojis[index].setCount(emoji.count.toString())
+                }
+            }
+        }
+        with(mBinding) {
+            val emojis = listOf(
+                imageOkay,
+                imageAngry,
+                imageLaugh,
+                imageLove,
+                imageSad
+            )
+
+            repeatOnStarted {
+                var nowItem = pickEmoji
+                var beforeItem: CustomEmoji? = null
+                while (true) {
+                    if (isLoadEmoji) {
+                        nowItem = pickEmoji
+                        isLoadEmoji = false
+                        delay(1000)
+                        continue
                     }
+                    if (nowItem != pickEmoji) {
+                        nowItem = pickEmoji
+                        if (pickEmoji?.tag == CHOOSE) {
+                            // 이모지 등록 처리
+                            viewModel.setEmoji(
+                                args.id,
+                                pickEmoji!!.emojiName
+                            )
+                        } else {
+                            // 이모지 취소 처리
+                            viewModel.setEmoji(
+                                args.id,
+                                beforeItem!!.emojiName
+                            )
+                        }
+                    }
+                    beforeItem = nowItem
+                    delay(1000)
                 }
             }
         }
@@ -352,9 +393,11 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         val item = emojis.removeAt(index)
                         item.animAlpha(1f)
                         item.tag = CHOOSE
+                        pickEmoji = item
                         emojis.forEach { emoji ->
                             emoji.animAlpha(EMOJI_ALPHA)
                         }
+                        isLoadEmoji = true
                     }
 
                     val adapter = DetailCommentRv(it.comments) {
@@ -378,6 +421,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     private fun clickEmoji(
         emoji: String,
     ) {
+
         with(mBinding) {
             val emojis = mutableListOf(
                 imageOkay,
@@ -387,10 +431,6 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 imageSad
             )
             val emojiIndex = getEmojiIndex(emoji)
-            viewModel.setEmoji(
-                args.id,
-                emoji.split("_").last()
-            )
 
             // 이모지 클릭시 나머지 이모지 알파 처리
             // 클릭된 이모지 +1 처리
@@ -409,6 +449,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 emojis.forEach {
                     it.animAlpha(1f)
                 }
+                pickEmoji = null
             } else {
                 // 클릭된 이모지 찾기
                 emojis.forEach {
@@ -425,45 +466,8 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                     (nowEmoji.count.toInt() + 1).toString()
                 )
                 nowEmoji.animAlpha(1f)
+                pickEmoji = nowEmoji
             }
-
-
-//            emojis.getOrNull(emojiIndex?: 10)?.let { // 이모지 존재여부
-//                if (pickEmoji != null && pickEmoji!!.id == it.id) { // 이모지 중복 클릭 처리
-//                    Log.d("TAG", "clickEmoji: test")
-//                    pickEmoji = null
-//                    it.tag = CHOOSE
-//                    it.setCount((it.count.toInt()-1).toString())
-//                    emojis.forEach {
-//                        it.animAlpha(1f)
-//                    }
-//                    return@clickEmoji
-//                }
-//            }
-//
-//
-//            if (emojiIndex != null) {
-//
-//                val allAlpha = emojis.sumOf {
-//                    (it.alpha*10).toInt()
-//                }
-//                val item = emojis.removeAt(emojiIndex)
-////                if (pickEmoji != null) {
-////                    pickEmoji!!.setCount(
-////                        (pickEmoji!!.count.toInt()-1).toString()
-////                    )
-////                }
-//                pickEmoji = item
-//
-//                // 현재 모든 아이템이 선택되어있지 않던지, 아이템이 원래 선택이 안되있던가
-//                val plus = if (allAlpha == 50 || item.alpha != 1f) 1 else -1
-//                item.setCount((item.count.toInt()+plus).toString())
-//                item.animAlpha(1f)
-//                // 분기점 처리 지금 애가 선택된 애인가?
-//            }
-//            emojis.forEach {
-//                it.animAlpha(emojiAlpha)
-//            }
         }
     }
     private fun changeBookmark() {

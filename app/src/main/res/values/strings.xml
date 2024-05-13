@@ -60,4 +60,9 @@
     <string name="image_dummy_author">테스트</string>
     <string name="image_dummy_title">1 / 2</string>
     <string name="text_image_that_save">이 사진만 저장</string>
+    <string name="emoji_angry">ANGRY</string>
+    <string name="emoji_sad">SAD</string>
+    <string name="emoji_laugh">LAUGH</string>
+    <string name="emoji_love">LOVE</string>
+    <string name="emoji_okay">OKAY</string>
 </resources>

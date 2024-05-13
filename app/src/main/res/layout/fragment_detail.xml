@@ -188,6 +188,7 @@
                             android:tag="@{vm.NOT_CHOOSE}"
                             style="@style/image_emoji"
                             app:image="@drawable/ic_okay"
+                            app:emojiName="@string/emoji_okay"
                             app:count="0" />
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="0dp"
@@ -198,6 +199,7 @@
                             android:onClick="@{() -> vm.onClickLove()}"
                             android:tag="@{vm.NOT_CHOOSE}"
                             app:image="@drawable/ic_love"
+                            app:emojiName="@string/emoji_love"
                             app:count="0"
                             style="@style/image_emoji"/>
                         <androidx.appcompat.widget.LinearLayoutCompat
@@ -211,6 +213,7 @@
                             android:tag="@{vm.NOT_CHOOSE}"
                             style="@style/image_emoji"
                             app:image="@drawable/ic_laugh"
+                            app:emojiName="@string/emoji_laugh"
                             app:count="0"/>
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="0dp"
@@ -222,6 +225,7 @@
                             android:tag="@{vm.NOT_CHOOSE}"
                             style="@style/image_emoji"
                             app:image="@drawable/ic_sad"
+                            app:emojiName="@string/emoji_sad"
                             app:count="0"/>
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="0dp"
@@ -233,6 +237,7 @@
                             android:tag="@{vm.NOT_CHOOSE}"
                             style="@style/image_emoji"
                             app:image="@drawable/ic_angry"
+                            app:emojiName="@string/emoji_angry"
                             app:count="0" />
                     </LinearLayout>
                 </LinearLayout>
