@@ -8,6 +8,7 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.allViews
 import androidx.core.view.isVisible
@@ -23,7 +24,9 @@ import com.b1nd.alimo.presentation.custom.CustomEmoji
 import com.b1nd.alimo.presentation.custom.CustomFileDownload
 import com.b1nd.alimo.presentation.feature.main.MainActivity
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.BOOKMARK
+import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.CHOOSE
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.NOT_BOOKMARK
+import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.NOT_CHOOSE
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_ANGRY
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_BACK
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_BOOKMARK
@@ -41,6 +44,7 @@ import com.b1nd.alimo.presentation.utiles.getResourceString
 import com.b1nd.alimo.presentation.utiles.loadImage
 import com.b1nd.alimo.presentation.utiles.loadNotCropImage
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.repeatOnStarted
 import com.b1nd.alimo.presentation.utiles.systemBarDark
 import com.b1nd.alimo.presentation.utiles.toDateString
 import com.bumptech.glide.Glide
@@ -57,6 +61,8 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
     private val args: DetailFragmentArgs by navArgs()
     private var pickEmoji: CustomEmoji? = null
+    // 이모지 새 로드시 True로 전환
+    private var isLoadEmoji: Boolean = false
 
     private var parentId: Int? = null
 
@@ -91,7 +97,6 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         clickEmoji(it)
                     }
                     ON_CLICK_BOOKMARK -> {
-//                        Log.d("TAG", "initView: ${mBinding.imageBookmark.tag.toString()}")
                         viewModel.pathBookmark(args.id)
                     }
                 }
@@ -146,14 +151,14 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initTouch() {
-        mBinding.layoutParent.setOnTouchListener { view, motionEvent ->
+        mBinding.layoutParent.setOnTouchListener { _, motionEvent ->
             if (motionEvent.action == MotionEvent.ACTION_UP) {
                 clearFocus()
             }
 
             return@setOnTouchListener true
         }
-        mBinding.rvComment.setOnTouchListener { view, motionEvent ->
+        mBinding.rvComment.setOnTouchListener { _, motionEvent ->
             if (motionEvent.action == MotionEvent.ACTION_UP) {
                 clearFocus()
             }
@@ -188,7 +193,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
             }
 
             val text = editSend.text.toString()
-            if (text.isNullOrBlank()) {
+            if (text.isBlank()) {
                 return
             }
             editSend.isEnabled = false
@@ -214,10 +219,39 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 )
                 it.forEach { emoji ->
                     val index = getEmojiIndex(emoji.emojiName)
-                    if (index != null) {
-                        emojis[index].setCount(emoji.count.toString())
+                    emojis[index].setCount(emoji.count.toString())
+                }
+            }
+        }
+
+        repeatOnStarted {
+            var nowItem = pickEmoji
+            var beforeItem: CustomEmoji? = null
+            while (true) {
+                if (isLoadEmoji) {
+                    nowItem = pickEmoji
+                    isLoadEmoji = false
+                    delay(1000)
+                    continue
+                }
+                if (nowItem != pickEmoji) {
+                    nowItem = pickEmoji
+                    if (pickEmoji?.tag == CHOOSE) {
+                        // 이모지 등록 처리
+                        viewModel.setEmoji(
+                            args.id,
+                            pickEmoji!!.emojiName
+                        )
+                    } else {
+                        // 이모지 취소 처리
+                        viewModel.setEmoji(
+                            args.id,
+                            beforeItem!!.emojiName
+                        )
                     }
                 }
+                beforeItem = nowItem
+                delay(1000)
             }
         }
     }
@@ -281,10 +315,10 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         val imageView = ImageView(requireContext())
                         imageView.run {
                             maxWidth = 30
-                            background = requireContext().getDrawable(R.drawable.shape_image_view)
+                            background = AppCompatResources.getDrawable(requireContext(), R.drawable.shape_image_view)
                             clipToOutline = true
                             isVisible = true
-                            setOnClickListener { view ->
+                            setOnClickListener { _ ->
                                 systemBarDark(true)
                                 changeVisibleAnimationView(true)
                                 mBinding.fragmentImage.isVisible = true
@@ -346,14 +380,15 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         imageSad
                     )
                     if (it.emoji != null) {
-                        getEmojiIndex(it.emoji)?.let { index ->
-                            emojis[index].animAlpha(1f)
-                            pickEmoji = emojis[index]
-                            emojis.removeAt(index)
-                        }
+                        val index = getEmojiIndex(it.emoji)
+                        val item = emojis.removeAt(index)
+                        item.animAlpha(1f)
+                        item.tag = CHOOSE
+                        pickEmoji = item
                         emojis.forEach { emoji ->
-                            emoji.animAlpha(emojiAlpha)
+                            emoji.animAlpha(EMOJI_ALPHA)
                         }
+                        isLoadEmoji = true
                     }
 
                     val adapter = DetailCommentRv(it.comments) {
@@ -377,6 +412,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     private fun clickEmoji(
         emoji: String,
     ) {
+
         with(mBinding) {
             val emojis = mutableListOf(
                 imageOkay,
@@ -386,40 +422,42 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                 imageSad
             )
             val emojiIndex = getEmojiIndex(emoji)
-            viewModel.setEmoji(
-                args.id,
-                emoji.split("_").last()
-            )
 
-            emojis.getOrNull(emojiIndex?: 10)?.let { // 이모지 존재여부
-                if (pickEmoji == it) { // 이모지 중복 클릭 처리
-                    pickEmoji = null
-                    emojis.forEach {
-                        it.animAlpha(1f)
+            // 이모지 클릭시 나머지 이모지 알파 처리
+            // 클릭된 이모지 +1 처리
+            // 원래 클릭되있던 이모지 -1 처리
+
+            // 원래 클릭되있던 이모지를 클릭할 경우 모두 알파 1f 처리
+            // 원래 클릭된 이모지 +1 처리
+
+            val nowEmoji = emojis[emojiIndex]
+            // 중복 클릭인지 확인
+            if (nowEmoji.tag == CHOOSE) {
+                nowEmoji.setCount(
+                    (nowEmoji.count.toInt() - 1).toString()
+                )
+                nowEmoji.tag = NOT_CHOOSE
+                emojis.forEach {
+                    it.animAlpha(1f)
+                }
+                pickEmoji = null
+            } else {
+                // 클릭된 이모지 찾기
+                emojis.forEach {
+                    if (it.tag == CHOOSE) {
+                        it.setCount(
+                            (it.count.toInt() - 1).toString()
+                        )
+                        it.tag = NOT_CHOOSE
                     }
-                    return@clickEmoji
+                    it.animAlpha(EMOJI_ALPHA)
                 }
-            }
-            if (emojiIndex != null) {
-                val allAlpha = emojis.sumOf {
-                    (it.alpha*10).toInt()
-                }
-                val item = emojis.removeAt(emojiIndex)
-                if (pickEmoji != null) {
-                    pickEmoji!!.setCount(
-                        (pickEmoji!!.count.toInt()-1).toString()
-                    )
-                }
-                pickEmoji = item
-
-                // 현재 모든 아이템이 선택되어있지 않던지, 아이템이 원래 선택이 안되있던가
-                val plus = if (allAlpha == 50 || item.alpha == emojiAlpha) 1 else -1
-                item.setCount((item.count.toInt()+plus).toString())
-                item.animAlpha(1f)
-                // 분기점 처리 지금 애가 선택된 애인가?
-            }
-            emojis.forEach {
-                it.animAlpha(emojiAlpha)
+                nowEmoji.tag = CHOOSE
+                nowEmoji.setCount(
+                    (nowEmoji.count.toInt() + 1).toString()
+                )
+                nowEmoji.animAlpha(1f)
+                pickEmoji = nowEmoji
             }
         }
     }
@@ -436,7 +474,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     }
 
     private fun CustomEmoji.animAlpha(alpha: Float) {
-        if (this.alpha == emojiAlpha && alpha == emojiAlpha ) {
+        if (this.alpha == EMOJI_ALPHA && alpha == EMOJI_ALPHA ) {
             return
         } else {
             this.animate()
@@ -470,7 +508,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
 
     private fun getEmojiIndex(
         emoji: String,
-    ): Int? {
+    ): Int {
         var nowEmoji = emoji
         if (emoji.length < 6) {
             nowEmoji = "ON_CLICK_${emoji}"
@@ -482,13 +520,13 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
             ON_CLICK_LAUGH -> 2
             ON_CLICK_LOVE -> 3
             ON_CLICK_SAD -> 4
-            else -> null
+            else -> 0
         }
         return emojiIndex
     }
 
     companion object {
-        const val emojiAlpha = 0.3f
+        const val EMOJI_ALPHA = 0.3f
     }
 
 }

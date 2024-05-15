@@ -14,6 +14,7 @@ import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.main.post.PostRecyclerAdapter
 import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.Env
+import com.b1nd.alimo.presentation.utiles.Env.AUTO_REFRESH_NOTIFICATION
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.shortToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -124,7 +125,7 @@ class BookmarkFragment: BaseFragment<FragmentBookmarkBinding, BookmarkViewModel>
                     Dlog.d("initNotice: ${errorState.error.message}")
                     viewModel.addErrorCount()
                     lifecycleScope.launch(Dispatchers.Main) {
-                        delay(500)
+                        delay(AUTO_REFRESH_NOTIFICATION)
                         adapter.retry()
                     }
                 }
