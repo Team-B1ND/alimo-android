@@ -42,7 +42,8 @@ class ProfileService @Inject constructor(
 
     fun deleteToken(){
         httpClient.plugin(Auth).providers
-            .filterIsInstance<BearerAuthProvider>()
-            .first().clearToken()
+            .filterIsInstance<BearerAuthProvider>().forEach {
+                it.clearToken()
+            }
     }
 }
