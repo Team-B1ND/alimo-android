@@ -38,7 +38,7 @@
 
 
     <string name="not_bookmark">아직 북마크가 없어요</string>
-    <string name="user_name">김가영</string>
+    <string name="user_name">Test</string>
     <string name="student_code">학생코드</string>
     <string name="student_share">부모님께만 공유해주세요</string>
     <string name="close">닫기</string>
@@ -60,4 +60,9 @@
     <string name="image_dummy_author">테스트</string>
     <string name="image_dummy_title">1 / 2</string>
     <string name="text_image_that_save">이 사진만 저장</string>
+    <string name="emoji_angry">ANGRY</string>
+    <string name="emoji_sad">SAD</string>
+    <string name="emoji_laugh">LAUGH</string>
+    <string name="emoji_love">LOVE</string>
+    <string name="emoji_okay">OKAY</string>
 </resources>

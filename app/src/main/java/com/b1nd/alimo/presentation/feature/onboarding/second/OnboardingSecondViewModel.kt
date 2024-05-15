@@ -3,7 +3,6 @@ package com.b1nd.alimo.presentation.feature.onboarding.second
 import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.data.repository.TokenRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
-import com.b1nd.alimo.presentation.utiles.Dlog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,9 +26,11 @@ class OnboardingSecondViewModel @Inject constructor(
         }
     }
 
+    fun onClickEasterEgg() = viewEvent(ON_CLICK_EASTER_EGG)
 
 
     companion object{
         const val ON_CLICK_START = "ON_CLICK_START"
+        const val ON_CLICK_EASTER_EGG = "ON_CLICK_EASTER_EGG"
     }
 }

@@ -26,6 +26,11 @@
         <item name="android:textFontWeight">700</item>
         <item name="android:textSize">16sp</item>
     </style>
+
+    <style name="text_body_light">
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textSize">16sp</item>
+    </style>
     
     <style name="text_label">
         <item name="android:textFontWeight">500</item>
@@ -51,6 +56,18 @@
         <item name="android:checked">true</item>
     </style>
 
+    <style name="textfield_basic">
+        <item name="android:textColorHint">@drawable/hint_color</item>
+        <item name="android:textColor">@color/Main900</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="textfield_password">
+        <item name="android:textColorHint">@drawable/hint_color</item>
+        <item name="android:textColor">@color/Main900</item>
+        <item name="android:inputType">textPassword</item>
+    </style>
+
     <declare-styleable name="custom_category_card">
         <attr name="name" format="string"/>
     </declare-styleable>
@@ -73,6 +90,7 @@
     <declare-styleable name="custom_emoji">
         <attr name="image" format="reference"/>
         <attr name="count" format="string"/>
+        <attr name="emojiName" format="string"/>
         <attr name="countVisible" format="boolean"/>
     </declare-styleable>
 </resources>

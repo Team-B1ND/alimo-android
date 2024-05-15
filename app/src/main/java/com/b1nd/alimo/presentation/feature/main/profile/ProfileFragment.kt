@@ -178,4 +178,6 @@ class ProfileFragment:
     override fun onWithdrawal() {
         viewModel.withdrawal()
     }
+
+
 }

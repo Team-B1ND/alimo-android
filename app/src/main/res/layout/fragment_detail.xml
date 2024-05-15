@@ -64,7 +64,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@id/image_profile"
                     app:layout_constraintEnd_toEndOf="parent"
-                    style="@style/text_label"/>
+                    style="@style/text_body_light"/>
 
                 <TextView
                     android:id="@+id/text_author"
@@ -75,7 +75,7 @@
                     android:visibility="@{vm.state.loading ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintTop_toBottomOf="@id/text_title"
                     app:layout_constraintStart_toStartOf="@id/text_title"
-                    style="@style/text_caption" />
+                    style="@style/text_label" />
 
 
 
@@ -89,11 +89,12 @@
                     android:textColor="@color/Main900"
                     android:autoLink="web"
                     android:linksClickable="true"
+                    android:lineSpacingMultiplier="1.3"
                     android:visibility="@{vm.state.loading ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintTop_toBottomOf="@id/text_author"
                     app:layout_constraintStart_toStartOf="@id/text_author"
                     app:layout_constraintEnd_toEndOf="@id/text_title"
-                    style="@style/text_caption"/>
+                    style="@style/text_body_light"/>
                 <LinearLayout
                     android:id="@+id/layout_image_content"
                     android:layout_width="0dp"
@@ -142,7 +143,7 @@
                     android:visibility="@{vm.state.loading ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintStart_toStartOf="@id/text_title"
                     app:layout_constraintTop_toBottomOf="@id/layout_files"
-                    style="@style/text_cute"/>
+                    style="@style/text_label"/>
                 <ImageView
                     android:id="@+id/image_bookmark"
                     android:layout_width="24dp"
@@ -184,9 +185,11 @@
                             android:id="@+id/image_okay"
                             android:onClick="@{() -> vm.onClickOkay()}"
                             android:clickable="true"
+                            android:tag="@{vm.NOT_CHOOSE}"
                             style="@style/image_emoji"
                             app:image="@drawable/ic_okay"
-                            app:count="0"/>
+                            app:emojiName="@string/emoji_okay"
+                            app:count="0" />
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="0dp"
                             android:layout_height="0dp"
@@ -194,7 +197,9 @@
                         <com.b1nd.alimo.presentation.custom.CustomEmoji
                             android:id="@+id/image_love"
                             android:onClick="@{() -> vm.onClickLove()}"
+                            android:tag="@{vm.NOT_CHOOSE}"
                             app:image="@drawable/ic_love"
+                            app:emojiName="@string/emoji_love"
                             app:count="0"
                             style="@style/image_emoji"/>
                         <androidx.appcompat.widget.LinearLayoutCompat
@@ -205,8 +210,10 @@
                         <com.b1nd.alimo.presentation.custom.CustomEmoji
                             android:id="@+id/image_laugh"
                             android:onClick="@{() -> vm.onClickLaugh()}"
+                            android:tag="@{vm.NOT_CHOOSE}"
                             style="@style/image_emoji"
                             app:image="@drawable/ic_laugh"
+                            app:emojiName="@string/emoji_laugh"
                             app:count="0"/>
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="0dp"
@@ -215,8 +222,10 @@
                         <com.b1nd.alimo.presentation.custom.CustomEmoji
                             android:id="@+id/image_sad"
                             android:onClick="@{() -> vm.onClickSad()}"
+                            android:tag="@{vm.NOT_CHOOSE}"
                             style="@style/image_emoji"
                             app:image="@drawable/ic_sad"
+                            app:emojiName="@string/emoji_sad"
                             app:count="0"/>
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="0dp"
@@ -225,8 +234,10 @@
                         <com.b1nd.alimo.presentation.custom.CustomEmoji
                             android:id="@+id/image_angry"
                             android:onClick="@{() -> vm.onClickAngry()}"
+                            android:tag="@{vm.NOT_CHOOSE}"
                             style="@style/image_emoji"
                             app:image="@drawable/ic_angry"
+                            app:emojiName="@string/emoji_angry"
                             app:count="0" />
                     </LinearLayout>
                 </LinearLayout>
@@ -285,8 +296,10 @@
                 android:layout_marginStart="4dp"
                 android:background="@null"
                 android:hint="댓글을 남겨보세요."
+                android:textColorHint="@color/Gray500"
                 android:textSize="12sp"
                 android:textFontWeight="500"
+                android:textColor="@color/Main900"
                 android:fontFamily="@font/pretendard"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/text_parent_commenter"

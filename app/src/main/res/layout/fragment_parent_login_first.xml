@@ -63,6 +63,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="20dp"
             android:textColorHint="@color/Gray500"
+            android:textColor="@color/Main900"
 
             app:endIconDrawable="@drawable/ic_clear_text"
             app:endIconMode="custom"
@@ -73,7 +74,7 @@
                 android:id="@+id/id_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:textColorHint="@drawable/hint_color"
+                style="@style/textfield_basic"
 
                 android:background="@drawable/edittext_border_background"
                 android:hint="@string/parent_join_email" />
@@ -89,6 +90,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="20dp"
             android:textColorHint="@color/Gray500"
+            android:textColor="@color/Main900"
 
             app:endIconMode="password_toggle"
             app:hintEnabled="false"
@@ -98,10 +100,9 @@
                 android:id="@+id/pw_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:textColorHint="@drawable/hint_color"
-                android:inputType="textPassword"
                 android:background="@drawable/edittext_border_background"
-                android:hint="@string/student_login_pw" />
+                android:hint="@string/student_login_pw"
+                style="@style/textfield_password"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 

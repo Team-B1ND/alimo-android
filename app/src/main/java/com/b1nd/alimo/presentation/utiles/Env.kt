@@ -9,4 +9,7 @@ object Env {
     const val NETWORK_ERROR_MESSAGE = "네트워크가 연결되지 않았습니다."
 
     const val ERROR = "오류가 발생했습니다"
+
+
+    const val AUTO_REFRESH_NOTIFICATION = 2000L
 }

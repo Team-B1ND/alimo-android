@@ -18,6 +18,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,10 +27,10 @@ class ProfileViewModel @Inject constructor(
     private val repository: ProfileRepository,
     private val alarmRepository: AlarmRepository,
     private val tokenRepository: TokenRepository
-): BaseViewModel() {
+) : BaseViewModel() {
 
     // 현재 알람 상태
-    private val _alarmState =  MutableStateFlow(false)
+    private val _alarmState = MutableStateFlow(false)
     val alarmState = _alarmState.asStateFlow()
 
     private val _sideEffect = Channel<ProfileSideEffect>()
@@ -36,6 +38,8 @@ class ProfileViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(ProfileState())
     val state = _state.asStateFlow()
+
+    private val mutex = Mutex()
 
 
     // 유저 정보 불러오기
@@ -45,7 +49,7 @@ class ProfileViewModel @Inject constructor(
                 _sideEffect.send(ProfileSideEffect.FailedLoad(it))
             }.collectLatest {
                 if (it is Resource.Error) {
-                    _sideEffect.send(ProfileSideEffect.FailedLoadInfo(it.error?: Throwable()))
+                    _sideEffect.send(ProfileSideEffect.FailedLoadInfo(it.error ?: Throwable()))
                 }
                 _state.value = _state.value.copy(
                     data = it.data,
@@ -59,7 +63,7 @@ class ProfileViewModel @Inject constructor(
                 _sideEffect.send(ProfileSideEffect.FailedLoad(it))
             }.collectLatest {
                 if (it is Resource.Error) {
-                    _sideEffect.send(ProfileSideEffect.FailedLoadCategory(it.error?: Throwable()))
+                    _sideEffect.send(ProfileSideEffect.FailedLoadCategory(it.error ?: Throwable()))
                 }
 
                 _state.value = _state.value.copy(
@@ -86,13 +90,14 @@ class ProfileViewModel @Inject constructor(
     // 회원탈퇴
     fun withdrawal() = launchIO {
         repository.deleteWithdrawal().collectLatest {
-            when(it) {
+            when (it) {
                 is Resource.Success -> {
                     _sideEffect.send(ProfileSideEffect.SuccessWithdrawal)
                 }
+
                 is Resource.Loading -> {}
                 is Resource.Error -> {
-                    _sideEffect.send(ProfileSideEffect.FailedWithdrawal(it.error?: Throwable()))
+                    _sideEffect.send(ProfileSideEffect.FailedWithdrawal(it.error ?: Throwable()))
                 }
             }
         }
@@ -101,22 +106,26 @@ class ProfileViewModel @Inject constructor(
     }
 
     // 현재 알림 가져오기
-    fun loadAlarm(){
+    fun loadAlarm() {
         viewModelScope.launch(Dispatchers.IO) {
-            _alarmState.value = alarmRepository.getAlarmState()
+            mutex.withLock {
+                _alarmState.value = !alarmRepository.getAlarmState()
+            }
         }
     }
 
     // 서버에게 현재 알림 상태 보내기
-    fun setAlarmState(value: Boolean){
+    fun setAlarmState(value: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.setAlarmState(value).collect()
-            alarmRepository.setAlarmState(value)
+            mutex.withLock {
+                alarmRepository.setAlarmState(value)
+                repository.setAlarmState(value).collect()
+            }
         }
     }
 
     // 로그아웃
-    fun logout(){
+    fun logout() {
         viewModelScope.launch(Dispatchers.IO) {
             kotlin.runCatching {
                 tokenRepository.deleteToken()
@@ -126,6 +135,7 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
+
     fun onClickStudentCode() = viewEvent(ON_CLICK_STUDENT_CODE)
 
     fun onClickPrivatePolicy() = viewEvent(ON_CLICK_PRIVATE_POLICY)

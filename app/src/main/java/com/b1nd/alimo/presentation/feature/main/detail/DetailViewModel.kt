@@ -100,12 +100,8 @@ class DetailViewModel @Inject constructor(
             reaction = reaction
         ).collectLatest {
             when(it) {
-                is Resource.Success -> {
-                    loadEmoji(notificationId)
-                }
-                is Resource.Loading -> {
-
-                }
+                is Resource.Success -> {}
+                is Resource.Loading -> {}
                 is Resource.Error -> {
                     _sideEffect.send(DetailSideEffect.FailedChangeEmoji)
                 }
@@ -175,5 +171,8 @@ class DetailViewModel @Inject constructor(
 
         const val NOT_BOOKMARK = "NOT_BOOKMARK"
         const val BOOKMARK = "BOOKMARK"
+
+        const val CHOOSE = "CHOOSE"
+        const val NOT_CHOOSE = "NOT_CHOOSE"
     }
 }
