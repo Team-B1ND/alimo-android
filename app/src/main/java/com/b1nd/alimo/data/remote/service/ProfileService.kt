@@ -32,7 +32,7 @@ class ProfileService @Inject constructor(
 
     suspend fun setAlarmState(value: Boolean): Response =
         httpClient.post(AlimoUrl.Member.ALARM) {
-            parameter("status", value)
+            parameter("status", !value)
         }.body()
 
     suspend fun deleteWithdrawal(): BaseResponse<String?> =

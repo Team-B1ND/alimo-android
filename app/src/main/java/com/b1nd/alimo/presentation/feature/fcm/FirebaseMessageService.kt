@@ -60,10 +60,7 @@ class FirebaseMessageService : FirebaseMessagingService() {
                 status = it
             }
         }
-        // 현재 상태가 False면 리턴을 통해 Push Message를 받지않음
-        if (status.not()) {
-            return
-        }
+
         val title = message.notification?.title
         val body = message.notification?.body
         val data = message.data
