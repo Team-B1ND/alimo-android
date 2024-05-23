@@ -17,6 +17,7 @@ import com.b1nd.alimo.presentation.base.BaseFragment
 import com.b1nd.alimo.presentation.feature.main.home.HomeViewModel.Companion.ON_CLICK_SPEAKER
 import com.b1nd.alimo.presentation.feature.main.post.PostRecyclerAdapter
 import com.b1nd.alimo.presentation.utiles.Dlog
+import com.b1nd.alimo.presentation.utiles.Env.AUTO_REFRESH_NOTIFICATION
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
 import com.b1nd.alimo.presentation.utiles.shortToast
@@ -223,7 +224,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
                     Dlog.d("initNotice: ${errorState.error.message}")
                     viewModel.addErrorCount()
                     lifecycleScope.launch(Dispatchers.Main) {
-                        delay(1000)
+                        delay(AUTO_REFRESH_NOTIFICATION)
                         adapter.retry()
                     }
                 }

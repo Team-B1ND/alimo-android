@@ -179,9 +179,5 @@ class ProfileFragment:
         viewModel.withdrawal()
     }
 
-    override fun onPause() {
-        super.onPause()
 
-        viewModel.setAlarmState(viewModel.alarmState.value)
-    }
 }

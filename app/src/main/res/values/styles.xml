@@ -90,6 +90,7 @@
     <declare-styleable name="custom_emoji">
         <attr name="image" format="reference"/>
         <attr name="count" format="string"/>
+        <attr name="emojiName" format="string"/>
         <attr name="countVisible" format="boolean"/>
     </declare-styleable>
 </resources>
