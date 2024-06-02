@@ -12,6 +12,4 @@ object Env {
 
 
     const val AUTO_REFRESH_NOTIFICATION = 2000L
-
-    const val UPDATE_REQUEST_CODE = 1001
 }
