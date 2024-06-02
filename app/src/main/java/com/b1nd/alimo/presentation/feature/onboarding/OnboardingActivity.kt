@@ -2,13 +2,11 @@ package com.b1nd.alimo.presentation.feature.onboarding
 
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import com.b1nd.alimo.R
 import com.b1nd.alimo.databinding.ActivityOnboardingBinding
 import com.b1nd.alimo.presentation.base.BaseActivity
 import com.b1nd.alimo.presentation.utiles.AlimoApplication
-import com.b1nd.alimo.presentation.utiles.Env.UPDATE_REQUEST_CODE
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
@@ -86,11 +84,10 @@ class OnboardingActivity:BaseActivity<ActivityOnboardingBinding, OnboardingViewM
                 if (appUpdateInfo.updateAvailability()
                     == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
                 ) {
-                    appUpdateManager.startUpdateFlowForResult(
+                    appUpdateManager.startUpdateFlow(
                         appUpdateInfo,
-                        AppUpdateType.IMMEDIATE,
                         this,
-                        UPDATE_REQUEST_CODE
+                        AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build(),
                     )
                 }
             }
