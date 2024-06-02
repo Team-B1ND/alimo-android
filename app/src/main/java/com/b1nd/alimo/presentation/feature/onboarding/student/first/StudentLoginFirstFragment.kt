@@ -2,7 +2,6 @@ package com.b1nd.alimo.presentation.feature.onboarding.student.first
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -145,7 +144,6 @@ class StudentLoginFirstFragment:
         collectFlow(viewModel.studentLoginSideEffect){
             when(it){
                 is StudentLoginSideEffect.FailedLogin -> {
-                    Log.d("TAG", "initSideEffect: 로그인실패 ${it.throwable}")
                     requireContext().shortToast("아이디와 비빌번호를 다시 확인해주세요")
                 }
 

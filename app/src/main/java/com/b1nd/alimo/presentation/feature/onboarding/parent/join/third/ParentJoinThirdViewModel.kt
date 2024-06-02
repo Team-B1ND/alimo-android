@@ -1,6 +1,5 @@
 package com.b1nd.alimo.presentation.feature.onboarding.parent.join.third
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.JoinModel
@@ -47,7 +46,6 @@ class ParentJoinThirdViewModel @Inject constructor(
                 when(resource){
                     is Resource.Success ->{
                         _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.Success)
-                        Log.d("TAG", "성공: ${resource.data}")
                         val token = resource.data?.accessToken
                         val refreshToken = resource.data?.refreshToken
                         // 성공시 토큰 저장
@@ -66,10 +64,8 @@ class ParentJoinThirdViewModel @Inject constructor(
                         _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.FailedEmailCheck(resource.error ?: Throwable()))
                         _isButtonClicked.value = false
 
-                        Log.d("TAG", "실패: ${resource.error}")
                     }
                     is Resource.Loading ->{
-                        Log.d("TAG", "로딩: ")
                     }
                 }
             }
@@ -88,7 +84,6 @@ class ParentJoinThirdViewModel @Inject constructor(
                     }
                     is Resource.Error -> {
                         _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.FailedPostEmail(resource.error ?: Throwable()))
-                        Log.d("TAG", "postEmail:실패 ${resource.error}")
                     }
                     is Resource.Loading -> {
                         Dlog.d("로딩: ")

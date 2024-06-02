@@ -198,7 +198,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fr
                 )
             },
             onClick = {
-                Log.d("TAG", "initView: ${it.notificationId}")
 
                 val navigate =
                     HomeFragmentDirections.actionNavItemHomeToDetailFragment(

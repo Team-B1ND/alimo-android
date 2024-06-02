@@ -65,15 +65,12 @@ class StudentLoginViewModel @Inject constructor(
                                 it.error ?: Throwable()
                             )
                         )
-                        Log.d("TAG", "login error:  ${it.error}")
                     }
 
                     is Resource.Loading -> {
-                        Log.d("TAG", "login: $it")
                     }
                 }
             }
-            Log.d("TAG", "login: 시작3")
             // FcmToken이 Null이 아닐 때만 로그인 로직을 수행
             studentLoginRepository.login(
                 StudentLoginRequest(
@@ -84,7 +81,6 @@ class StudentLoginViewModel @Inject constructor(
                 when (resource) {
                     is Resource.Success -> {
                         // 성공하면 서버에서 받은 AccessToken과 RefreshToken 저장
-                        Log.d("TAG", "login: ${resource.data}")
                         val token = resource.data?.accessToken
                         val refreshToken = resource.data?.refreshToken
                         if (token != null && refreshToken != null) {
@@ -98,11 +94,9 @@ class StudentLoginViewModel @Inject constructor(
                     }
 
                     is Resource.Error -> {
-                        Log.d("TAG", "login: 실패 ${resource.error}")
                     }
 
                     is Resource.Loading -> {
-                        Log.d("TAG", "login:로딩 ${resource.error} ${resource.data}")
                     }
 
                 }
@@ -135,7 +129,6 @@ class StudentLoginViewModel @Inject constructor(
                             )
                         )
                         _isButtonClicked.value = false
-                        Log.d("TAG", "실패: ${resource.error}")
                     }
 
                     is Resource.Success -> {
@@ -143,7 +136,6 @@ class StudentLoginViewModel @Inject constructor(
                             // 데이터에서 코드만 가져와서 저장
                             val code = resource.data.location.split("[=&]".toRegex())[1]
                             _dodamCode.value = _dodamCode.value.copy(code = code)
-                            Log.d("TAG", "성공: ${code}")
                         }
                     }
 
