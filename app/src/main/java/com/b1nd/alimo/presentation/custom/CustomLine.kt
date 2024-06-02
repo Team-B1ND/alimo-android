@@ -6,7 +6,6 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import com.b1nd.alimo.R
 
@@ -32,7 +31,6 @@ class CustomLine(context: Context?, Attrif: AttributeSet) : View(context, Attrif
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        Log.d("TAG", "onDraw: $rectF")
         rectF?.let {
 //            val radius = it.height() / 6 // 호의 반지름
             // y 길이 만큼의 선 그리기 (90도 호를 그릴 공간 제외)

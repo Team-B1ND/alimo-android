@@ -2,7 +2,6 @@ package com.b1nd.alimo.presentation.feature.onboarding.parent.join.second
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -196,11 +195,9 @@ class ParentJoinSecondFragment :
         collectFlow(viewModel.parentJoinSecondSideEffect){
             when(it){
                 is ParentJoinSecondSideEffect.FailedSignup ->{
-                    Log.d("TAG", "initSideEffect: 로그인 실패")
                 }
                 is ParentJoinSecondSideEffect.FailedMemberName ->{
                     requireContext().shortToast(Env.ERROR)
-                    Log.d("TAG", "initSideEffect: 이름 가져오기 실패")
                 }
                 ParentJoinSecondSideEffect.SuccessSignup ->{
                     val email = mBinding.idEditText.text.toString()

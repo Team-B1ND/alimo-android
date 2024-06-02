@@ -83,7 +83,6 @@ fun sha512(text: String): String {
     val md = MessageDigest.getInstance("SHA-512")
     val digest = md.digest(bytes)
     val pw = digest.fold("", { str, it -> str + "%02x".format(it) })
-    Log.d("TAG", "sha512: $pw")
     return pw
 }
 fun isDebuggable(context: Context): Boolean {

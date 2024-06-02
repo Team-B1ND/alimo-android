@@ -62,11 +62,9 @@ class OnboardingActivity:BaseActivity<ActivityOnboardingBinding, OnboardingViewM
     }
 
     private fun checkUpdate() {
-        Log.d("called", "checkUpdate: ")
         appUpdateManager
             .appUpdateInfo
             .addOnSuccessListener { appUpdateInfo ->
-                Log.d("called", "checkUpdate: 123")
                 if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
                     appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
                 ) {
