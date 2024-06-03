@@ -1,88 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_comment"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto">
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/image_user_profile"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_comment_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="7dp"
-            android:src="@drawable/ic_profile"
+            android:foreground="?attr/selectableItemBackground"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
-        <TextView
-            android:id="@+id/text_user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="13dp"
-            android:text="2예진"
-            android:textSize="14sp"
-            android:textColor="@color/Gray700"
-            android:textFontWeight="700"
-            app:layout_constraintTop_toTopOf="@id/image_user_profile"
-            app:layout_constraintStart_toEndOf="@id/image_user_profile"/>
-        <TextView
-            android:id="@+id/text_user_comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:text="yes, 알겠습니다.."
-            android:textSize="14sp"
-            android:textColor="@color/Main900"
-            android:textFontWeight="500"
-            app:layout_constraintTop_toBottomOf="@id/text_user_name"
-            app:layout_constraintStart_toStartOf="@id/text_user_name"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/image_user_profile"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="7dp"
+                android:src="@drawable/ic_profile"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+            <TextView
+                android:id="@+id/text_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="13dp"
+                android:text="2예진"
+                android:textSize="14sp"
+                android:textColor="@color/Gray700"
+                android:textFontWeight="700"
+                app:layout_constraintTop_toTopOf="@id/image_user_profile"
+                app:layout_constraintStart_toEndOf="@id/image_user_profile"/>
+            <TextView
+                android:id="@+id/text_user_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="yes, 알겠습니다.."
+                android:textSize="14sp"
+                android:textColor="@color/Main900"
+                android:textFontWeight="500"
+                app:layout_constraintTop_toBottomOf="@id/text_user_name"
+                app:layout_constraintStart_toStartOf="@id/text_user_name"/>
 
-        <TextView
-            android:id="@+id/text_user_datetime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:layout_marginStart="1dp"
-            android:text="2023년 (-1)월 33일 오후 25:sqrt(3)"
-            android:textSize="12sp"
-            android:textColor="@color/Gray500"
-            android:textFontWeight="500"
-            app:layout_constraintTop_toBottomOf="@id/text_user_comment"
-            app:layout_constraintStart_toStartOf="@id/text_user_comment"/>
+            <TextView
+                android:id="@+id/text_user_datetime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginStart="1dp"
+                android:text="2023년 (-1)월 33일 오후 25:sqrt(3)"
+                android:textSize="12sp"
+                android:textColor="@color/Gray500"
+                android:textFontWeight="500"
+                app:layout_constraintTop_toBottomOf="@id/text_user_comment"
+                app:layout_constraintStart_toStartOf="@id/text_user_comment"/>
 
-        <TextView
-            android:id="@+id/text_user_reply_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:layout_marginStart="12dp"
-            android:text="답글 달기"
-            android:textSize="12sp"
-            android:textColor="@color/Gray500"
-            android:textFontWeight="500"
-            android:clickable="true"
-            android:background="@drawable/ripple_white"
-            app:layout_constraintTop_toBottomOf="@id/text_user_comment"
-            app:layout_constraintStart_toEndOf="@id/text_user_datetime"/>
+            <TextView
+                android:id="@+id/text_user_reply_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginStart="12dp"
+                android:text="답글 달기"
+                android:textSize="12sp"
+                android:textColor="@color/Gray500"
+                android:textFontWeight="500"
+                android:clickable="true"
+                android:background="@drawable/ripple_white"
+                app:layout_constraintTop_toBottomOf="@id/text_user_comment"
+                app:layout_constraintStart_toEndOf="@id/text_user_datetime"/>
 
+            <com.b1nd.alimo.presentation.custom.CustomLineComment
+                android:id="@+id/image_line"
+                android:layout_width="18dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="24dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/image_user_profile"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/layout_comment_content"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.b1nd.alimo.presentation.custom.CustomLineComment
-            android:id="@+id/image_line"
+            android:id="@+id/image_line2"
             android:layout_width="18dp"
             android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/image_user_profile"
+            android:layout_marginStart="24dp"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/layout_comment_content"
             app:layout_constraintBottom_toTopOf="@id/rv_comment_comment"
-            app:layout_constraintStart_toStartOf="@id/image_user_profile"/>
+            app:layout_constraintStart_toStartOf="@id/layout_comment_content"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_comment_comment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
+            android:layout_marginStart="8dp"
             android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/text_user_datetime"
-            app:layout_constraintStart_toStartOf="@id/image_user_profile"
+            app:layout_constraintTop_toBottomOf="@id/layout_comment_content"
+            app:layout_constraintStart_toStartOf="@id/layout_comment_content"
             app:layout_constraintEnd_toEndOf="parent">
 
         </androidx.recyclerview.widget.RecyclerView>

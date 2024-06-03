@@ -8,6 +8,8 @@ data class CommentResponse(
     val commentId: Int,
     @SerializedName("content")
     val content: String,
+    @SerializedName("commenterId")
+    val commenterId: Int,
     @SerializedName("commentor")
     val commenter: String,
     @SerializedName("createdAt")

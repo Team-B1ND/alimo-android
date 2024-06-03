@@ -37,6 +37,7 @@ internal fun List<DetailNotificationResponse>.toModels() =
 internal fun CommentResponse.toModel() =
     CommentModel(
         commentId = commentId,
+        commenterId = commenterId,
         content = content,
         commenter = commenter,
         createdAt = createdAt,
@@ -55,8 +56,9 @@ internal fun SubCommentResponse.toModel() =
         commentId = commentId,
         content = content,
         commenter = commenter,
+        commenterId = commenterId,
         createdAt = createdAt,
-        profileImage = profileImage
+        profileImage = profileImage,
     )
 
 @JvmName("SubCommentResponseToModels")

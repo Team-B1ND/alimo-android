@@ -72,5 +72,25 @@ class DetailRepository @Inject constructor(
         emit(Resource.Success(null))
     }
 
+    suspend fun deleteComment(
+        commentId: Int
+    ) = safeFlow<Unit> {
+        detailService.deleteComment(
+            commentId = commentId
+        ).errorCheck()
+
+        emit(Resource.Success(Unit))
+    }
+
+    suspend fun deleteSubComment(
+        commentId: Int
+    ) = safeFlow<Unit> {
+        detailService.deleteSubComment(
+            commentId = commentId
+        ).errorCheck()
+
+        emit(Resource.Success(Unit))
+    }
+
 
 }
