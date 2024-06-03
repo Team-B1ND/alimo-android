@@ -9,6 +9,7 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.allViews
@@ -74,6 +75,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
         initTouch()
         initEmoji()
         initNotice()
+        initBackHandler()
         viewModel.loadProfile()
 
         bindingViewEvent { event ->
@@ -433,6 +435,20 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     override fun onDestroyView() {
         super.onDestroyView()
         (requireActivity() as? MainActivity)?.bottomVisible(true)
+    }
+
+    private fun initBackHandler() {
+        requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (parentId != null) {
+                    parentId = null
+                    mBinding.textParentCommenter.visibility = View.GONE
+                    return
+                }
+                findNavController().popBackStack()
+            }
+
+        })
     }
 
     private fun clickEmoji(
