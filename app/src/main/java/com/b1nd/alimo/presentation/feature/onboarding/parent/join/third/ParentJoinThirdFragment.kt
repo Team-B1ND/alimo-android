@@ -74,7 +74,7 @@ class ParentJoinThirdFragment :
                         view?.hideKeyboard()
                     }
                     ON_CLICK_JOIN -> {
-                        startActivityWithFinishAll(MainActivity::class.java)
+                        viewModel.verificationSkipCheck()
                     }
                     ON_CLICK_CERTIFICATION -> {
                         viewModel.postEmail(args.email)
@@ -150,6 +150,12 @@ class ParentJoinThirdFragment :
                 ParentJoinThirdSideEffect.Success -> {
                     mBinding.error.visibility = View.INVISIBLE
                     requireContext().shortToast("이메일 인증에 성공하였습니다.")
+                }
+                ParentJoinThirdSideEffect.JoinSuccess ->{
+                    startActivityWithFinishAll(MainActivity::class.java)
+                }
+                ParentJoinThirdSideEffect.SkipVerification ->{
+                    requireContext().shortToast("이메일 인증을 해주세요")
                 }
             }
         }
