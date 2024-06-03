@@ -3,7 +3,6 @@ package com.b1nd.alimo.presentation.feature.main.detail
 import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.DecelerateInterpolator
@@ -14,7 +13,6 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.allViews
 import androidx.core.view.isVisible
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -428,6 +426,35 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                     )
                     mBinding.rvComment.adapter = adapter
                 }
+            }
+        }
+
+        collectStateFlow(viewModel.profileData) { data ->
+            if (data == null) { return@collectStateFlow }
+            if (viewModel.state.value.notificationState == null) { return@collectStateFlow }
+            with(viewModel.state.value.notificationState!!) {
+                val adapter = DetailCommentRv(
+                    items = comments,
+                    userId = data.memberId,
+                    onClickReply = {
+                        val commenter = it.commenter + getResourceString(R.string.comment_item_that)
+                        parentId = it.commentId
+                        mBinding.textParentCommenter.visibility = View.VISIBLE
+                        mBinding.textParentCommenter.text = commenter
+                    },
+                    onLongClickComment = { commentId, isSub ->
+                        CommentDeleteDialog(
+                            onClickDelete = {
+                                viewModel.deleteComment(
+                                    notificationId = args.id,
+                                    commentId = commentId,
+                                    isSub = isSub
+                                )
+                            }
+                        ).show(childFragmentManager, "commentDeleteDialog`")
+                    }
+                )
+                mBinding.rvComment.adapter = adapter
             }
         }
     }
