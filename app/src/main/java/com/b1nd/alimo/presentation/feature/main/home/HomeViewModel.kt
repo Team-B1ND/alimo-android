@@ -58,7 +58,6 @@ class HomeViewModel @Inject constructor(
     // 상단 카테고리들에 대한 정보
     private val _categoryData: MutableStateFlow<List<HomeCategoryRvItem>> = MutableStateFlow(emptyList())
     val categoryData = _categoryData.asStateFlow()
-
     // 중복 에러 방출을 방지하기 위한 카운트
     private val _errorCount = MutableStateFlow(0)
     val errorCount = _errorCount.asStateFlow()

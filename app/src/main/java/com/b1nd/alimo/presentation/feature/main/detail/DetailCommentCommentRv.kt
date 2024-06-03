@@ -11,7 +11,9 @@ import com.b1nd.alimo.presentation.utiles.loadImage
 import com.b1nd.alimo.presentation.utiles.toDateString
 
 class DetailCommentCommentRv constructor(
-    private val items: List<SubCommentModel>
+    private val items: List<SubCommentModel>,
+    private val userId: Int?,
+    private val onLongClickComment: (commentId: Int, isSub: Boolean) -> Unit,
 ): RecyclerView.Adapter<DetailCommentCommentRv.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemCommentCommentBinding): RecyclerView.ViewHolder(binding.root)
@@ -39,6 +41,13 @@ class DetailCommentCommentRv constructor(
             Dlog.d("onBindViewHolder: ${items.size - position}")
             if (items.size - position != 1) { // 마지막 댓글인 경우 선 안보이도록
                 binding.imageLine.visibility = View.VISIBLE
+            }
+
+            if (it.commenterId == userId) {
+                binding.layoutComment.setOnLongClickListener { _ ->
+                    onLongClickComment(it.commentId, true)
+                    true
+                }
             }
         }
     }

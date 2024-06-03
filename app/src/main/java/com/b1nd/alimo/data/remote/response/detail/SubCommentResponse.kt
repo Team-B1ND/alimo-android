@@ -10,6 +10,8 @@ data class SubCommentResponse(
     val content: String,
     @SerializedName("commentor")
     val commenter: String,
+    @SerializedName("commenterId")
+    val commenterId: Int,
     @SerializedName("createdAt")
     val createdAt: LocalDateTime,
     @SerializedName("profileImage")
