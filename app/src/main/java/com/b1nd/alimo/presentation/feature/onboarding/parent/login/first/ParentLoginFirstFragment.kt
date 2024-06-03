@@ -40,11 +40,16 @@ class ParentLoginFirstFragment :
                 mBinding.progressCir.visibility = View.VISIBLE
                 mBinding.loginBtnOn.visibility = View.INVISIBLE
                 mBinding.progressCir.setIndeterminate(it)
+                mBinding.idEditText.isEnabled = false // EditText 비활성화
+                mBinding.pwEditText.isEnabled = false // EditText 비활성화
             } else {
                 mBinding.progressCir.visibility = View.INVISIBLE
                 mBinding.loginBtnOn.visibility = View.VISIBLE
+                mBinding.idEditText.isEnabled = true // EditText 활성화
+                mBinding.pwEditText.isEnabled = true // EditText 활성화
             }
         }
+
 
         bindingViewEvent { event ->
             event.onSuccessEvent {

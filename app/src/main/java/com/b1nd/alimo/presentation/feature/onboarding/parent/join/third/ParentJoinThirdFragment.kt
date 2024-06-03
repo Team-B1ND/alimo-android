@@ -43,9 +43,11 @@ class ParentJoinThirdFragment :
                 mBinding.progressCir.visibility = View.VISIBLE
                 mBinding.joinBtnOn.visibility = View.INVISIBLE
                 mBinding.progressCir.setIndeterminate(it)
+                mBinding.idEditText.isEnabled = false // EditText 비활성화
             } else {
                 mBinding.progressCir.visibility = View.INVISIBLE
                 mBinding.joinBtnOn.visibility = View.VISIBLE
+                mBinding.idEditText.isEnabled = true // EditText 활성화
             }
         }
 

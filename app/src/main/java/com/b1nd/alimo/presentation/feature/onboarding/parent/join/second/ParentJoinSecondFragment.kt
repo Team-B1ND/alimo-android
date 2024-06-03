@@ -42,9 +42,15 @@ class ParentJoinSecondFragment :
                 mBinding.progressCir.visibility = View.VISIBLE
                 mBinding.loginBtnOn.visibility = View.INVISIBLE
                 mBinding.progressCir.setIndeterminate(it)
+                mBinding.idEditText.isEnabled = false
+                mBinding.pwEditText.isEnabled = false
+                mBinding.verifyPwEditText.isEnabled = false
             }else{
                 mBinding.progressCir.visibility = View.INVISIBLE
                 mBinding.loginBtnOn.visibility = View.VISIBLE
+                mBinding.idEditText.isEnabled = true
+                mBinding.pwEditText.isEnabled = true
+                mBinding.verifyPwEditText.isEnabled = true
             }
         }
         
