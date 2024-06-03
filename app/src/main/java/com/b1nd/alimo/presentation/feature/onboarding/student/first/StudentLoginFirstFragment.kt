@@ -102,7 +102,9 @@ class StudentLoginFirstFragment:
             override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
-                updateButtonColor()
+                if (mBinding.progressCir.visibility != View.VISIBLE) {
+                    updateButtonColor()
+                }
             }
 
             override fun afterTextChanged(editable: Editable?) {}
@@ -112,7 +114,9 @@ class StudentLoginFirstFragment:
             override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
-                updateButtonColor()
+                if (mBinding.progressCir.visibility != View.VISIBLE) {
+                    updateButtonColor()
+                }
             }
 
             override fun afterTextChanged(editable: Editable?) {}
@@ -125,18 +129,17 @@ class StudentLoginFirstFragment:
         val text1 = mBinding.idEditText.text.toString().trim { it <= ' ' }
         val text2 = mBinding.pwEditText.text.toString().trim { it <= ' ' }
 
-        // 버튼의 색상을 변경하는 로직 추가
-        if (text1.isNotEmpty() && text2.isNotEmpty()) {
-            Dlog.d("updateButtonColor: on")
-            // 두 EditText의 텍스트가 null이 아닐 때 버튼의 색상을 변경
-            mBinding.loginBtnOff.visibility = View.GONE
-            mBinding.loginBtnOn.visibility = View.VISIBLE
-        } else {
-            Dlog.d("updateButtonColor: off")
-            // 두 EditText 중 하나라도 텍스트가 null일 때 버튼의 색상을 기본 색상으로 변경
-            mBinding.loginBtnOff.visibility = View.VISIBLE
-            mBinding.loginBtnOn.visibility = View.GONE
-
+        // 프로그래스바가 보이지 않는 상태에서만 버튼의 상태를 변경
+        if (mBinding.progressCir.visibility != View.VISIBLE) {
+            if (text1.isNotEmpty() && text2.isNotEmpty()) {
+                Dlog.d("updateButtonColor: on")
+                mBinding.loginBtnOff.visibility = View.GONE
+                mBinding.loginBtnOn.visibility = View.VISIBLE
+            } else {
+                Dlog.d("updateButtonColor: off")
+                mBinding.loginBtnOff.visibility = View.VISIBLE
+                mBinding.loginBtnOn.visibility = View.GONE
+            }
         }
     }
 
@@ -153,6 +156,8 @@ class StudentLoginFirstFragment:
             }
         }
     }
+
+
 
 
 }
