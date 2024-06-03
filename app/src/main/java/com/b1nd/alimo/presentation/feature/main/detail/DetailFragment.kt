@@ -3,6 +3,7 @@ package com.b1nd.alimo.presentation.feature.main.detail
 import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.DecelerateInterpolator
@@ -71,6 +72,7 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
         initTouch()
         initEmoji()
         initNotice()
+        viewModel.loadProfile()
 
         bindingViewEvent { event ->
             event.onSuccessEvent {
@@ -285,6 +287,14 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         mBinding.editSend.isEnabled = true
                     }
                 }
+                is DetailSideEffect.SuccessDeleteComment -> {
+
+                }
+                is DetailSideEffect.FailedLoadProfile -> {
+
+                }
+
+                is DetailSideEffect.FailedDeleteComment -> {}
             }
         }
     }
@@ -391,13 +401,23 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         isLoadEmoji = true
                     }
 
-                    val adapter = DetailCommentRv(it.comments) {
-                        // issue: 아래처럼 처리하지 않으면 답글 달기 버튼이 클릭되지 않음.
-                        val commenter = it.commenter + getResourceString(R.string.comment_item_that)
-                        parentId = it.commentId
-                        textParentCommenter.visibility = View.VISIBLE
-                        textParentCommenter.text = commenter
-                    }
+                    val adapter = DetailCommentRv(
+                        items = it.comments,
+                        userId = viewModel.profileData.value?.memberId,
+                        onClickReply = {
+                            val commenter = it.commenter + getResourceString(R.string.comment_item_that)
+                            parentId = it.commentId
+                            textParentCommenter.visibility = View.VISIBLE
+                            textParentCommenter.text = commenter
+                        },
+                        onLongClickComment = { commentId, isSub ->
+                            viewModel.deleteComment(
+                                notificationId = args.id,
+                                commentId = commentId,
+                                isSub = isSub
+                            )
+                        }
+                    )
                     mBinding.rvComment.adapter = adapter
                 }
             }

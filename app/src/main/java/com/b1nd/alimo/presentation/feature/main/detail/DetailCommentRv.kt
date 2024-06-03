@@ -11,7 +11,9 @@ import com.b1nd.alimo.presentation.utiles.toDateString
 
 class DetailCommentRv constructor(
     private val items: List<CommentModel>,
-    private val onClickReply: (CommentModel) -> Unit
+    private val userId: Int?,
+    private val onLongClickComment: (commentId: Int, isSub: Boolean) -> Unit,
+    private val onClickReply: (CommentModel) -> Unit,
 ): RecyclerView.Adapter<DetailCommentRv.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemCommentBinding): RecyclerView.ViewHolder(binding.root)
@@ -29,7 +31,18 @@ class DetailCommentRv constructor(
             if (it.subComments.isNotEmpty()) {
                 binding.imageLine.visibility = View.VISIBLE
                 binding.rvCommentComment.visibility = View.VISIBLE
-                binding.rvCommentComment.adapter = DetailCommentCommentRv(it.subComments)
+                binding.rvCommentComment.adapter = DetailCommentCommentRv(
+                    items = it.subComments,
+                    userId = userId,
+                    onLongClickComment = onLongClickComment
+                )
+            }
+
+            if (it.commenterId == userId) {
+                binding.layoutCommentContent.setOnLongClickListener { _ ->
+                    onLongClickComment(it.commentId, false)
+                    true
+                }
             }
 
             binding.textUserReplyButton.setOnClickListener {  view ->
