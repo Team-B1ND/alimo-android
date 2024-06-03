@@ -13,6 +13,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.allViews
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -36,6 +37,7 @@ import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_OKAY
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_SAD
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_SEND
+import com.b1nd.alimo.presentation.feature.main.detail.delete.CommentDeleteDialog
 import com.b1nd.alimo.presentation.feature.main.image.ImageFragment
 import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.collectFlow
@@ -411,11 +413,15 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                             textParentCommenter.text = commenter
                         },
                         onLongClickComment = { commentId, isSub ->
-                            viewModel.deleteComment(
-                                notificationId = args.id,
-                                commentId = commentId,
-                                isSub = isSub
-                            )
+                            CommentDeleteDialog(
+                                onClickDelete = {
+                                    viewModel.deleteComment(
+                                        notificationId = args.id,
+                                        commentId = commentId,
+                                        isSub = isSub
+                                    )
+                                }
+                            ).show(childFragmentManager, "commentDeleteDialog`")
                         }
                     )
                     mBinding.rvComment.adapter = adapter

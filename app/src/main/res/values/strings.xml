@@ -65,4 +65,6 @@
     <string name="emoji_laugh">LAUGH</string>
     <string name="emoji_love">LOVE</string>
     <string name="emoji_okay">OKAY</string>
+    <string name="comment_delete">정말 삭제하시겠습니까?</string>
+    <string name="delete">삭제</string>
 </resources>
