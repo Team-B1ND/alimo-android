@@ -42,9 +42,15 @@ class ParentJoinSecondFragment :
                 mBinding.progressCir.visibility = View.VISIBLE
                 mBinding.loginBtnOn.visibility = View.INVISIBLE
                 mBinding.progressCir.setIndeterminate(it)
+                mBinding.idEditText.isEnabled = false
+                mBinding.pwEditText.isEnabled = false
+                mBinding.verifyPwEditText.isEnabled = false
             }else{
                 mBinding.progressCir.visibility = View.INVISIBLE
                 mBinding.loginBtnOn.visibility = View.VISIBLE
+                mBinding.idEditText.isEnabled = true
+                mBinding.pwEditText.isEnabled = true
+                mBinding.verifyPwEditText.isEnabled = true
             }
         }
         
@@ -105,8 +111,7 @@ class ParentJoinSecondFragment :
                 start: Int,
                 count: Int,
                 after: Int
-            ) {
-            }
+            ) {}
 
             override fun onTextChanged(
                 charSequence: CharSequence?,
@@ -114,7 +119,9 @@ class ParentJoinSecondFragment :
                 before: Int,
                 count: Int
             ) {
-                updateButtonColor()
+                if (!isProgressBarVisible()) {
+                    updateButtonColor()
+                }
             }
 
             override fun afterTextChanged(editable: Editable?) {}
@@ -126,8 +133,7 @@ class ParentJoinSecondFragment :
                 start: Int,
                 count: Int,
                 after: Int
-            ) {
-            }
+            ) {}
 
             override fun onTextChanged(
                 charSequence: CharSequence?,
@@ -135,7 +141,9 @@ class ParentJoinSecondFragment :
                 before: Int,
                 count: Int
             ) {
-                updateButtonColor()
+                if (!isProgressBarVisible()) {
+                    updateButtonColor()
+                }
             }
 
             override fun afterTextChanged(editable: Editable?) {}
@@ -147,8 +155,7 @@ class ParentJoinSecondFragment :
                 start: Int,
                 count: Int,
                 after: Int
-            ) {
-            }
+            ) {}
 
             override fun onTextChanged(
                 charSequence: CharSequence?,
@@ -156,7 +163,9 @@ class ParentJoinSecondFragment :
                 before: Int,
                 count: Int
             ) {
-                updateButtonColor()
+                if (!isProgressBarVisible()) {
+                    updateButtonColor()
+                }
             }
 
             override fun afterTextChanged(editable: Editable?) {}
@@ -164,6 +173,8 @@ class ParentJoinSecondFragment :
     }
 
     private fun updateButtonColor() {
+        if (isProgressBarVisible()) return // 프로그레스바가 보이면 종료
+
         val text1 = mBinding.idEditText.text.toString().trim { it <= ' ' }
         val text2 = mBinding.pwEditText.text.toString().trim { it <= ' ' }
         val text3 = mBinding.verifyPwEditText.text.toString().trim { it <= ' ' }
@@ -179,9 +190,9 @@ class ParentJoinSecondFragment :
             // 두 EditText 중 하나라도 텍스트가 null일 때 버튼의 색상을 기본 색상으로 변경
             mBinding.loginBtnOff.visibility = View.VISIBLE
             mBinding.loginBtnOn.visibility = View.INVISIBLE
-
         }
     }
+
 
     // 비번과 비번확인 Text가 같은지 확인하는 함수
     private fun comparisonPassword(): Boolean {
@@ -209,6 +220,10 @@ class ParentJoinSecondFragment :
                 }
             }
         }
+    }
+
+    private fun isProgressBarVisible(): Boolean {
+        return mBinding.progressCir.visibility == View.VISIBLE
     }
 
 }

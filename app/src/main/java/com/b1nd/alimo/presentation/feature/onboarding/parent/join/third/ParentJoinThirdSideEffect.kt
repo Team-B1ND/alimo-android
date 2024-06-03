@@ -5,4 +5,8 @@ sealed class ParentJoinThirdSideEffect {
     data class FailedPostEmail(val throwable: Throwable):ParentJoinThirdSideEffect()
     data class FailedEmailCheck(val throwable: Throwable): ParentJoinThirdSideEffect()
     data object Success: ParentJoinThirdSideEffect()
+
+    data object JoinSuccess: ParentJoinThirdSideEffect()
+
+    data object SkipVerification: ParentJoinThirdSideEffect()
 }
