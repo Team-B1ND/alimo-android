@@ -5,7 +5,6 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import com.bumptech.glide.load.Key
@@ -77,14 +76,7 @@ class BackgroundColorTransform(private val backgroundColor: Int) : BitmapTransfo
     }
 }
 
-// DAuth를 사용하기 위해 비번을 암호화
-fun sha512(text: String): String {
-    val bytes = text.toByteArray()
-    val md = MessageDigest.getInstance("SHA-512")
-    val digest = md.digest(bytes)
-    val pw = digest.fold("", { str, it -> str + "%02x".format(it) })
-    return pw
-}
+
 fun isDebuggable(context: Context): Boolean {
     var debuggable = false;
     val pm = context.getPackageManager();
