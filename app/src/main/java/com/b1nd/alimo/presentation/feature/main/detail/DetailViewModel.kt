@@ -4,7 +4,9 @@ import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.EmojiModel
 import com.b1nd.alimo.data.repository.DetailRepository
+import com.b1nd.alimo.data.repository.ProfileRepository
 import com.b1nd.alimo.presentation.base.BaseViewModel
+import com.b1nd.alimo.presentation.feature.main.profile.ProfileInfoModel
 import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.launchIO
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-   private val detailRepository: DetailRepository
+   private val detailRepository: DetailRepository,
+   private val profileRepository: ProfileRepository
 ): BaseViewModel() {
 
     private val _state = MutableStateFlow(DetailState())
@@ -28,6 +31,10 @@ class DetailViewModel @Inject constructor(
 
     private val _emojiState = MutableStateFlow<List<EmojiModel>>(emptyList())
     val emojiState = _emojiState.asStateFlow()
+
+    // 자신의 정보
+    private val _profileData = MutableStateFlow<ProfileInfoModel?>(null)
+    val profileData = _profileData.asStateFlow()
 
     private val _sideEffect = Channel<DetailSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
@@ -134,6 +141,48 @@ class DetailViewModel @Inject constructor(
                 is Resource.Loading -> {}
                 is Resource.Error -> {
                     _sideEffect.send(DetailSideEffect.FailedPostComment(it.error?: Throwable()))
+                }
+            }
+        }
+    }
+
+    fun loadProfile(
+
+    ) = launchIO {
+        profileRepository.getInfo().collectLatest {
+            when(it) {
+                is Resource.Success -> {
+                    _profileData.value = it.data
+                }
+                is Resource.Loading -> {}
+
+                is Resource.Error -> {
+                    _sideEffect.send(DetailSideEffect.FailedLoadProfile(it.error?: Throwable()))
+                }
+            }
+        }
+    }
+
+    fun deleteComment(
+        notificationId: Int,
+        commentId: Int,
+        isSub: Boolean
+    ) = launchIO {
+        val response = if (isSub) detailRepository.deleteSubComment(commentId) else detailRepository.deleteComment(commentId)
+        response.collectLatest {
+            when(it) {
+                is Resource.Success -> {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        val load = async {
+                            loadNotification(notificationId)
+                        }
+                        load.await()
+                        _sideEffect.send(DetailSideEffect.SuccessDeleteComment)
+                    }
+                }
+                is Resource.Loading -> {}
+                is Resource.Error -> {
+                    _sideEffect.send(DetailSideEffect.FailedDeleteComment(it.error?: Throwable()))
                 }
             }
         }

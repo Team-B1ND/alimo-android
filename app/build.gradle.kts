@@ -21,8 +21,8 @@ android {
         applicationId = "com.b1nd.alimo"
         minSdk = 28
         targetSdk = 34
-        versionCode = 5
-        versionName = "1.0.3"
+        versionCode = 6
+        versionName = "1.1.0"
 
         buildConfigField("String", "SERVER_URL", "${prperties["SERVER_URL"]}")
 
@@ -137,6 +137,10 @@ dependencies {
 
     // photo view
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
+
+    // in-app update
+    implementation ("com.google.android.play:app-update:2.1.0")
+    implementation ("com.google.android.play:app-update-ktx:2.1.0")
 
 }
 

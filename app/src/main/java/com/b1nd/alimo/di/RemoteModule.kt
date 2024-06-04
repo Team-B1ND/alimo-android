@@ -3,7 +3,6 @@ package com.b1nd.alimo.di
 import LocalDateTimeTypeAdapter
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.remote.request.TokenRequest
 import com.b1nd.alimo.data.remote.response.BaseResponse
@@ -160,7 +159,6 @@ object RemoteModule {
                     }
                 }
                 sendWithoutRequest { request ->
-                    Log.d("TAG", "${request.url.toString().split("?")[0]}: ")
 
                     when (request.url.toString()) {
                         AlimoUrl.REFRESH -> false

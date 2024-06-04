@@ -1,6 +1,5 @@
 package com.b1nd.alimo.presentation.feature.onboarding.parent.join.third
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.b1nd.alimo.data.Resource
 import com.b1nd.alimo.data.model.JoinModel
@@ -21,10 +20,10 @@ import javax.inject.Inject
 class ParentJoinThirdViewModel @Inject constructor(
     private val parentJoinRepository: ParentJoinRepository,
     private val tokenRepository: TokenRepository
-): BaseViewModel() {
+) : BaseViewModel() {
 
     private var _parentJoinState = MutableStateFlow(JoinModel())
-    val  parentJoinState =_parentJoinState.asStateFlow()
+    val parentJoinState = _parentJoinState.asStateFlow()
 
     private val _parentJoinThirdSideEffect = Channel<ParentJoinThirdSideEffect>()
     val parentJoinThirdSideEffect = _parentJoinThirdSideEffect.receiveAsFlow()
@@ -32,22 +31,22 @@ class ParentJoinThirdViewModel @Inject constructor(
     private val _isButtonClicked = MutableStateFlow<Boolean>(false)
     val isButtonClicked = _isButtonClicked.asStateFlow()
 
+    private var verificationSkipCheck = MutableStateFlow(true)
+
     fun emailCheck(
         email: String,
         code: String
-    ){
+    ) {
         Dlog.d("emailCheck: 시작")
         viewModelScope.launch {
-            _isButtonClicked.value = true
             // 인증 코드를 서버로 전송
             parentJoinRepository.emailCheck(
                 email = email,
                 code = code
-            ).collectLatest {resource ->
-                when(resource){
-                    is Resource.Success ->{
+            ).collectLatest { resource ->
+                when (resource) {
+                    is Resource.Success -> {
                         _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.Success)
-                        Log.d("TAG", "성공: ${resource.data}")
                         val token = resource.data?.accessToken
                         val refreshToken = resource.data?.refreshToken
                         // 성공시 토큰 저장
@@ -58,20 +57,34 @@ class ParentJoinThirdViewModel @Inject constructor(
                                 accessToken = token,
                                 refreshToken = refreshToken
                             )
-                            _isButtonClicked.value = false
-
+                            verificationSkipCheck.value = false
                         }
                     }
-                    is Resource.Error ->{
-                        _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.FailedEmailCheck(resource.error ?: Throwable()))
-                        _isButtonClicked.value = false
 
-                        Log.d("TAG", "실패: ${resource.error}")
+                    is Resource.Error -> {
+                        _parentJoinThirdSideEffect.send(
+                            ParentJoinThirdSideEffect.FailedEmailCheck(
+                                resource.error ?: Throwable()
+                            )
+                        )
                     }
-                    is Resource.Loading ->{
-                        Log.d("TAG", "로딩: ")
+
+                    is Resource.Loading -> {
                     }
                 }
+            }
+        }
+    }
+
+    fun verificationSkipCheck() {
+        viewModelScope.launch {
+            _isButtonClicked.value = true
+            if (verificationSkipCheck.value) {
+                _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.SkipVerification)
+                _isButtonClicked.value = false
+            }else{
+                _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.JoinSuccess)
+                _isButtonClicked.value = false
             }
         }
     }
@@ -79,17 +92,22 @@ class ParentJoinThirdViewModel @Inject constructor(
     // 인증 요청을 서버에 요청
     fun postEmail(
         email: String
-    ){
+    ) {
         viewModelScope.launch {
-            parentJoinRepository.postEmailsVerification(email).collectLatest {resource->
-                when (resource){
+            parentJoinRepository.postEmailsVerification(email).collectLatest { resource ->
+                when (resource) {
                     is Resource.Success -> {
                         Dlog.d("postEmail:성공 ${resource.data?.message}")
                     }
+
                     is Resource.Error -> {
-                        _parentJoinThirdSideEffect.send(ParentJoinThirdSideEffect.FailedPostEmail(resource.error ?: Throwable()))
-                        Log.d("TAG", "postEmail:실패 ${resource.error}")
+                        _parentJoinThirdSideEffect.send(
+                            ParentJoinThirdSideEffect.FailedPostEmail(
+                                resource.error ?: Throwable()
+                            )
+                        )
                     }
+
                     is Resource.Loading -> {
                         Dlog.d("로딩: ")
                     }
@@ -105,7 +123,7 @@ class ParentJoinThirdViewModel @Inject constructor(
     fun onClickCertification() = viewEvent(ON_CLICK_CERTIFICATION)
     fun onClickCheck() = viewEvent(ON_CLICK_CHECK)
 
-    companion object{
+    companion object {
         const val ON_CLICK_BACK = "ON_CLICK_BACK"
         const val ON_CLICK_BACKGROUND = "ON_CLICK_BACKGROUND"
         const val ON_CLICK_JOIN = "ON_CLICK_JOIN"

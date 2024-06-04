@@ -8,6 +8,7 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.allViews
@@ -35,6 +36,7 @@ import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_OKAY
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_SAD
 import com.b1nd.alimo.presentation.feature.main.detail.DetailViewModel.Companion.ON_CLICK_SEND
+import com.b1nd.alimo.presentation.feature.main.detail.delete.CommentDeleteDialog
 import com.b1nd.alimo.presentation.feature.main.image.ImageFragment
 import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.collectFlow
@@ -71,6 +73,8 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
         initTouch()
         initEmoji()
         initNotice()
+        initBackHandler()
+        viewModel.loadProfile()
 
         bindingViewEvent { event ->
             event.onSuccessEvent {
@@ -285,6 +289,14 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         mBinding.editSend.isEnabled = true
                     }
                 }
+                is DetailSideEffect.SuccessDeleteComment -> {
+
+                }
+                is DetailSideEffect.FailedLoadProfile -> {
+
+                }
+
+                is DetailSideEffect.FailedDeleteComment -> {}
             }
         }
     }
@@ -391,15 +403,58 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
                         isLoadEmoji = true
                     }
 
-                    val adapter = DetailCommentRv(it.comments) {
-                        // issue: 아래처럼 처리하지 않으면 답글 달기 버튼이 클릭되지 않음.
-                        val commenter = it.commenter + getResourceString(R.string.comment_item_that)
-                        parentId = it.commentId
-                        textParentCommenter.visibility = View.VISIBLE
-                        textParentCommenter.text = commenter
-                    }
+                    val adapter = DetailCommentRv(
+                        items = it.comments,
+                        userId = viewModel.profileData.value?.memberId,
+                        onClickReply = {
+                            val commenter = it.commenter + getResourceString(R.string.comment_item_that)
+                            parentId = it.commentId
+                            textParentCommenter.visibility = View.VISIBLE
+                            textParentCommenter.text = commenter
+                        },
+                        onLongClickComment = { commentId, isSub ->
+                            CommentDeleteDialog(
+                                onClickDelete = {
+                                    viewModel.deleteComment(
+                                        notificationId = args.id,
+                                        commentId = commentId,
+                                        isSub = isSub
+                                    )
+                                }
+                            ).show(childFragmentManager, "commentDeleteDialog`")
+                        }
+                    )
                     mBinding.rvComment.adapter = adapter
                 }
+            }
+        }
+
+        collectStateFlow(viewModel.profileData) { data ->
+            if (data == null) { return@collectStateFlow }
+            if (viewModel.state.value.notificationState == null) { return@collectStateFlow }
+            with(viewModel.state.value.notificationState!!) {
+                val adapter = DetailCommentRv(
+                    items = comments,
+                    userId = data.memberId,
+                    onClickReply = {
+                        val commenter = it.commenter + getResourceString(R.string.comment_item_that)
+                        parentId = it.commentId
+                        mBinding.textParentCommenter.visibility = View.VISIBLE
+                        mBinding.textParentCommenter.text = commenter
+                    },
+                    onLongClickComment = { commentId, isSub ->
+                        CommentDeleteDialog(
+                            onClickDelete = {
+                                viewModel.deleteComment(
+                                    notificationId = args.id,
+                                    commentId = commentId,
+                                    isSub = isSub
+                                )
+                            }
+                        ).show(childFragmentManager, "commentDeleteDialog`")
+                    }
+                )
+                mBinding.rvComment.adapter = adapter
             }
         }
     }
@@ -407,6 +462,20 @@ class DetailFragment: BaseFragment<FragmentDetailBinding, DetailViewModel>(R.lay
     override fun onDestroyView() {
         super.onDestroyView()
         (requireActivity() as? MainActivity)?.bottomVisible(true)
+    }
+
+    private fun initBackHandler() {
+        requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (parentId != null) {
+                    parentId = null
+                    mBinding.textParentCommenter.visibility = View.GONE
+                    return
+                }
+                findNavController().popBackStack()
+            }
+
+        })
     }
 
     private fun clickEmoji(

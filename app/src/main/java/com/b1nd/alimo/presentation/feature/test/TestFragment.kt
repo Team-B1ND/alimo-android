@@ -1,15 +1,14 @@
 package com.b1nd.alimo.presentation.feature.test
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.b1nd.alimo.databinding.FragmentProfileBinding
 import com.b1nd.alimo.presentation.custom.CustomCategoryCard
 import com.b1nd.alimo.presentation.custom.CustomSnackBar
-import com.b1nd.alimo.databinding.FragmentProfileBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -34,7 +33,6 @@ class TestFragment: Fragment() {
         }
         binding.layoutCategory.addView(CustomCategoryCard(requireContext(), null, "qwewqe"))
         binding.cardAlarm.setSwitchOnClickListener {
-            Log.d("TAG", "onCreateView: $it")
         }
         lifecycleScope.launch(Dispatchers.Main) {
             delay(1000)

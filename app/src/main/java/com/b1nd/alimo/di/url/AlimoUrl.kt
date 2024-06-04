@@ -26,6 +26,8 @@ object AlimoUrl {
 
     object Comment{
         const val CREATE = "$COMMENT/create"
+        const val DELETE = "$COMMENT/delete"
+        const val DELETE_SUB = "$COMMENT/deleteSub"
     }
 
     object Notification{

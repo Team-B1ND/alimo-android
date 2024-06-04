@@ -1,8 +1,8 @@
 package com.b1nd.alimo.presentation.feature.onboarding.parent.join.third
 
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.View
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -35,18 +35,19 @@ class ParentJoinThirdFragment :
     override val viewModel: ParentJoinThirdViewModel by viewModels()
     private val args: ParentJoinThirdFragmentArgs by navArgs()
 
-
     override fun initView() {
         initSideEffect()
 
-        collectFlow(viewModel.isButtonClicked){
-            if (it){
+        collectFlow(viewModel.isButtonClicked) {
+            if (it) {
                 mBinding.progressCir.visibility = View.VISIBLE
                 mBinding.joinBtnOn.visibility = View.INVISIBLE
                 mBinding.progressCir.setIndeterminate(it)
-            }else{
+                mBinding.idEditText.isEnabled = false // EditText 비활성화
+            } else {
                 mBinding.progressCir.visibility = View.INVISIBLE
                 mBinding.joinBtnOn.visibility = View.VISIBLE
+                mBinding.idEditText.isEnabled = true // EditText 활성화
             }
         }
 
@@ -61,24 +62,21 @@ class ParentJoinThirdFragment :
                 }
             }
         }
+
         bindingViewEvent { event ->
             event.onSuccessEvent {
                 when (it) {
                     ON_CLICK_BACK -> {
                         findNavController().navigate(R.id.action_parentJoinThird_to_onboardingThird)
                     }
-
                     ON_CLICK_BACKGROUND -> {
                         mBinding.idEditTextLayout.clearFocus()
                         view?.hideKeyboard()
                     }
-
                     ON_CLICK_JOIN -> {
-                        startActivityWithFinishAll(MainActivity::class.java)
+                        viewModel.verificationSkipCheck()
                     }
-
                     ON_CLICK_CERTIFICATION -> {
-
                         viewModel.postEmail(args.email)
                         mBinding.parentJoinThirstTitle.setText(R.string.parent_join_thirst_title_2)
                         mBinding.check.visibility = View.VISIBLE
@@ -87,7 +85,6 @@ class ParentJoinThirdFragment :
 
                         // 이메일 인증을 요청하면 5분 타이머 실행
                         object : CountDownTimer(300000, 1000) {
-
                             override fun onTick(millisUntilFinished: Long) {
                                 val minutes = millisUntilFinished / 60000
                                 val seconds = (millisUntilFinished % 60000) / 1000
@@ -100,13 +97,10 @@ class ParentJoinThirdFragment :
                                 val navController = findNavController()
                                 navController.navigate(R.id.action_parentJoinThird_to_onboardingThird)
                             }
-
                         }.start()
-
                     }
-
                     ON_CLICK_CHECK -> {
-                        Dlog.d("initView: ${args.email} ${ mBinding.idEditText.text.toString()}")
+                        Dlog.d("initView: ${args.email} ${mBinding.idEditText.text.toString()}")
                         // 서버로 인증 코드 전송
                         viewModel.emailCheck(
                             email = args.email,
@@ -118,30 +112,56 @@ class ParentJoinThirdFragment :
             }
         }
 
-
-
-
+        mBinding.idEditText.addTextChangedListener {
+            if (!isProgressBarVisible()) {
+                updateButtonColor()
+            }
+        }
     }
 
-    private fun initSideEffect(){
-        collectFlow(viewModel.parentJoinThirdSideEffect){
-            when(it){
-                is ParentJoinThirdSideEffect.FailedEmailCheck ->{
+    private fun updateButtonColor() {
+        if (isProgressBarVisible()) return // 프로그레스바가 보이면 종료
+
+        val text = mBinding.idEditText.text.toString().trim { it <= ' ' }
+
+        // 버튼의 색상을 변경하는 로직 추가
+        if (text.isNotEmpty()) {
+            Dlog.d("updateButtonColor: on")
+            // EditText의 텍스트가 null이 아닐 때 버튼의 색상을 변경
+            mBinding.joinBtnOff.visibility = View.INVISIBLE
+            mBinding.joinBtnOn.visibility = View.VISIBLE
+        } else {
+            Dlog.d("updateButtonColor: off")
+            // EditText가 텍스트가 null일 때 버튼의 색상을 기본 색상으로 변경
+            mBinding.joinBtnOff.visibility = View.VISIBLE
+            mBinding.joinBtnOn.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun initSideEffect() {
+        collectFlow(viewModel.parentJoinThirdSideEffect) {
+            when (it) {
+                is ParentJoinThirdSideEffect.FailedEmailCheck -> {
                     mBinding.error.visibility = View.VISIBLE
-                    Log.d("TAG", "initSideEffect: 이메일 인증 실패${it.throwable}")
                 }
-                is ParentJoinThirdSideEffect.FailedPostEmail ->{
+                is ParentJoinThirdSideEffect.FailedPostEmail -> {
                     requireContext().shortToast(Env.ERROR)
-                    Log.d("TAG", "initSideEffect: ${it.throwable}")
                 }
-                ParentJoinThirdSideEffect.Success ->{
+                ParentJoinThirdSideEffect.Success -> {
                     mBinding.error.visibility = View.INVISIBLE
                     requireContext().shortToast("이메일 인증에 성공하였습니다.")
-                    Log.d("TAG", "initSideEffect: 성공")
+                }
+                ParentJoinThirdSideEffect.JoinSuccess ->{
+                    startActivityWithFinishAll(MainActivity::class.java)
+                }
+                ParentJoinThirdSideEffect.SkipVerification ->{
+                    requireContext().shortToast("이메일 인증을 해주세요")
                 }
             }
         }
     }
 
+    private fun isProgressBarVisible(): Boolean =
+        mBinding.progressCir.visibility == View.VISIBLE
 
 }

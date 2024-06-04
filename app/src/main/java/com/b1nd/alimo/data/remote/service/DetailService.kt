@@ -8,6 +8,7 @@ import com.b1nd.alimo.data.remote.response.detail.EmojiResponse
 import com.b1nd.alimo.di.url.AlimoUrl
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
@@ -63,5 +64,15 @@ class DetailService @Inject constructor(
                 )
             )
         }.body<BaseResponse<String?>>()
+
+    suspend fun deleteComment(
+        commentId: Int
+    ): BaseResponse<Unit> =
+        httpClient.delete("${AlimoUrl.Comment.DELETE}/${commentId}").body()
+
+    suspend fun deleteSubComment(
+        commentId: Int
+    ): BaseResponse<Unit> =
+        httpClient.delete("${AlimoUrl.Comment.DELETE_SUB}/${commentId}").body()
 
 }

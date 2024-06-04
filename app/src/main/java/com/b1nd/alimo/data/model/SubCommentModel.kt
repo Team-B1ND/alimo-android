@@ -6,6 +6,7 @@ data class SubCommentModel(
     val commentId: Int,
     val content: String,
     val commenter: String,
+    val commenterId: Int,
     val createdAt: LocalDateTime,
     val profileImage: String?,
 )

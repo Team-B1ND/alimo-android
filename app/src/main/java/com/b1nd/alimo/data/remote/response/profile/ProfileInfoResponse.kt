@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ProfileInfoResponse(
+    val memberId: Int,
     val email: String,
     val grade: Int,
     val room: Int,

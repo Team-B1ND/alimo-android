@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -85,7 +84,6 @@ class ParentJoinFirstFragment :
                     }
 
                     ON_CLICK_NEXT -> {
-//                        Log.d("TAG", "${viewModel.tureFalse.value.data?.isCorrectChildCode}: ")
 
                         val studentCode = getChildCode()
                         Dlog.d("학생 코드: $studentCode")
@@ -183,31 +181,36 @@ class ParentJoinFirstFragment :
     inner class GenericTextWatcher(private val currentView: EditText, private val nextView: View?) :
         TextWatcher {
         override fun afterTextChanged(editable: Editable) {
+            if (isProgressBarVisible()) return // Exit if the progress bar is visible
+
             if (editable.length == 1) {
                 if (checkAllText()) {
-                    // 모든 EditText에 텍스트가 있을 때
-                    view?.hideKeyboard() // 키보드 숨김
+                    // All EditTexts have text
+                    view?.hideKeyboard() // Hide keyboard
                     mBinding.loginBtnOff.visibility = View.INVISIBLE
                     mBinding.loginBtnOn.visibility = View.VISIBLE
                 } else {
-                    // 다음 EditText로 포커스 이동
+                    // Move focus to next EditText
                     nextView?.requestFocus()
                     mBinding.loginBtnOff.visibility = View.VISIBLE
                     mBinding.loginBtnOn.visibility = View.INVISIBLE
                     if (nextView is EditText) {
-                        // 다음 EditText에 텍스트가 입력되면 배경 업데이트
+                        // Update background of next EditText if it has text
                         updateEditTextBackground(nextView)
                     }
                 }
             }
             updateEditTextBackground(currentView)
         }
+
         override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            // 변경 전에 수행할 작업
+            // Perform operations before text changes
         }
+
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            // 텍스트가 변경될 때 수행할 작업
+            // Perform operations when text changes
         }
+
         private fun checkAllText(): Boolean {
             for (editText in editTextList) {
                 if (editText.text.isNullOrEmpty()) {
@@ -222,9 +225,11 @@ class ParentJoinFirstFragment :
         private val previousView: EditText?
     ) : View.OnKeyListener {
         override fun onKey(p0: View?, keyCode: Int, event: KeyEvent?): Boolean {
+            if (isProgressBarVisible()) return false // Exit if the progress bar is visible
+
             updateButtonState()
             if (event!!.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL && currentView.text.isEmpty()) {
-                // 현재가 비어 있으면 이전 EditText의 숫자도 삭제됨
+                // If current is empty, delete previous EditText's number as well
                 previousView?.text = null
                 previousView?.requestFocus()
                 if (previousView != null) {
@@ -234,15 +239,16 @@ class ParentJoinFirstFragment :
             }
             return false
         }
-        // 버튼 상태 변경 메서드
+
+        // Button state update method
         private fun updateButtonState() {
             val allTextFilled = editTextList.all { it.text.isNotEmpty() }
             if (allTextFilled) {
-                // 모든 EditText에 텍스트가 있는 경우
+                // If all EditTexts have text
                 mBinding.loginBtnOff.visibility = View.INVISIBLE
                 mBinding.loginBtnOn.visibility = View.VISIBLE
             } else {
-                // 하나라도 비어있는 EditText가 있는 경우
+                // If any EditText is empty
                 mBinding.loginBtnOff.visibility = View.VISIBLE
                 mBinding.loginBtnOn.visibility = View.INVISIBLE
             }
@@ -265,4 +271,8 @@ class ParentJoinFirstFragment :
             }
         }
     }
+
+    private fun isProgressBarVisible(): Boolean =
+        mBinding.progressCir.visibility == View.VISIBLE
+
 }
