@@ -222,8 +222,8 @@ class ParentJoinSecondFragment :
         }
     }
 
-    private fun isProgressBarVisible(): Boolean {
-        return mBinding.progressCir.visibility == View.VISIBLE
-    }
+    private fun isProgressBarVisible(): Boolean =
+        mBinding.progressCir.visibility == View.VISIBLE
+
 
 }
