@@ -24,6 +24,7 @@ import com.b1nd.alimo.presentation.utiles.Dlog
 import com.b1nd.alimo.presentation.utiles.collectFlow
 import com.b1nd.alimo.presentation.utiles.hideKeyboard
 import com.b1nd.alimo.presentation.utiles.onSuccessEvent
+import com.b1nd.alimo.presentation.utiles.setOnPasteListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -37,7 +38,6 @@ class ParentJoinFirstFragment :
         IncorrectCodeDialog()
     }
     private val editTextList = mutableListOf<EditText>()
-
 
     override fun initView() {
         initSideEffect()
@@ -76,7 +76,6 @@ class ParentJoinFirstFragment :
                     ON_CLICK_BACK -> {
                         Dlog.d("initView: 뒤로가")
                         findNavController().navigate(R.id.action_parentJoinFirst_to_onboardingThird)
-
                     }
 
                     ON_CLICK_LOGIN -> {
@@ -84,16 +83,12 @@ class ParentJoinFirstFragment :
                     }
 
                     ON_CLICK_NEXT -> {
-
                         val studentCode = getChildCode()
                         Dlog.d("학생 코드: $studentCode")
-
                         viewModel.checkStudentCode(studentCode)
                     }
 
                     ON_CLICK_STUDENT_CODE -> {
-                        // "학생 코드가 무엇인가요?"를 클릭시 아래의 Url로 이동
-                        Dlog.d("studentCode: click")
                         val url = "https://subsequent-grouse.super.site/"
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                         startActivity(intent)
@@ -102,7 +97,6 @@ class ParentJoinFirstFragment :
                     ON_CLICK_BACKGROUND -> {
                         view?.hideKeyboard()
                     }
-
                 }
             }
         }
@@ -110,8 +104,6 @@ class ParentJoinFirstFragment :
         mBinding.studentCode1.requestFocus()
         showKeyboard()
 
-
-        // 리스트에 EditText 객체들을 추가합니다
         editTextList.addAll(
             listOf(
                 mBinding.studentCode1,
@@ -123,10 +115,7 @@ class ParentJoinFirstFragment :
             )
         )
 
-
-// editTextList에 대해 forEachIndexed를 사용하여 반복합니다.
         editTextList.forEachIndexed { index, editText ->
-            // 현재 EditText에 GenericTextWatcher를 추가
             editText.addTextChangedListener(
                 GenericTextWatcher(
                     editText,
@@ -134,14 +123,23 @@ class ParentJoinFirstFragment :
                 )
             )
 
-            // 현재 EditText에 GenericKeyEvent를 추가
             editText.setOnKeyListener(GenericKeyEvent(editText, editTextList.getOrNull(index - 1)))
 
-            // 초기 설정을 위해 EditText의 배경을 설정
             setupEditTextBackground(editText)
         }
-    }
 
+        // 첫 번째 EditText에 붙여넣기 리스너 설정
+        mBinding.studentCode1.setOnPasteListener { pastedText ->
+            if (pastedText.length == editTextList.size) {
+                for (i in editTextList.indices) {
+                    editTextList[i].setText(pastedText[i].toString())
+                }
+                view?.hideKeyboard()
+                mBinding.loginBtnOff.visibility = View.INVISIBLE
+                mBinding.loginBtnOn.visibility = View.VISIBLE
+            }
+        }
+    }
 
     private fun getChildCode() = StringBuilder().apply {
         append(mBinding.studentCode1.text.toString())
@@ -158,18 +156,14 @@ class ParentJoinFirstFragment :
                 updateEditTextBackground(editText)
             }
 
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // 이전 텍스트 변경 전에 수행할 작업
-            }
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // 텍스트가 변경될 때 수행할 작업
-            }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
         })
 
-        // 초기 설정을 위해 한 번 호출
         updateEditTextBackground(editText)
     }
+
     private fun updateEditTextBackground(editText: EditText) {
         val backgroundResource = if (editText.text?.isEmpty() == true) {
             R.drawable.edittext_border_background
@@ -178,24 +172,22 @@ class ParentJoinFirstFragment :
         }
         editText.setBackgroundResource(backgroundResource)
     }
+
     inner class GenericTextWatcher(private val currentView: EditText, private val nextView: View?) :
         TextWatcher {
         override fun afterTextChanged(editable: Editable) {
-            if (isProgressBarVisible()) return // Exit if the progress bar is visible
+            if (isProgressBarVisible()) return
 
             if (editable.length == 1) {
                 if (checkAllText()) {
-                    // All EditTexts have text
-                    view?.hideKeyboard() // Hide keyboard
+                    view?.hideKeyboard()
                     mBinding.loginBtnOff.visibility = View.INVISIBLE
                     mBinding.loginBtnOn.visibility = View.VISIBLE
                 } else {
-                    // Move focus to next EditText
                     nextView?.requestFocus()
                     mBinding.loginBtnOff.visibility = View.VISIBLE
                     mBinding.loginBtnOn.visibility = View.INVISIBLE
                     if (nextView is EditText) {
-                        // Update background of next EditText if it has text
                         updateEditTextBackground(nextView)
                     }
                 }
@@ -203,13 +195,9 @@ class ParentJoinFirstFragment :
             updateEditTextBackground(currentView)
         }
 
-        override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            // Perform operations before text changes
-        }
+        override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            // Perform operations when text changes
-        }
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
         private fun checkAllText(): Boolean {
             for (editText in editTextList) {
@@ -220,16 +208,16 @@ class ParentJoinFirstFragment :
             return true
         }
     }
+
     inner class GenericKeyEvent(
         private val currentView: EditText,
         private val previousView: EditText?
     ) : View.OnKeyListener {
         override fun onKey(p0: View?, keyCode: Int, event: KeyEvent?): Boolean {
-            if (isProgressBarVisible()) return false // Exit if the progress bar is visible
+            if (isProgressBarVisible()) return false
 
             updateButtonState()
             if (event!!.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL && currentView.text.isEmpty()) {
-                // If current is empty, delete previous EditText's number as well
                 previousView?.text = null
                 previousView?.requestFocus()
                 if (previousView != null) {
@@ -240,39 +228,38 @@ class ParentJoinFirstFragment :
             return false
         }
 
-        // Button state update method
         private fun updateButtonState() {
             val allTextFilled = editTextList.all { it.text.isNotEmpty() }
             if (allTextFilled) {
-                // If all EditTexts have text
                 mBinding.loginBtnOff.visibility = View.INVISIBLE
                 mBinding.loginBtnOn.visibility = View.VISIBLE
             } else {
-                // If any EditText is empty
                 mBinding.loginBtnOff.visibility = View.VISIBLE
                 mBinding.loginBtnOn.visibility = View.INVISIBLE
             }
         }
     }
+
     private fun showKeyboard() {
-        val imm =
-            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(mBinding.studentCode1, InputMethodManager.SHOW_IMPLICIT)
     }
 
     private fun initSideEffect() {
         collectFlow(viewModel.parentJoinFirstSideEffect) {
             when(it) {
-
                 is ParentJoinFirstSideEffect.FailedChildCode -> {
                     dialog.show(requireActivity().supportFragmentManager, "올바르지 않은 학생코드")
                 }
-
             }
         }
     }
 
     private fun isProgressBarVisible(): Boolean =
         mBinding.progressCir.visibility == View.VISIBLE
-
 }
+
+
+
+
+
