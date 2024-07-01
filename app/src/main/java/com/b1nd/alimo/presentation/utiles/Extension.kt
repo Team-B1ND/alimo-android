@@ -1,6 +1,7 @@
 package com.b1nd.alimo.presentation.utiles
 
 import android.app.DownloadManager
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
@@ -8,11 +9,14 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Patterns
 import android.view.View
 import android.view.WindowInsetsController
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
@@ -64,6 +68,31 @@ fun <T> Fragment.collectStateFlow(
             }
         }
     }
+}
+
+
+
+fun EditText.setOnPasteListener(onPaste: (String) -> Unit) {
+    this.addTextChangedListener(object : TextWatcher {
+        private var oldText: String = ""
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            oldText = s?.toString() ?: ""
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            val newText = s?.toString() ?: ""
+            if (newText.length > oldText.length && newText.length == this@setOnPasteListener.maxLines) {
+                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val pasteData = clipboard.primaryClip?.getItemAt(0)?.text?.toString()
+                if (!pasteData.isNullOrEmpty()) {
+                    onPaste(pasteData)
+                }
+            }
+        }
+
+        override fun afterTextChanged(s: Editable?) {}
+    })
 }
 
 fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
